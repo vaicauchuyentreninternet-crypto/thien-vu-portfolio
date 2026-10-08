@@ -3589,6 +3589,103 @@
       .hero-actions .resume-link{order:1}
       .hero-actions .secondary-link{order:2}
     }
+
+    /* Hero action consistency only: compact editorial CTAs and text-safe vector arrows. */
+    .hero-v2 .hero-actions{
+      display:flex!important;
+      flex-direction:row!important;
+      flex-wrap:wrap!important;
+      align-items:center!important;
+      justify-content:flex-start!important;
+      gap:8px!important;
+      width:auto!important;
+      margin-top:22px!important;
+    }
+    .hero-v2 .hero-actions > a{
+      box-sizing:border-box;
+      display:inline-flex!important;
+      align-items:center!important;
+      justify-content:center!important;
+      flex:0 0 auto;
+      order:0!important;
+      gap:7px;
+      width:auto!important;
+      height:38px!important;
+      min-height:38px!important;
+      padding:0 13px!important;
+      border:1px solid rgba(21,21,21,.21)!important;
+      border-radius:0!important;
+      background:transparent!important;
+      color:#242421!important;
+      font-family:Inter,Geist,"Helvetica Neue",Arial,sans-serif!important;
+      font-size:12px!important;
+      font-weight:550!important;
+      line-height:1!important;
+      letter-spacing:0!important;
+      white-space:nowrap!important;
+      text-decoration:none!important;
+      box-shadow:none!important;
+      transition:transform .25s var(--ease),background .25s var(--ease),border-color .25s var(--ease),color .25s var(--ease)!important;
+    }
+    .hero-v2 .hero-actions > a.primary-link{
+      background:var(--accent)!important;
+      border-color:var(--accent)!important;
+      color:#fff!important;
+    }
+    .hero-v2 .hero-actions > a:hover{
+      transform:translateY(-1px)!important;
+      background:rgba(122,0,25,.045)!important;
+      border-color:rgba(122,0,25,.52)!important;
+      color:var(--accent)!important;
+    }
+    .hero-v2 .hero-actions > a.primary-link:hover{
+      background:#950020!important;
+      border-color:#950020!important;
+      color:#fff!important;
+    }
+    .hero-v2 .hero-actions > a:focus-visible{
+      outline:2px solid var(--accent);
+      outline-offset:3px;
+    }
+    .hero-v2 .hero-actions .hero-cta-arrow{
+      width:11px;
+      height:11px;
+      flex:0 0 11px;
+      fill:none;
+      stroke:currentColor;
+      stroke-width:1.4;
+      stroke-linecap:square;
+      stroke-linejoin:miter;
+      display:block;
+      transition:transform .25s var(--ease);
+    }
+    .hero-v2 .hero-actions > a:hover .hero-cta-arrow{transform:translate(1px,-1px)}
+    @media(max-width:720px){
+      .hero-v2 .hero-actions{gap:7px!important;margin-top:18px!important}
+      .hero-v2 .hero-actions > a{
+        height:36px!important;
+        min-height:36px!important;
+        padding:0 10px!important;
+        gap:5px;
+        font-size:11px!important;
+      }
+      .hero-v2 .hero-actions .hero-cta-arrow{width:10px;height:10px;flex-basis:10px}
+    }
+    @media(max-width:360px){
+      .hero-v2 .hero-actions{
+        display:grid!important;
+        grid-template-columns:repeat(2,minmax(0,1fr));
+        width:100%!important;
+      }
+      .hero-v2 .hero-actions > a{width:100%!important}
+      .hero-v2 .hero-actions > a:last-child{grid-column:1/-1}
+    }
+    @media(prefers-reduced-motion:reduce){
+      .hero-v2 .hero-actions > a,
+      .hero-v2 .hero-actions .hero-cta-arrow{transition:none!important}
+      .hero-v2 .hero-actions > a:hover,
+      .hero-v2 .hero-actions > a:hover .hero-cta-arrow{transform:none!important}
+    }
   </style>
 
 </head>
@@ -3659,9 +3756,9 @@
           <h1><span class="desktop-hero-text">I turn repeated operational work into systems teams can rely on.</span><span class="mobile-hero-text">I turn repeated work into reliable systems.</span></h1>
           <p class="hero-copy"><span class="desktop-hero-text">I work across e-commerce operations, data, automation and web tooling. I usually start by understanding where a process slows down, then structure the workflow and build a practical system that is easier to run, measure and improve.</span><span class="mobile-hero-text">Operations, data, automation and web tooling connected into practical workflows.</span></p>
           <div class="hero-actions">
-            <a class="primary-link" href="#automation-lab"><span class="desktop-hero-text">Explore how I build systems →</span><span class="mobile-hero-text">How I build →</span></a>
-            <a class="secondary-link" href="#work"><span class="desktop-hero-text">View selected case studies ↗</span><span class="mobile-hero-text">Case studies ↗</span></a>
-            <a class="resume-link" href="Nguyen_Thien_Vu_Resume.pdf" target="_blank" rel="noopener noreferrer" type="application/pdf" aria-label="View Nguyễn Thiên Vũ résumé (PDF, opens in a new tab)">View Resume ↗</a>
+            <a class="primary-link" href="#automation-lab">How I build<svg class="hero-cta-arrow" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M3.5 12.5 12.5 3.5 M5.5 3.5 H12.5 V10.5"/></svg></a>
+            <a class="secondary-link" href="#work">Case studies<svg class="hero-cta-arrow" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M3.5 12.5 12.5 3.5 M5.5 3.5 H12.5 V10.5"/></svg></a>
+            <a class="resume-link" href="Nguyen_Thien_Vu_Resume.pdf" target="_blank" rel="noopener noreferrer" type="application/pdf" aria-label="View Nguyễn Thiên Vũ résumé (PDF, opens in a new tab)">Résumé PDF<svg class="hero-cta-arrow" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M3.5 12.5 12.5 3.5 M5.5 3.5 H12.5 V10.5"/></svg></a>
           </div>
 <div class="hero-meta"><span>Nguyễn Thiên Vũ</span><span>ANCARAT · 2024-Present</span><span>Systems · Automation · Web Operations</span></div>
         </div>
