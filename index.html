@@ -129,6 +129,9 @@
     .contact-note{font-size:13px;color:var(--muted);line-height:1.65;max-width:620px}
     .contact-links{display:flex;gap:20px;flex-wrap:wrap;margin-top:28px}
     .contact-links a{font-size:13px;border-bottom:1px solid currentColor;padding-bottom:3px}
+    /* Contact links only: no mail application is required for the Gmail route. */
+    .contact-links .contact-copy{font:inherit;font-size:13px;color:inherit;background:none;border:0;border-bottom:1px solid currentColor;padding:0 0 3px;cursor:pointer}
+    .contact-links .contact-copy-feedback{font-size:12px;color:var(--accent);align-self:center}
     .footer{border-top:1px solid var(--line);margin-top:90px;padding-top:24px;display:flex;justify-content:space-between;gap:20px;color:var(--muted);font-size:11px;letter-spacing:.04em;text-transform:uppercase}
 
     .js .reveal{opacity:0;filter:blur(5px);transition:opacity .72s var(--ease),transform .72s var(--ease),filter .72s var(--ease),clip-path .85s var(--ease)}
@@ -3486,6 +3489,86 @@
   }
   .hero-v2 .metric-portrait{min-height:0 !important}
 }
+
+
+/* V53: Code Lab remains a fixed-size editor while text is typed. */
+.code-lab-main{height:620px;min-height:0}
+.code-lab-editor,.code-lab-terminal{min-height:0;overflow:hidden}
+.code-lab-tabs,.code-lab-footer{flex-shrink:0}
+.code-lab-code-wrap{
+  flex:1 1 auto;
+  min-height:0;
+  overflow-y:auto;
+  overflow-x:auto;
+  overflow-anchor:none;
+  overscroll-behavior:contain;
+}
+@media(max-width:980px){
+  .code-lab-main{height:auto;min-height:0}
+  .code-lab-editor{height:520px;min-height:0}
+  .code-lab-terminal{height:auto;min-height:320px;overflow:visible}
+  .code-lab-terminal-body{overflow:visible}
+}
+@media(max-width:720px){
+  .code-lab-editor{height:clamp(330px,52svh,430px);min-height:0}
+  .code-lab-terminal{height:auto;min-height:320px;overflow:visible}
+  .code-lab-terminal-body{overflow:visible}
+
+  /* The portrait stays 20% smaller and centered within the mobile Hero. */
+  .hero-v2 .hero-grid > .hero-control{
+    align-items:center !important;
+    justify-content:center !important;
+  }
+  .hero-v2 .metric-portrait,
+  .hero-v2 .portrait-under{
+    width:80% !important;
+    max-width:80% !important;
+    margin-inline:auto !important;
+  }
+  .hero-v2 .portrait-under{text-align:center !important}
+  .hero-v2 .portrait-under span{text-align:center !important}
+
+  /* The case workflow wraps vertically instead of widening the popup. */
+  #case-dialog{
+    max-width:100%;
+    overflow-x:hidden;
+    overscroll-behavior-x:none;
+  }
+  #case-dialog .case-shell,
+  #case-dialog .case-block-grid,
+  #case-dialog .case-block-grid > div{
+    min-width:0;
+    max-width:100%;
+  }
+  #case-dialog .case-block-grid{
+    grid-template-columns:minmax(0,1fr) !important;
+  }
+  #case-dialog .architecture{
+    display:flex;
+    flex-direction:column;
+    align-items:stretch;
+    gap:5px;
+    width:100%;
+    min-width:0;
+    max-width:100%;
+    overflow:visible;
+    padding:0;
+  }
+  #case-dialog .architecture button{
+    width:100%;
+    min-height:44px;
+    white-space:normal;
+    text-align:center;
+    line-height:1.35;
+    padding:12px 14px;
+  }
+  #case-dialog .architecture .arrow{
+    align-self:center;
+    display:block;
+    line-height:14px;
+    transform:rotate(90deg);
+  }
+}
 </style>
 
 </head>
@@ -4218,10 +4301,39 @@
 
     const links=document.getElementById('contact-links');
     const contactItems=[];
-    if(CONFIG.email) contactItems.push(`<a href="mailto:${CONFIG.email}">${CONFIG.email} ↗</a>`);
+    if(CONFIG.email){
+      const gmailCompose='https://mail.google.com/mail/?view=cm&fs=1&to='+encodeURIComponent(CONFIG.email);
+      contactItems.push(`<a href="${gmailCompose}" target="_blank" rel="noopener noreferrer" aria-label="Write an email to ${CONFIG.email} using Gmail">${CONFIG.email} · Gmail ↗</a>`);
+      contactItems.push('<button class="contact-copy" type="button" id="contact-copy-email">Copy email</button>');
+      contactItems.push('<span class="contact-copy-feedback" id="contact-copy-feedback" role="status" aria-live="polite"></span>');
+    }
     if(CONFIG.linkedin) contactItems.push(`<a href="${CONFIG.linkedin}" target="_blank" rel="noreferrer">LinkedIn ↗</a>`);
     if(CONFIG.resume) contactItems.push(`<a href="${CONFIG.resume}" target="_blank" rel="noreferrer">Résumé ↗</a>`);
     links.innerHTML=contactItems.join('');
+    const copyEmailButton=document.getElementById('contact-copy-email');
+    if(copyEmailButton){
+      copyEmailButton.addEventListener('click',async()=>{
+        const feedback=document.getElementById('contact-copy-feedback');
+        try{
+          if(navigator.clipboard && window.isSecureContext){
+            await navigator.clipboard.writeText(CONFIG.email);
+          }else{
+            const helper=document.createElement('textarea');
+            helper.value=CONFIG.email;
+            helper.setAttribute('readonly','');
+            helper.style.cssText='position:fixed;left:-9999px;top:0;opacity:0';
+            document.body.appendChild(helper);
+            helper.select();
+            const succeeded=document.execCommand('copy');
+            helper.remove();
+            if(!succeeded) throw new Error('Clipboard unavailable');
+          }
+          feedback.textContent='Email copied';
+        }catch(error){
+          feedback.textContent='Copy this address manually: '+CONFIG.email;
+        }
+      });
+    }
 
 
     const progressBar=document.getElementById('progress-bar');
@@ -5103,6 +5215,7 @@
     cycleToken++;
     running=false;
     codeEl.innerHTML='';
+    if(scrollEl){scrollEl.scrollTop=0;scrollEl.scrollLeft=0;}
     logs.forEach(log=>log.classList.remove('show'));
     statusEl.textContent='EDITING';
     progressEl.style.width='0%';
@@ -5116,6 +5229,7 @@
     text.className='code-text';
     line.appendChild(text);
     codeEl.appendChild(line);
+    if(scrollEl) scrollEl.scrollTop=scrollEl.scrollHeight;
     return {line,text};
   }
 
@@ -5132,7 +5246,6 @@
       cursor.className='code-lab-cursor';
       textEl.appendChild(cursor);
       positionEl.textContent=`Ln ${lineIndex+1}, Col ${Math.max(1,i+1)}`;
-      if(scrollEl) scrollEl.scrollTop=scrollEl.scrollHeight;
       await sleep(11 + Math.random()*13);
     }
     textEl.innerHTML=highlight(value);
@@ -5148,6 +5261,7 @@
     cycleToken++;
     const token=cycleToken;
     codeEl.innerHTML='';
+    if(scrollEl){scrollEl.scrollTop=0;scrollEl.scrollLeft=0;}
     logs.forEach(log=>log.classList.remove('show'));
     statusEl.textContent='EDITING';
     progressEl.style.width='0%';
