@@ -1,0 +1,2640 @@
+{
+  "source": "GenLogin workflow exports in TOOL GEN.zip",
+  "scenes": [
+    {
+      "id": "gold",
+      "name": "Gold catalog / publisher",
+      "kicker": "853-note catalog workflow",
+      "description": "Product publishing, field updates, and a return-to-queue retry route",
+      "file": "upload gold.genlogin",
+      "fileNodes": 853,
+      "fileEdges": 1102,
+      "nodes": [
+        {
+          "id": "9oJYI",
+          "type": "ReadFile",
+          "label": "Read file / variable",
+          "hint": "inport.txt",
+          "options": {
+            "filePath": "C:\\Users\\<local-user>\\Desktop\\inport.txt",
+            "inputType": "file",
+            "readMode": "lineByLineDelimiter",
+            "lineDelimiter": "|",
+            "mapVariables": "[\"Tên sản phẩm *\", \"Mã sản phẩm (SKU) *\", \"Danh mục 1 *\", \"Danh mục 2 *\", \"Danh mục 3 *\", \"Danh mục 4\", \"check 1 \", \"check 2\", \"check3\", \"check4\", \"check5\", \"Tên hiển thị\"]"
+          },
+          "code": "",
+          "lane": "main",
+          "position": 0,
+          "source": "upload gold.genlogin"
+        },
+        {
+          "id": "y2UMA",
+          "type": "If",
+          "label": "If",
+          "hint": "Tên sản phẩm * = ",
+          "options": {
+            "leftOperand": "Tên sản phẩm *",
+            "operator": "="
+          },
+          "code": "",
+          "lane": "main",
+          "position": 1,
+          "source": "upload gold.genlogin"
+        },
+        {
+          "id": "KxDLa",
+          "type": "OpenUrl",
+          "label": "Open url",
+          "hint": "https://bo.ancarat.com/products",
+          "options": {
+            "url": "https://bo.ancarat.com/products",
+            "waitUntilEvent": "load",
+            "timeoutWaitForNavigation": "0"
+          },
+          "code": "",
+          "lane": "main",
+          "position": 2,
+          "source": "upload gold.genlogin"
+        },
+        {
+          "id": "Fpups",
+          "type": "TypeText",
+          "label": "Type text",
+          "hint": "//input [@placeholder=\"Tìm tên/Mã SP...\"]",
+          "options": {
+            "selectorType": "xpath",
+            "selector": "//input [@placeholder=\"Tìm tên/Mã SP...\"]",
+            "text": "${Mã sản phẩm (SKU) *}",
+            "typeSpeed": "5",
+            "typeAsHuman": "True"
+          },
+          "code": "",
+          "lane": "main",
+          "position": 3,
+          "source": "upload gold.genlogin"
+        },
+        {
+          "id": "cO0Xw",
+          "type": "GetAttributeValue",
+          "label": "Get attribute",
+          "hint": "//a[contains(@class, 'text-primary') and contains(., '${Mã sản phẩ",
+          "options": {
+            "selectorType": "xpath",
+            "selector": "//a[contains(@class, 'text-primary') and contains(., '${Mã sản phẩm (SKU) *}')]",
+            "attributeName": "href",
+            "outputVariable": "link bo"
+          },
+          "code": "",
+          "lane": "main",
+          "position": 4,
+          "source": "upload gold.genlogin"
+        },
+        {
+          "id": "Hg-pd",
+          "type": "WriteFile",
+          "label": "Write file",
+          "hint": "link bo3.txt",
+          "options": {
+            "filePath": "C:\\Users\\<local-user>\\Desktop\\link bo3.txt",
+            "writeMode": "append",
+            "appendMode": "newline",
+            "inputVariable": "${Mã sản phẩm (SKU) *}|${Tên sản phẩm *}|https://bo.ancarat.com${link bo}"
+          },
+          "code": "",
+          "lane": "main",
+          "position": 5,
+          "source": "upload gold.genlogin"
+        },
+        {
+          "id": "4aMKo",
+          "type": "OpenUrl",
+          "label": "Open url",
+          "hint": "https://bo.ancarat.com${link bo}",
+          "options": {
+            "url": "https://bo.ancarat.com${link bo}",
+            "waitUntilEvent": "load",
+            "timeoutWaitForNavigation": "0"
+          },
+          "code": "",
+          "lane": "main",
+          "position": 6,
+          "source": "upload gold.genlogin"
+        },
+        {
+          "id": "RsVKe",
+          "type": "ElementExists",
+          "label": "Element exists",
+          "hint": "//h2 [text () =\"Sửa sản phẩm\"]",
+          "options": {
+            "selectorType": "xpath",
+            "selector": "//h2 [text () =\"Sửa sản phẩm\"]"
+          },
+          "code": "",
+          "lane": "main",
+          "position": 7,
+          "source": "upload gold.genlogin"
+        },
+        {
+          "id": "S8-B4",
+          "type": "If",
+          "label": "If",
+          "hint": "Tên hiển thị = ",
+          "options": {
+            "leftOperand": "Tên hiển thị",
+            "operator": "="
+          },
+          "code": "",
+          "lane": "main",
+          "position": 8,
+          "source": "upload gold.genlogin"
+        },
+        {
+          "id": "gruVK",
+          "type": "Click",
+          "label": "Click",
+          "hint": "//div [@class=\"richtext-relative \"]",
+          "options": {
+            "selectorType": "xpath",
+            "selector": "//div [@class=\"richtext-relative \"]",
+            "buttonType": "left",
+            "clickCount": "1",
+            "timeout": "10"
+          },
+          "code": "",
+          "lane": "main",
+          "position": 9,
+          "source": "upload gold.genlogin"
+        },
+        {
+          "id": "XUOIW",
+          "type": "Press",
+          "label": "Press key",
+          "hint": "GenLogin action",
+          "options": {
+            "key": "[\"ControlLeft\", \"KeyA\", \"Backspace\"]"
+          },
+          "code": "",
+          "lane": "main",
+          "position": 10,
+          "source": "upload gold.genlogin"
+        },
+        {
+          "id": "h5XUP",
+          "type": "TypeText",
+          "label": "Type text",
+          "hint": "//div [@class=\"richtext-relative \"]",
+          "options": {
+            "selectorType": "xpath",
+            "selector": "//div [@class=\"richtext-relative \"]",
+            "text": "${Danh mục 1 *}",
+            "typeSpeed": "5",
+            "typeAsHuman": "False"
+          },
+          "code": "",
+          "lane": "main",
+          "position": 11,
+          "source": "upload gold.genlogin"
+        },
+        {
+          "id": "wjNZm",
+          "type": "Reload",
+          "label": "Reload page",
+          "hint": "GenLogin action",
+          "options": {},
+          "code": "",
+          "lane": "branch",
+          "position": 12,
+          "source": "upload gold.genlogin"
+        },
+        {
+          "id": "zXOP5",
+          "type": "Pause",
+          "label": "Sleep",
+          "hint": "Wait 1 sec",
+          "options": {
+            "timeoutType": "fixed",
+            "timeout": "1",
+            "timeoutFrom": "1",
+            "timeoutTo": "3"
+          },
+          "code": "",
+          "lane": "branch",
+          "position": 13,
+          "source": "upload gold.genlogin"
+        },
+        {
+          "id": "l_WRD",
+          "type": "WriteFile",
+          "label": "Write file",
+          "hint": "output new1.txt",
+          "options": {
+            "filePath": "C:\\Users\\<local-user>\\Desktop\\output new1.txt",
+            "writeMode": "append",
+            "appendMode": "newline",
+            "inputVariable": "${Tên sản phẩm *}|${Mã sản phẩm (SKU) *}|${Danh mục 1 *}|${Danh mục 2 *}|${Danh mục 3 *}|${Danh mục 4}|${check 1 }|${check 2}|${check3}|${check4}|"
+          },
+          "code": "",
+          "lane": "branch",
+          "position": 14,
+          "source": "upload gold.genlogin"
+        },
+        {
+          "id": "fJ-Gk",
+          "type": "Pause",
+          "label": "Sleep",
+          "hint": "Wait 1 sec",
+          "options": {
+            "timeoutType": "fixed",
+            "timeout": "1",
+            "timeoutFrom": "1",
+            "timeoutTo": "3"
+          },
+          "code": "",
+          "lane": "branch",
+          "position": 15,
+          "source": "upload gold.genlogin"
+        },
+        {
+          "id": "NfSOY",
+          "type": "SetVariable",
+          "label": "Set variable",
+          "hint": "Tên hiển thị",
+          "options": {
+            "variableName": "Tên hiển thị",
+            "setOperator": "="
+          },
+          "code": "",
+          "lane": "branch",
+          "position": 16,
+          "source": "upload gold.genlogin"
+        },
+        {
+          "id": "Tx_PV",
+          "type": "SetVariable",
+          "label": "Set variable",
+          "hint": "Tên sản phẩm *",
+          "options": {
+            "variableName": "Tên sản phẩm *",
+            "setOperator": "="
+          },
+          "code": "",
+          "lane": "branch",
+          "position": 17,
+          "source": "upload gold.genlogin"
+        }
+      ],
+      "edges": [
+        {
+          "from": "gruVK",
+          "to": "XUOIW",
+          "state": "success",
+          "retry": false,
+          "handle": "successNode"
+        },
+        {
+          "from": "XUOIW",
+          "to": "h5XUP",
+          "state": "success",
+          "retry": false,
+          "handle": "successNode"
+        },
+        {
+          "from": "l_WRD",
+          "to": "fJ-Gk",
+          "state": "success",
+          "retry": true,
+          "handle": "successNode"
+        },
+        {
+          "from": "h5XUP",
+          "to": "l_WRD",
+          "state": "fail",
+          "retry": false,
+          "handle": "failNode"
+        },
+        {
+          "from": "XUOIW",
+          "to": "l_WRD",
+          "state": "fail",
+          "retry": false,
+          "handle": "failNode"
+        },
+        {
+          "from": "gruVK",
+          "to": "l_WRD",
+          "state": "fail",
+          "retry": false,
+          "handle": "failNode"
+        },
+        {
+          "from": "y2UMA",
+          "to": "KxDLa",
+          "state": "fail",
+          "retry": false,
+          "handle": "failNode"
+        },
+        {
+          "from": "wjNZm",
+          "to": "zXOP5",
+          "state": "success",
+          "retry": true,
+          "handle": "successNode"
+        },
+        {
+          "from": "KxDLa",
+          "to": "wjNZm",
+          "state": "fail",
+          "retry": false,
+          "handle": "failNode"
+        },
+        {
+          "from": "Fpups",
+          "to": "cO0Xw",
+          "state": "success",
+          "retry": false,
+          "handle": "successNode"
+        },
+        {
+          "from": "cO0Xw",
+          "to": "Hg-pd",
+          "state": "success",
+          "retry": false,
+          "handle": "successNode"
+        },
+        {
+          "from": "Hg-pd",
+          "to": "4aMKo",
+          "state": "success",
+          "retry": false,
+          "handle": "successNode"
+        },
+        {
+          "from": "4aMKo",
+          "to": "RsVKe",
+          "state": "success",
+          "retry": false,
+          "handle": "successNode"
+        },
+        {
+          "from": "KxDLa",
+          "to": "Fpups",
+          "state": "success",
+          "retry": false,
+          "handle": "successNode"
+        },
+        {
+          "from": "zXOP5",
+          "to": "Fpups",
+          "state": "success",
+          "retry": true,
+          "handle": "successNode"
+        },
+        {
+          "from": "9oJYI",
+          "to": "y2UMA",
+          "state": "success",
+          "retry": false,
+          "handle": "successNode"
+        },
+        {
+          "from": "Tx_PV",
+          "to": "9oJYI",
+          "state": "success",
+          "retry": true,
+          "handle": "successNode"
+        },
+        {
+          "from": "RsVKe",
+          "to": "S8-B4",
+          "state": "success",
+          "retry": false,
+          "handle": "successNode"
+        },
+        {
+          "from": "S8-B4",
+          "to": "gruVK",
+          "state": "success",
+          "retry": false,
+          "handle": "successNode"
+        },
+        {
+          "from": "fJ-Gk",
+          "to": "NfSOY",
+          "state": "success",
+          "retry": true,
+          "handle": "successNode"
+        },
+        {
+          "from": "NfSOY",
+          "to": "Tx_PV",
+          "state": "success",
+          "retry": true,
+          "handle": "successNode"
+        }
+      ],
+      "routes": {
+        "success": [
+          "9oJYI",
+          "y2UMA",
+          "KxDLa",
+          "Fpups",
+          "cO0Xw",
+          "Hg-pd",
+          "4aMKo",
+          "RsVKe",
+          "S8-B4",
+          "gruVK",
+          "XUOIW",
+          "h5XUP"
+        ],
+        "exception": [
+          "9oJYI",
+          "y2UMA",
+          "KxDLa",
+          "Fpups",
+          "cO0Xw",
+          "Hg-pd",
+          "4aMKo",
+          "RsVKe",
+          "S8-B4",
+          "gruVK",
+          "XUOIW",
+          "l_WRD",
+          "fJ-Gk",
+          "NfSOY",
+          "Tx_PV",
+          "9oJYI",
+          "y2UMA"
+        ]
+      }
+    },
+    {
+      "id": "az-content",
+      "name": "AZ Project / AI content",
+      "kicker": "176-note AI and QA workflow",
+      "description": "AI content injection, conditional branches, DOM evaluation, and retry loops",
+      "file": "AZ PROJECT.genlogin",
+      "fileNodes": 176,
+      "fileEdges": 256,
+      "nodes": [
+        {
+          "id": "start_E3pgm",
+          "type": "Start",
+          "label": "Start",
+          "hint": "GenLogin action",
+          "options": {},
+          "code": "",
+          "lane": "main",
+          "position": 0,
+          "source": "AZ PROJECT.genlogin"
+        },
+        {
+          "id": "Acshp",
+          "type": "ReadFile",
+          "label": "Read file / variable",
+          "hint": "FINAL DATA CONTETN.txt",
+          "options": {
+            "filePath": "C:\\Users\\<local-user>\\Desktop\\AZ ANCARAT\\FINAL DATA CONTETN.txt",
+            "inputType": "file",
+            "readMode": "lineByLineDelimiter",
+            "lineDelimiter": "(|)",
+            "mapVariables": "[\"Link edit bo có ancarat\", \"ANSWER\"]"
+          },
+          "code": "",
+          "lane": "main",
+          "position": 1,
+          "source": "AZ PROJECT.genlogin"
+        },
+        {
+          "id": "0xAAe",
+          "type": "OpenUrl",
+          "label": "Open url",
+          "hint": "${Link edit bo có ancarat}",
+          "options": {
+            "url": "${Link edit bo có ancarat}",
+            "waitUntilEvent": "load",
+            "timeoutWaitForNavigation": "0"
+          },
+          "code": "",
+          "lane": "main",
+          "position": 2,
+          "source": "AZ PROJECT.genlogin"
+        },
+        {
+          "id": "8XB52",
+          "type": "If",
+          "label": "If",
+          "hint": "ANSWER = This response couldn’t load",
+          "options": {
+            "leftOperand": "ANSWER",
+            "operator": "=",
+            "rightOperand": "This response couldn’t load"
+          },
+          "code": "",
+          "lane": "main",
+          "position": 3,
+          "source": "AZ PROJECT.genlogin"
+        },
+        {
+          "id": "djbcM",
+          "type": "If",
+          "label": "If",
+          "hint": "Link edit bo có ancarat = ",
+          "options": {
+            "leftOperand": "Link edit bo có ancarat",
+            "operator": "="
+          },
+          "code": "",
+          "lane": "main",
+          "position": 4,
+          "source": "AZ PROJECT.genlogin"
+        },
+        {
+          "id": "BYI-L",
+          "type": "Click",
+          "label": "Click",
+          "hint": "//*[text () =\"Tags\"]",
+          "options": {
+            "selectorType": "xpath",
+            "selector": "//*[text () =\"Tags\"]",
+            "buttonType": "left",
+            "clickCount": "1",
+            "timeout": "10"
+          },
+          "code": "",
+          "lane": "main",
+          "position": 5,
+          "source": "AZ PROJECT.genlogin"
+        },
+        {
+          "id": "25T1G",
+          "type": "EvalV2",
+          "label": "Javascript",
+          "hint": "JavaScript / browser evaluation",
+          "options": {},
+          "code": "(async () => {\n  const XPATH_CLICK = '//button[contains(normalize-space(.),\"Xem HTML\")]';\n\n  const sleep = ms => new Promise(r => setTimeout(r, ms));\n\n  const visible = el =>\n    !!el &&\n    el.getClientRects().length > 0 &&\n    getComputedStyle(el).visibility !== \"hidden\";\n\n  try {\n    const btn = document.evaluate(\n      XPATH_CLICK,\n      document,\n      null,\n      XPathResult.FIRST_ORDERED_NODE_TYPE,\n      null\n    ).singleNodeValue;",
+          "lane": "main",
+          "position": 6,
+          "source": "AZ PROJECT.genlogin"
+        },
+        {
+          "id": "QrqCK",
+          "type": "EvalV2",
+          "label": "Javascript",
+          "hint": "JavaScript / browser evaluation",
+          "options": {},
+          "code": "// Synchronous Eval: output is ALWAYS numeric 1/0, NEVER a Promise.\n  // Do not click Save / Publish. Re-runnable and product-agnostic.\n  const STAGE = \"01_ARTICLE\";\n  const VERSION = \"ANCARAT V10 SYNC \" + STAGE;\n  const ANSWER_VAR = \"ANSWER\";\n  const FAIL_VAR = \"fail note\";\n  const STATE_KEY = \"__ANCARAT_V10_STATE_\" + STAGE + \"__\";\n  const START = Date.now();\n  const BUDGET_MS = 17000;\n  let phase = \"START\";\n  let changed = false;\n  let lastSelector = \"\";\n  function log(code, message) {\n    console.log(\"[\" + VERSION + \"][\" + phase + \"][\" + code + \"] \" + String(message || \"\"));\n  }\n  function fault(code, message) {\n    const error = new Error(String(message || code));\n    error.mapperCode = code;",
+          "lane": "main",
+          "position": 7,
+          "source": "AZ PROJECT.genlogin"
+        },
+        {
+          "id": "irYpX",
+          "type": "SetVariable",
+          "label": "Set variable",
+          "hint": "stt js",
+          "options": {
+            "variableName": "stt js",
+            "setOperator": "+",
+            "variableValue": "1"
+          },
+          "code": "",
+          "lane": "main",
+          "position": 8,
+          "source": "AZ PROJECT.genlogin"
+        },
+        {
+          "id": "KZ17n",
+          "type": "If",
+          "label": "If",
+          "hint": "stt js < 7",
+          "options": {
+            "leftOperand": "stt js",
+            "operator": "<",
+            "rightOperand": "7"
+          },
+          "code": "",
+          "lane": "main",
+          "position": 9,
+          "source": "AZ PROJECT.genlogin"
+        },
+        {
+          "id": "GqIHD",
+          "type": "SetVariable",
+          "label": "Set variable",
+          "hint": "stt js",
+          "options": {
+            "variableName": "stt js",
+            "setOperator": "=",
+            "variableValue": "1"
+          },
+          "code": "",
+          "lane": "main",
+          "position": 10,
+          "source": "AZ PROJECT.genlogin"
+        },
+        {
+          "id": "4sUQk",
+          "type": "EvalV2",
+          "label": "Javascript",
+          "hint": "JavaScript / browser evaluation",
+          "options": {},
+          "code": "// One awaited run: create exactly 5 FAQ rows, bulk-fill 10 fields, verify.\n  // Does not edit product description, SEO chips, price or publication state.\n  const PREFIX = \"[ANCARAT][FAQ]\";\n  const MAX_MS = 23000;\n  const started = Date.now();\n  const fail = (code) => { throw new Error(code); };\n  const tidy = (value) => String(value == null ? \"\" : value).normalize(\"NFC\").replace(/\\s+/g,\" \").trim();\n  const unpack = (value) => {\n    for (let i=0;i<4;i++) {\n      if (typeof value === \"string\") return value;\n      if (value && typeof value === \"object\") {\n        if (value.value !== undefined) {value=value.value;continue;}\n        if (value.data !== undefined) {value=value.data;continue;}\n        if (value.result !== undefined) {value=value.result;continue;}\n      }\n      break;\n    }\n    fail(\"ANSWER_NOT_TEXT\");",
+          "lane": "main",
+          "position": 11,
+          "source": "AZ PROJECT.genlogin"
+        },
+        {
+          "id": "PCiE8",
+          "type": "ReadFile",
+          "label": "Read file / variable",
+          "hint": "FINAL DATA CONTETN.txt",
+          "options": {
+            "filePath": "C:\\Users\\<local-user>\\Desktop\\AZ ANCARAT\\FINAL DATA CONTETN.txt",
+            "inputType": "file",
+            "readMode": "lineByLineDelimiter",
+            "lineDelimiter": "(|)",
+            "mapVariables": "[\"Link edit bo có ancarat\", \"ANSWER\"]"
+          },
+          "code": "",
+          "lane": "branch",
+          "position": 12,
+          "source": "AZ PROJECT.genlogin"
+        },
+        {
+          "id": "NnP99",
+          "type": "EvalV2",
+          "label": "Javascript",
+          "hint": "JavaScript / browser evaluation",
+          "options": {},
+          "code": "// Synchronous Eval: output is ALWAYS numeric 1/0, NEVER a Promise.\n  // Do not click Save / Publish. Re-runnable and product-agnostic.\n  const STAGE = \"01_ARTICLE\";\n  const VERSION = \"ANCARAT V10 SYNC \" + STAGE;\n  const ANSWER_VAR = \"ANSWER\";\n  const FAIL_VAR = \"fail note\";\n  const STATE_KEY = \"__ANCARAT_V10_STATE_\" + STAGE + \"__\";\n  const START = Date.now();\n  const BUDGET_MS = 17000;\n  let phase = \"START\";\n  let changed = false;\n  let lastSelector = \"\";\n  function log(code, message) {\n    console.log(\"[\" + VERSION + \"][\" + phase + \"][\" + code + \"] \" + String(message || \"\"));\n  }\n  function fault(code, message) {\n    const error = new Error(String(message || code));\n    error.mapperCode = code;",
+          "lane": "branch",
+          "position": 13,
+          "source": "AZ PROJECT.genlogin"
+        },
+        {
+          "id": "5C72a",
+          "type": "OpenUrl",
+          "label": "Open url",
+          "hint": "https://chatgpt.com/",
+          "options": {
+            "url": "https://chatgpt.com/",
+            "waitUntilEvent": "load",
+            "timeoutWaitForNavigation": "0"
+          },
+          "code": "",
+          "lane": "branch",
+          "position": 14,
+          "source": "AZ PROJECT.genlogin"
+        },
+        {
+          "id": "R5Ot_",
+          "type": "SetVariable",
+          "label": "Set variable",
+          "hint": "stt",
+          "options": {
+            "variableName": "stt",
+            "setOperator": "=",
+            "variableValue": "1"
+          },
+          "code": "",
+          "lane": "branch",
+          "position": 15,
+          "source": "AZ PROJECT.genlogin"
+        }
+      ],
+      "edges": [
+        {
+          "from": "PCiE8",
+          "to": "0xAAe",
+          "state": "success",
+          "retry": true,
+          "handle": "successNode"
+        },
+        {
+          "from": "BYI-L",
+          "to": "25T1G",
+          "state": "success",
+          "retry": false,
+          "handle": "successNode"
+        },
+        {
+          "from": "25T1G",
+          "to": "0xAAe",
+          "state": "fail",
+          "retry": false,
+          "handle": "failNode"
+        },
+        {
+          "from": "Acshp",
+          "to": "0xAAe",
+          "state": "success",
+          "retry": false,
+          "handle": "successNode"
+        },
+        {
+          "from": "BYI-L",
+          "to": "0xAAe",
+          "state": "fail",
+          "retry": false,
+          "handle": "failNode"
+        },
+        {
+          "from": "djbcM",
+          "to": "BYI-L",
+          "state": "fail",
+          "retry": false,
+          "handle": "failNode"
+        },
+        {
+          "from": "irYpX",
+          "to": "KZ17n",
+          "state": "success",
+          "retry": false,
+          "handle": "successNode"
+        },
+        {
+          "from": "KZ17n",
+          "to": "GqIHD",
+          "state": "fail",
+          "retry": false,
+          "handle": "failNode"
+        },
+        {
+          "from": "GqIHD",
+          "to": "4sUQk",
+          "state": "success",
+          "retry": false,
+          "handle": "successNode"
+        },
+        {
+          "from": "QrqCK",
+          "to": "irYpX",
+          "state": "success",
+          "retry": false,
+          "handle": "successNode"
+        },
+        {
+          "from": "KZ17n",
+          "to": "QrqCK",
+          "state": "success",
+          "retry": false,
+          "handle": "successNode"
+        },
+        {
+          "from": "25T1G",
+          "to": "QrqCK",
+          "state": "success",
+          "retry": false,
+          "handle": "successNode"
+        },
+        {
+          "from": "djbcM",
+          "to": "5C72a",
+          "state": "success",
+          "retry": false,
+          "handle": "successNode"
+        },
+        {
+          "from": "0xAAe",
+          "to": "PCiE8",
+          "state": "fail",
+          "retry": false,
+          "handle": "failNode"
+        },
+        {
+          "from": "QrqCK",
+          "to": "NnP99",
+          "state": "fail",
+          "retry": false,
+          "handle": "failNode"
+        },
+        {
+          "from": "NnP99",
+          "to": "irYpX",
+          "state": "success",
+          "retry": true,
+          "handle": "successNode"
+        },
+        {
+          "from": "start_E3pgm",
+          "to": "Acshp",
+          "state": "success",
+          "retry": false,
+          "handle": "start_E3pgm__handle-right"
+        },
+        {
+          "from": "0xAAe",
+          "to": "8XB52",
+          "state": "success",
+          "retry": false,
+          "handle": "successNode"
+        },
+        {
+          "from": "8XB52",
+          "to": "Acshp",
+          "state": "success",
+          "retry": false,
+          "handle": "successNode"
+        },
+        {
+          "from": "8XB52",
+          "to": "djbcM",
+          "state": "fail",
+          "retry": false,
+          "handle": "failNode"
+        },
+        {
+          "from": "5C72a",
+          "to": "R5Ot_",
+          "state": "success",
+          "retry": true,
+          "handle": "successNode"
+        }
+      ],
+      "routes": {
+        "success": [
+          "start_E3pgm",
+          "Acshp",
+          "0xAAe",
+          "8XB52",
+          "djbcM",
+          "BYI-L",
+          "25T1G",
+          "QrqCK",
+          "irYpX",
+          "KZ17n",
+          "GqIHD",
+          "4sUQk"
+        ],
+        "exception": [
+          "start_E3pgm",
+          "Acshp",
+          "0xAAe",
+          "8XB52",
+          "djbcM",
+          "BYI-L",
+          "0xAAe",
+          "8XB52",
+          "djbcM",
+          "BYI-L",
+          "25T1G",
+          "QrqCK"
+        ]
+      }
+    },
+    {
+      "id": "az-intake",
+      "name": "AZ Project / SKU intake",
+      "kicker": "176-note AI and QA workflow",
+      "description": "Product-code extraction, selectors, image capture, and status logging",
+      "file": "AZ PROJECT.genlogin",
+      "fileNodes": 176,
+      "fileEdges": 256,
+      "nodes": [
+        {
+          "id": "_3mnu",
+          "type": "OpenUrl",
+          "label": "Open url",
+          "hint": "https://bo.ancarat.com/products?…",
+          "options": {
+            "url": "https://bo.ancarat.com/products?…",
+            "waitUntilEvent": "load",
+            "timeoutWaitForNavigation": "0"
+          },
+          "code": "",
+          "lane": "main",
+          "position": 0,
+          "source": "AZ PROJECT.genlogin"
+        },
+        {
+          "id": "VT_xw",
+          "type": "ReadFile",
+          "label": "Read file / variable",
+          "hint": "LAST SKU.txt",
+          "options": {
+            "filePath": "C:\\Users\\<local-user>\\Desktop\\AZ ANCARAT\\LAST SKU.txt",
+            "inputType": "file",
+            "readMode": "lineByLineDelimiter",
+            "lineDelimiter": "|",
+            "mapVariables": "[\"STT K QUAN TRONG\", \"LAST SKU\"]"
+          },
+          "code": "",
+          "lane": "main",
+          "position": 1,
+          "source": "AZ PROJECT.genlogin"
+        },
+        {
+          "id": "urdz5",
+          "type": "ElementExists",
+          "label": "Element exists",
+          "hint": "//p [text () =\"Quản lý thông tin sản phẩm\"]",
+          "options": {
+            "selectorType": "xpath",
+            "selector": "//p [text () =\"Quản lý thông tin sản phẩm\"]"
+          },
+          "code": "",
+          "lane": "main",
+          "position": 2,
+          "source": "AZ PROJECT.genlogin"
+        },
+        {
+          "id": "qZ4xM",
+          "type": "GetText",
+          "label": "Get text",
+          "hint": "(//div[contains(@class, \"whitespace-pre-wrap break-words\")])[${num",
+          "options": {
+            "selectorType": "xpath",
+            "selector": "(//div[contains(@class, \"whitespace-pre-wrap break-words\")])[${num sp}]",
+            "outputVariable": "mã sp"
+          },
+          "code": "",
+          "lane": "main",
+          "position": 3,
+          "source": "AZ PROJECT.genlogin"
+        },
+        {
+          "id": "B7WPG",
+          "type": "SetVariable",
+          "label": "Set variable",
+          "hint": "fLAST SKU",
+          "options": {
+            "variableName": "fLAST SKU",
+            "setOperator": "=",
+            "variableValue": "${mã sp}"
+          },
+          "code": "",
+          "lane": "main",
+          "position": 4,
+          "source": "AZ PROJECT.genlogin"
+        },
+        {
+          "id": "X8cEF",
+          "type": "Click",
+          "label": "Click",
+          "hint": "(//div[normalize-space()='${mã sp}']/ancestor::td/following-siblin",
+          "options": {
+            "selectorType": "xpath",
+            "selector": "(//div[normalize-space()='${mã sp}']/ancestor::td/following-sibling::td[contains(@class,'align-middle')])[2]",
+            "buttonType": "left",
+            "clickCount": "1",
+            "timeout": "10"
+          },
+          "code": "",
+          "lane": "main",
+          "position": 5,
+          "source": "AZ PROJECT.genlogin"
+        },
+        {
+          "id": "u053a",
+          "type": "GetAttributeValue",
+          "label": "Get attribute",
+          "hint": "//a[.//div[normalize-space(.)='${mã sp}']]",
+          "options": {
+            "selectorType": "xpath",
+            "selector": "//a[.//div[normalize-space(.)='${mã sp}']]",
+            "attributeName": "href",
+            "outputVariable": "Link edit bo"
+          },
+          "code": "",
+          "lane": "main",
+          "position": 6,
+          "source": "AZ PROJECT.genlogin"
+        },
+        {
+          "id": "xOyE-",
+          "type": "SetVariable",
+          "label": "Set variable",
+          "hint": "Link edit bo có ancarat",
+          "options": {
+            "variableName": "Link edit bo có ancarat",
+            "setOperator": "=",
+            "variableValue": "https://bo.ancarat.com${Link edit bo}"
+          },
+          "code": "",
+          "lane": "main",
+          "position": 7,
+          "source": "AZ PROJECT.genlogin"
+        },
+        {
+          "id": "5jub4",
+          "type": "GetText",
+          "label": "Get text",
+          "hint": "//div[contains(text(), '${mã sp}')]/ancestor::tr//div[contains(@cl",
+          "options": {
+            "selectorType": "xpath",
+            "selector": "//div[contains(text(), '${mã sp}')]/ancestor::tr//div[contains(@class, 'line-clamp-2')]",
+            "outputVariable": "ten sp"
+          },
+          "code": "",
+          "lane": "main",
+          "position": 8,
+          "source": "AZ PROJECT.genlogin"
+        },
+        {
+          "id": "v65Jl",
+          "type": "GetAttributeValue",
+          "label": "Get attribute",
+          "hint": "//div[text()='${mã sp}']/ancestor::tr//img",
+          "options": {
+            "selectorType": "xpath",
+            "selector": "//div[text()='${mã sp}']/ancestor::tr//img",
+            "attributeName": "src",
+            "outputVariable": "img"
+          },
+          "code": "",
+          "lane": "main",
+          "position": 9,
+          "source": "AZ PROJECT.genlogin"
+        },
+        {
+          "id": "3xA_r",
+          "type": "If",
+          "label": "If",
+          "hint": "check map = ${img}",
+          "options": {
+            "leftOperand": "check map",
+            "operator": "=",
+            "rightOperand": "${img}"
+          },
+          "code": "",
+          "lane": "main",
+          "position": 10,
+          "source": "AZ PROJECT.genlogin"
+        },
+        {
+          "id": "cA-X5",
+          "type": "SetVariable",
+          "label": "Set variable",
+          "hint": "img",
+          "options": {
+            "variableName": "img",
+            "setOperator": "="
+          },
+          "code": "",
+          "lane": "main",
+          "position": 11,
+          "source": "AZ PROJECT.genlogin"
+        },
+        {
+          "id": "cwFAJ",
+          "type": "SaveAssets",
+          "label": "Save assets",
+          "hint": "GenLogin action",
+          "options": {},
+          "code": "",
+          "lane": "branch",
+          "position": 12,
+          "source": "AZ PROJECT.genlogin"
+        },
+        {
+          "id": "mfA9V",
+          "type": "Eval",
+          "label": "Eval",
+          "hint": "JavaScript / browser evaluation",
+          "options": {},
+          "code": "(() => {\n  const src = (function () { /*${ten sp}*/ }).toString();\n\n  const tenSP = src.slice(\n    src.indexOf(\"/*\") + 2,\n    src.lastIndexOf(\"*/\")\n  ).trim();\n\n  const result = tenSP.includes(\"ANCARAT\") ? \"done check\" : \"write\";\n\n  return result;\n})()",
+          "lane": "branch",
+          "position": 13,
+          "source": "AZ PROJECT.genlogin"
+        },
+        {
+          "id": "szir-",
+          "type": "SetVariable",
+          "label": "Set variable",
+          "hint": "LỖI HỆ THỐNG",
+          "options": {
+            "variableName": "LỖI HỆ THỐNG",
+            "setOperator": "=",
+            "variableValue": "A1 OPEN LINK"
+          },
+          "code": "",
+          "lane": "branch",
+          "position": 14,
+          "source": "AZ PROJECT.genlogin"
+        },
+        {
+          "id": "sth0o",
+          "type": "WriteFile",
+          "label": "Write file",
+          "hint": "LỖI A1 LẤY THÔNG TIN SP.txt",
+          "options": {
+            "filePath": "C:\\Users\\<local-user>\\Desktop\\AZ ANCARAT\\LỖI A1 LẤY THÔNG TIN SP.txt",
+            "writeMode": "append",
+            "appendMode": "newline",
+            "inputVariable": "${mã sp}|${ten sp}|${img}|${LAST SKU}|${LỖI HỆ THỐNG}"
+          },
+          "code": "",
+          "lane": "branch",
+          "position": 15,
+          "source": "AZ PROJECT.genlogin"
+        },
+        {
+          "id": "TE3H3",
+          "type": "WriteFile",
+          "label": "Write file",
+          "hint": "LAST SKU.txt",
+          "options": {
+            "filePath": "C:\\Users\\<local-user>\\Desktop\\AZ ANCARAT\\LAST SKU.txt",
+            "writeMode": "overwrite",
+            "appendMode": "newline",
+            "inputVariable": "${STT K QUAN TRONG}|${LAST SKU}"
+          },
+          "code": "",
+          "lane": "branch",
+          "position": 16,
+          "source": "AZ PROJECT.genlogin"
+        }
+      ],
+      "edges": [
+        {
+          "from": "v65Jl",
+          "to": "cA-X5",
+          "state": "fail",
+          "retry": false,
+          "handle": "failNode"
+        },
+        {
+          "from": "5jub4",
+          "to": "v65Jl",
+          "state": "success",
+          "retry": false,
+          "handle": "successNode"
+        },
+        {
+          "from": "v65Jl",
+          "to": "3xA_r",
+          "state": "success",
+          "retry": false,
+          "handle": "successNode"
+        },
+        {
+          "from": "3xA_r",
+          "to": "cA-X5",
+          "state": "success",
+          "retry": false,
+          "handle": "successNode"
+        },
+        {
+          "from": "3xA_r",
+          "to": "cwFAJ",
+          "state": "fail",
+          "retry": false,
+          "handle": "failNode"
+        },
+        {
+          "from": "cA-X5",
+          "to": "cwFAJ",
+          "state": "success",
+          "retry": false,
+          "handle": "successNode"
+        },
+        {
+          "from": "_3mnu",
+          "to": "VT_xw",
+          "state": "success",
+          "retry": false,
+          "handle": "successNode"
+        },
+        {
+          "from": "_3mnu",
+          "to": "szir-",
+          "state": "fail",
+          "retry": false,
+          "handle": "failNode"
+        },
+        {
+          "from": "VT_xw",
+          "to": "szir-",
+          "state": "fail",
+          "retry": false,
+          "handle": "failNode"
+        },
+        {
+          "from": "qZ4xM",
+          "to": "szir-",
+          "state": "fail",
+          "retry": false,
+          "handle": "failNode"
+        },
+        {
+          "from": "szir-",
+          "to": "sth0o",
+          "state": "success",
+          "retry": true,
+          "handle": "successNode"
+        },
+        {
+          "from": "qZ4xM",
+          "to": "B7WPG",
+          "state": "success",
+          "retry": false,
+          "handle": "successNode"
+        },
+        {
+          "from": "B7WPG",
+          "to": "X8cEF",
+          "state": "success",
+          "retry": false,
+          "handle": "successNode"
+        },
+        {
+          "from": "VT_xw",
+          "to": "urdz5",
+          "state": "success",
+          "retry": false,
+          "handle": "successNode"
+        },
+        {
+          "from": "urdz5",
+          "to": "qZ4xM",
+          "state": "success",
+          "retry": false,
+          "handle": "successNode"
+        },
+        {
+          "from": "urdz5",
+          "to": "szir-",
+          "state": "fail",
+          "retry": false,
+          "handle": "failNode"
+        },
+        {
+          "from": "X8cEF",
+          "to": "u053a",
+          "state": "success",
+          "retry": false,
+          "handle": "successNode"
+        },
+        {
+          "from": "u053a",
+          "to": "xOyE-",
+          "state": "success",
+          "retry": false,
+          "handle": "successNode"
+        },
+        {
+          "from": "xOyE-",
+          "to": "5jub4",
+          "state": "success",
+          "retry": false,
+          "handle": "successNode"
+        },
+        {
+          "from": "sth0o",
+          "to": "TE3H3",
+          "state": "success",
+          "retry": true,
+          "handle": "successNode"
+        },
+        {
+          "from": "sth0o",
+          "to": "TE3H3",
+          "state": "fail",
+          "retry": true,
+          "handle": "failNode"
+        },
+        {
+          "from": "cwFAJ",
+          "to": "mfA9V",
+          "state": "success",
+          "retry": true,
+          "handle": "successNode"
+        },
+        {
+          "from": "cwFAJ",
+          "to": "mfA9V",
+          "state": "fail",
+          "retry": true,
+          "handle": "failNode"
+        }
+      ],
+      "routes": {
+        "success": [
+          "_3mnu",
+          "VT_xw",
+          "urdz5",
+          "qZ4xM",
+          "B7WPG",
+          "X8cEF",
+          "u053a",
+          "xOyE-",
+          "5jub4",
+          "v65Jl",
+          "3xA_r",
+          "cA-X5",
+          "cwFAJ"
+        ],
+        "exception": [
+          "_3mnu",
+          "VT_xw",
+          "urdz5",
+          "qZ4xM",
+          "szir-",
+          "sth0o",
+          "TE3H3"
+        ]
+      }
+    },
+    {
+      "id": "stock-update",
+      "name": "Quantity / web limits",
+      "kicker": "120-note inventory workflow",
+      "description": "Read local stock data, compare branches, and update web-side limits",
+      "file": "up so luuong web.genlogin",
+      "fileNodes": 120,
+      "fileEdges": 165,
+      "nodes": [
+        {
+          "id": "AU5v2",
+          "type": "Spreadsheet",
+          "label": "Spreadsheet",
+          "hint": "read A:A",
+          "options": {
+            "spreadSheetAction": "read",
+            "spreadSheetRange": "A:A",
+            "spreadSheetName": "DATA",
+            "spreadSheetStorage": "variables"
+          },
+          "code": "",
+          "lane": "main",
+          "position": 0,
+          "source": "up so luuong web.genlogin"
+        },
+        {
+          "id": "gAsgC",
+          "type": "ReadFile",
+          "label": "Read file / variable",
+          "hint": "RATE.txt",
+          "options": {
+            "filePath": "C:\\Users\\<local-user>\\Desktop\\DATA BAC\\${date}\\RATE.txt",
+            "inputType": "file",
+            "readMode": "lineByLineDelimiter",
+            "lineDelimiter": "|",
+            "mapVariables": "[\"STT\", \"RATE\"]"
+          },
+          "code": "",
+          "lane": "main",
+          "position": 1,
+          "source": "up so luuong web.genlogin"
+        },
+        {
+          "id": "_0lH0",
+          "type": "SetVariable",
+          "label": "Set variable",
+          "hint": "RATE",
+          "options": {
+            "variableName": "RATE",
+            "setOperator": "+",
+            "variableValue": "1"
+          },
+          "code": "",
+          "lane": "main",
+          "position": 2,
+          "source": "up so luuong web.genlogin"
+        },
+        {
+          "id": "t3giG",
+          "type": "WriteFile",
+          "label": "Write file",
+          "hint": "RATE.txt",
+          "options": {
+            "filePath": "C:\\Users\\<local-user>\\Desktop\\DATA BAC\\${date}\\RATE.txt",
+            "writeMode": "overwrite",
+            "appendMode": "newline",
+            "inputVariable": "${STT}|${RATE}"
+          },
+          "code": "",
+          "lane": "main",
+          "position": 3,
+          "source": "up so luuong web.genlogin"
+        },
+        {
+          "id": "vjrKU",
+          "type": "Spreadsheet",
+          "label": "Spreadsheet",
+          "hint": "read L:L",
+          "options": {
+            "spreadSheetAction": "read",
+            "spreadSheetRange": "L:L",
+            "spreadSheetName": "${date}",
+            "spreadSheetStorage": "variables"
+          },
+          "code": "",
+          "lane": "main",
+          "position": 4,
+          "source": "up so luuong web.genlogin"
+        },
+        {
+          "id": "4p54m",
+          "type": "If",
+          "label": "If",
+          "hint": "Value = ",
+          "options": {
+            "leftOperand": "Value",
+            "operator": "="
+          },
+          "code": "",
+          "lane": "main",
+          "position": 5,
+          "source": "up so luuong web.genlogin"
+        },
+        {
+          "id": "YEm1G",
+          "type": "ReadFile",
+          "label": "Read file / variable",
+          "hint": "${date}_${RATE}.txt",
+          "options": {
+            "filePath": "C:\\Users\\<local-user>\\Desktop\\DATA BAC\\${date}\\${date}_${RATE}.txt",
+            "inputType": "file",
+            "readMode": "lineByLineDelimiter",
+            "lineDelimiter": "|",
+            "mapVariables": "[\"Tên sản phẩm *\", \"Mã sản phẩm (SKU) *\", \"Him Lam\", \"Hậu Giang\", \"Xã Đàn\", \"Nguyễn Trãi\", \"LQD\", \"Trần Nhân Tông\", \"giao hàng online \", \"74 Cách Mạng Tháng 8\", \"Link BO\", \"date\", \"VAR NAME\"]",
+            "outputVariable": "Mã sản phẩm (SKU) *"
+          },
+          "code": "",
+          "lane": "main",
+          "position": 6,
+          "source": "up so luuong web.genlogin"
+        },
+        {
+          "id": "tjolD",
+          "type": "OpenUrl",
+          "label": "Open url",
+          "hint": "${Link BO}",
+          "options": {
+            "url": "${Link BO}",
+            "waitUntilEvent": "load",
+            "timeoutWaitForNavigation": "0"
+          },
+          "code": "",
+          "lane": "main",
+          "position": 7,
+          "source": "up so luuong web.genlogin"
+        },
+        {
+          "id": "3I-AL",
+          "type": "If",
+          "label": "If",
+          "hint": "Him Lam = ",
+          "options": {
+            "leftOperand": "Him Lam",
+            "operator": "="
+          },
+          "code": "",
+          "lane": "main",
+          "position": 8,
+          "source": "up so luuong web.genlogin"
+        },
+        {
+          "id": "8Tom8",
+          "type": "GetValue",
+          "label": "Get value",
+          "hint": "//td[contains(text(), \"105 Nguyễn Thị Thập\")]/following-sibling::t",
+          "options": {
+            "selectorType": "xpath",
+            "selector": "//td[contains(text(), \"105 Nguyễn Thị Thập\")]/following-sibling::td//input",
+            "outputVariable": "data check"
+          },
+          "code": "",
+          "lane": "main",
+          "position": 9,
+          "source": "up so luuong web.genlogin"
+        },
+        {
+          "id": "SBcz5",
+          "type": "If",
+          "label": "If",
+          "hint": "data check = ",
+          "options": {
+            "leftOperand": "data check",
+            "operator": "="
+          },
+          "code": "",
+          "lane": "main",
+          "position": 10,
+          "source": "up so luuong web.genlogin"
+        },
+        {
+          "id": "x_7S5",
+          "type": "If",
+          "label": "If",
+          "hint": "Hậu Giang = ",
+          "options": {
+            "leftOperand": "Hậu Giang",
+            "operator": "="
+          },
+          "code": "",
+          "lane": "main",
+          "position": 11,
+          "source": "up so luuong web.genlogin"
+        },
+        {
+          "id": "giuLZ",
+          "type": "WriteFile",
+          "label": "Write file",
+          "hint": "RATE.txt",
+          "options": {
+            "filePath": "C:\\Users\\<local-user>\\Desktop\\DATA BAC\\${date}\\RATE.txt",
+            "writeMode": "overwrite",
+            "appendMode": "newline",
+            "inputVariable": "1|1"
+          },
+          "code": "",
+          "lane": "branch",
+          "position": 12,
+          "source": "up so luuong web.genlogin"
+        },
+        {
+          "id": "CWtv2",
+          "type": "SetVariable",
+          "label": "Set variable",
+          "hint": "RATE",
+          "options": {
+            "variableName": "RATE",
+            "setOperator": "=",
+            "variableValue": "1"
+          },
+          "code": "",
+          "lane": "branch",
+          "position": 13,
+          "source": "up so luuong web.genlogin"
+        },
+        {
+          "id": "iSwjP",
+          "type": "WriteFile",
+          "label": "Write file",
+          "hint": "${date}_${RATE}.txt",
+          "options": {
+            "filePath": "C:\\Users\\<local-user>\\Desktop\\DATA BAC\\${date}\\${date}_${RATE}.txt",
+            "writeMode": "append",
+            "appendMode": "newline",
+            "inputVariable": "${Value}"
+          },
+          "code": "",
+          "lane": "branch",
+          "position": 14,
+          "source": "up so luuong web.genlogin"
+        },
+        {
+          "id": "VctXf",
+          "type": "WriteFile",
+          "label": "Write file",
+          "hint": "${date}log.txt",
+          "options": {
+            "filePath": "C:\\Users\\<local-user>\\Desktop\\DATA BAC\\${date}\\${date}log.txt",
+            "writeMode": "append",
+            "appendMode": "newline",
+            "inputVariable": "${Value}"
+          },
+          "code": "",
+          "lane": "branch",
+          "position": 15,
+          "source": "up so luuong web.genlogin"
+        },
+        {
+          "id": "QEKUh",
+          "type": "SetVariable",
+          "label": "Set variable",
+          "hint": "num",
+          "options": {
+            "variableName": "num",
+            "setOperator": "+",
+            "variableValue": "1"
+          },
+          "code": "",
+          "lane": "branch",
+          "position": 16,
+          "source": "up so luuong web.genlogin"
+        }
+      ],
+      "edges": [
+        {
+          "from": "YEm1G",
+          "to": "tjolD",
+          "state": "success",
+          "retry": false,
+          "handle": "successNode"
+        },
+        {
+          "from": "vjrKU",
+          "to": "4p54m",
+          "state": "success",
+          "retry": false,
+          "handle": "successNode"
+        },
+        {
+          "from": "4p54m",
+          "to": "iSwjP",
+          "state": "fail",
+          "retry": false,
+          "handle": "failNode"
+        },
+        {
+          "from": "QEKUh",
+          "to": "vjrKU",
+          "state": "success",
+          "retry": true,
+          "handle": "successNode"
+        },
+        {
+          "from": "4p54m",
+          "to": "YEm1G",
+          "state": "success",
+          "retry": false,
+          "handle": "successNode"
+        },
+        {
+          "from": "iSwjP",
+          "to": "VctXf",
+          "state": "success",
+          "retry": true,
+          "handle": "successNode"
+        },
+        {
+          "from": "VctXf",
+          "to": "QEKUh",
+          "state": "success",
+          "retry": true,
+          "handle": "successNode"
+        },
+        {
+          "from": "8Tom8",
+          "to": "SBcz5",
+          "state": "success",
+          "retry": false,
+          "handle": "successNode"
+        },
+        {
+          "from": "3I-AL",
+          "to": "8Tom8",
+          "state": "success",
+          "retry": false,
+          "handle": "successNode"
+        },
+        {
+          "from": "SBcz5",
+          "to": "x_7S5",
+          "state": "success",
+          "retry": false,
+          "handle": "successNode"
+        },
+        {
+          "from": "tjolD",
+          "to": "3I-AL",
+          "state": "success",
+          "retry": false,
+          "handle": "successNode"
+        },
+        {
+          "from": "gAsgC",
+          "to": "_0lH0",
+          "state": "success",
+          "retry": false,
+          "handle": "successNode"
+        },
+        {
+          "from": "_0lH0",
+          "to": "t3giG",
+          "state": "success",
+          "retry": false,
+          "handle": "successNode"
+        },
+        {
+          "from": "gAsgC",
+          "to": "giuLZ",
+          "state": "fail",
+          "retry": false,
+          "handle": "failNode"
+        },
+        {
+          "from": "AU5v2",
+          "to": "gAsgC",
+          "state": "success",
+          "retry": false,
+          "handle": "successNode"
+        },
+        {
+          "from": "t3giG",
+          "to": "vjrKU",
+          "state": "success",
+          "retry": false,
+          "handle": "successNode"
+        },
+        {
+          "from": "giuLZ",
+          "to": "CWtv2",
+          "state": "success",
+          "retry": true,
+          "handle": "successNode"
+        },
+        {
+          "from": "CWtv2",
+          "to": "vjrKU",
+          "state": "success",
+          "retry": true,
+          "handle": "successNode"
+        }
+      ],
+      "routes": {
+        "success": [
+          "AU5v2",
+          "gAsgC",
+          "_0lH0",
+          "t3giG",
+          "vjrKU",
+          "4p54m",
+          "YEm1G",
+          "tjolD",
+          "3I-AL",
+          "8Tom8",
+          "SBcz5",
+          "x_7S5"
+        ],
+        "exception": [
+          "AU5v2",
+          "gAsgC",
+          "giuLZ",
+          "CWtv2",
+          "vjrKU",
+          "4p54m",
+          "YEm1G",
+          "tjolD",
+          "3I-AL",
+          "8Tom8"
+        ]
+      }
+    },
+    {
+      "id": "minus",
+      "name": "Check Minus / reconciliation",
+      "kicker": "133-note inventory workflow",
+      "description": "Cross-check stock and thresholds, record exceptions, and continue processing",
+      "file": "CHECK MINUS.genlogin",
+      "fileNodes": 133,
+      "fileEdges": 219,
+      "nodes": [
+        {
+          "id": "H1uss",
+          "type": "OpenUrl",
+          "label": "Open url",
+          "hint": "https://bo.ancarat.com/web-limit-config?…",
+          "options": {
+            "url": "https://bo.ancarat.com/web-limit-config?…",
+            "waitUntilEvent": "load",
+            "timeoutWaitForNavigation": "0"
+          },
+          "code": "",
+          "lane": "main",
+          "position": 0,
+          "source": "CHECK MINUS.genlogin"
+        },
+        {
+          "id": "XI3LH",
+          "type": "ReadFile",
+          "label": "Read file / variable",
+          "hint": "RATEMINUS.txt",
+          "options": {
+            "filePath": "C:\\Users\\<local-user>\\Desktop\\DATA BAC\\${date}\\RATEMINUS.txt",
+            "inputType": "file",
+            "readMode": "lineByLineDelimiter",
+            "lineDelimiter": "|",
+            "mapVariables": "[\"STT\", \"RATE\"]"
+          },
+          "code": "",
+          "lane": "main",
+          "position": 1,
+          "source": "CHECK MINUS.genlogin"
+        },
+        {
+          "id": "cD8nS",
+          "type": "SetVariable",
+          "label": "Set variable",
+          "hint": "RATE",
+          "options": {
+            "variableName": "RATE",
+            "setOperator": "+",
+            "variableValue": "1"
+          },
+          "code": "",
+          "lane": "main",
+          "position": 2,
+          "source": "CHECK MINUS.genlogin"
+        },
+        {
+          "id": "hl39q",
+          "type": "WriteFile",
+          "label": "Write file",
+          "hint": "RATEMINUS.txt",
+          "options": {
+            "filePath": "C:\\Users\\<local-user>\\Desktop\\DATA BAC\\${date}\\RATEMINUS.txt",
+            "writeMode": "overwrite",
+            "appendMode": "newline",
+            "inputVariable": "${STT}|${RATE}"
+          },
+          "code": "",
+          "lane": "main",
+          "position": 3,
+          "source": "CHECK MINUS.genlogin"
+        },
+        {
+          "id": "Ofd90",
+          "type": "Spreadsheet",
+          "label": "Spreadsheet",
+          "hint": "read L:L",
+          "options": {
+            "spreadSheetAction": "read",
+            "spreadSheetRange": "L:L",
+            "spreadSheetName": "${date}",
+            "spreadSheetStorage": "variables"
+          },
+          "code": "",
+          "lane": "main",
+          "position": 4,
+          "source": "CHECK MINUS.genlogin"
+        },
+        {
+          "id": "4IkH0",
+          "type": "Spreadsheet",
+          "label": "Spreadsheet",
+          "hint": "read L:L",
+          "options": {
+            "spreadSheetAction": "read",
+            "spreadSheetRange": "L:L",
+            "spreadSheetName": "${DATE+1}",
+            "spreadSheetStorage": "variables"
+          },
+          "code": "",
+          "lane": "main",
+          "position": 5,
+          "source": "CHECK MINUS.genlogin"
+        },
+        {
+          "id": "1Xw0t",
+          "type": "WriteFile",
+          "label": "Write file",
+          "hint": "${date}_${RATE}_MINUS+1.txt",
+          "options": {
+            "filePath": "C:\\Users\\<local-user>\\Desktop\\DATA BAC\\${date}\\${date}_${RATE}_MINUS+1.txt",
+            "writeMode": "append",
+            "appendMode": "newline",
+            "inputVariable": "${VAR 2}"
+          },
+          "code": "",
+          "lane": "main",
+          "position": 6,
+          "source": "CHECK MINUS.genlogin"
+        },
+        {
+          "id": "Mlj2E",
+          "type": "If",
+          "label": "If",
+          "hint": "Value = ",
+          "options": {
+            "leftOperand": "Value",
+            "operator": "="
+          },
+          "code": "",
+          "lane": "main",
+          "position": 7,
+          "source": "CHECK MINUS.genlogin"
+        },
+        {
+          "id": "gwnJd",
+          "type": "ReadFile",
+          "label": "Read file / variable",
+          "hint": "${date}_${RATE}_MINUS+1.txt",
+          "options": {
+            "filePath": "C:\\Users\\<local-user>\\Desktop\\DATA BAC\\${date}\\${date}_${RATE}_MINUS+1.txt",
+            "inputType": "file",
+            "readMode": "lineByLineDelimiter",
+            "lineDelimiter": "|",
+            "mapVariables": "[\"Tên sản phẩm *_2\", \"Mã sản phẩm (SKU) *_2\", \"Him Lam_2\", \"Hậu Giang_2\", \"Xã Đàn_2\", \"Nguyễn Trãi_2\", \"LQD_2\", \"Trần Nhân Tông_2\", \"giao hàng online_2\", \"74 Cách Mạng Tháng 8_2\", \"Link BO_2\", \"date_2\", \"VAR NAME_2\", \"stt2_2\"]",
+            "outputVariable": "Mã sản phẩm (SKU) *"
+          },
+          "code": "",
+          "lane": "main",
+          "position": 8,
+          "source": "CHECK MINUS.genlogin"
+        },
+        {
+          "id": "zQPRo",
+          "type": "ReadFile",
+          "label": "Read file / variable",
+          "hint": "${date}_${RATE}_MINUS.txt",
+          "options": {
+            "filePath": "C:\\Users\\<local-user>\\Desktop\\DATA BAC\\${date}\\${date}_${RATE}_MINUS.txt",
+            "inputType": "file",
+            "readMode": "lineByLineDelimiter",
+            "lineDelimiter": "|",
+            "mapVariables": "[\"Tên sản phẩm *\", \"Mã sản phẩm (SKU) *\", \"Him Lam\", \"Hậu Giang\", \"Xã Đàn\", \"Nguyễn Trãi\", \"LQD\", \"Trần Nhân Tông\", \"giao hàng online \", \"Cửa hàng 74 Cách Mạng Tháng 8\", \"Link BO\", \"date\", \"VAR NAME\", \"stt2\"]",
+            "outputVariable": "Mã sản phẩm (SKU) *"
+          },
+          "code": "",
+          "lane": "main",
+          "position": 9,
+          "source": "CHECK MINUS.genlogin"
+        },
+        {
+          "id": "ZeKsL",
+          "type": "If",
+          "label": "If",
+          "hint": "Tên sản phẩm * = ",
+          "options": {
+            "leftOperand": "Tên sản phẩm *",
+            "operator": "="
+          },
+          "code": "",
+          "lane": "main",
+          "position": 10,
+          "source": "CHECK MINUS.genlogin"
+        },
+        {
+          "id": "tgjvI",
+          "type": "ReadFile",
+          "label": "Read file / variable",
+          "hint": "${date}_${RATE}_MINUS+1.txt",
+          "options": {
+            "filePath": "C:\\Users\\<local-user>\\Desktop\\DATA BAC\\${date}\\${date}_${RATE}_MINUS+1.txt",
+            "inputType": "file",
+            "readMode": "lineByLineDelimiter",
+            "lineDelimiter": "|",
+            "mapVariables": "[\"Tên sản phẩm *_2\", \"Mã sản phẩm (SKU) *_2\", \"Him Lam_2\", \"Hậu Giang_2\", \"Xã Đàn_2\", \"Nguyễn Trãi_2\", \"LQD_2\", \"Trần Nhân Tông_2\", \"giao hàng online_2\", \"Cửa hàng 74 Cách Mạng Tháng 8\", \"Link BO_2\", \"date_2\", \"VAR NAME_2\", \"stt2_2\"]",
+            "outputVariable": "Mã sản phẩm (SKU) *"
+          },
+          "code": "",
+          "lane": "main",
+          "position": 11,
+          "source": "CHECK MINUS.genlogin"
+        },
+        {
+          "id": "ejJQW",
+          "type": "WriteFile",
+          "label": "Write file",
+          "hint": "RATEMINUS.txt",
+          "options": {
+            "filePath": "C:\\Users\\<local-user>\\Desktop\\DATA BAC\\${date}\\RATEMINUS.txt",
+            "writeMode": "overwrite",
+            "appendMode": "newline",
+            "inputVariable": "1|1"
+          },
+          "code": "",
+          "lane": "branch",
+          "position": 12,
+          "source": "CHECK MINUS.genlogin"
+        },
+        {
+          "id": "NWPFj",
+          "type": "SetVariable",
+          "label": "Set variable",
+          "hint": "RATE",
+          "options": {
+            "variableName": "RATE",
+            "setOperator": "=",
+            "variableValue": "1"
+          },
+          "code": "",
+          "lane": "branch",
+          "position": 13,
+          "source": "CHECK MINUS.genlogin"
+        },
+        {
+          "id": "hg97F",
+          "type": "WriteFile",
+          "label": "Write file",
+          "hint": "${date}_${RATE}_MINUS.txt",
+          "options": {
+            "filePath": "C:\\Users\\<local-user>\\Desktop\\DATA BAC\\${date}\\${date}_${RATE}_MINUS.txt",
+            "writeMode": "append",
+            "appendMode": "newline",
+            "inputVariable": "${Value}"
+          },
+          "code": "",
+          "lane": "branch",
+          "position": 14,
+          "source": "CHECK MINUS.genlogin"
+        },
+        {
+          "id": "6P6iQ",
+          "type": "WriteFile",
+          "label": "Write file",
+          "hint": "${date}logminus.txt",
+          "options": {
+            "filePath": "C:\\Users\\<local-user>\\Desktop\\DATA BAC\\${date}\\${date}logminus.txt",
+            "writeMode": "append",
+            "appendMode": "newline",
+            "inputVariable": "${Value}"
+          },
+          "code": "",
+          "lane": "branch",
+          "position": 15,
+          "source": "CHECK MINUS.genlogin"
+        },
+        {
+          "id": "JnTLF",
+          "type": "SetVariable",
+          "label": "Set variable",
+          "hint": "num",
+          "options": {
+            "variableName": "num",
+            "setOperator": "+",
+            "variableValue": "1"
+          },
+          "code": "",
+          "lane": "branch",
+          "position": 16,
+          "source": "CHECK MINUS.genlogin"
+        }
+      ],
+      "edges": [
+        {
+          "from": "Mlj2E",
+          "to": "hg97F",
+          "state": "fail",
+          "retry": false,
+          "handle": "failNode"
+        },
+        {
+          "from": "JnTLF",
+          "to": "Ofd90",
+          "state": "success",
+          "retry": true,
+          "handle": "successNode"
+        },
+        {
+          "from": "hg97F",
+          "to": "6P6iQ",
+          "state": "success",
+          "retry": true,
+          "handle": "successNode"
+        },
+        {
+          "from": "6P6iQ",
+          "to": "JnTLF",
+          "state": "success",
+          "retry": true,
+          "handle": "successNode"
+        },
+        {
+          "from": "XI3LH",
+          "to": "cD8nS",
+          "state": "success",
+          "retry": false,
+          "handle": "successNode"
+        },
+        {
+          "from": "cD8nS",
+          "to": "hl39q",
+          "state": "success",
+          "retry": false,
+          "handle": "successNode"
+        },
+        {
+          "from": "XI3LH",
+          "to": "ejJQW",
+          "state": "fail",
+          "retry": false,
+          "handle": "failNode"
+        },
+        {
+          "from": "hl39q",
+          "to": "Ofd90",
+          "state": "success",
+          "retry": false,
+          "handle": "successNode"
+        },
+        {
+          "from": "ejJQW",
+          "to": "NWPFj",
+          "state": "success",
+          "retry": true,
+          "handle": "successNode"
+        },
+        {
+          "from": "NWPFj",
+          "to": "Ofd90",
+          "state": "success",
+          "retry": true,
+          "handle": "successNode"
+        },
+        {
+          "from": "Mlj2E",
+          "to": "gwnJd",
+          "state": "success",
+          "retry": false,
+          "handle": "successNode"
+        },
+        {
+          "from": "H1uss",
+          "to": "XI3LH",
+          "state": "success",
+          "retry": false,
+          "handle": "successNode"
+        },
+        {
+          "from": "Ofd90",
+          "to": "4IkH0",
+          "state": "success",
+          "retry": false,
+          "handle": "successNode"
+        },
+        {
+          "from": "4IkH0",
+          "to": "1Xw0t",
+          "state": "success",
+          "retry": false,
+          "handle": "successNode"
+        },
+        {
+          "from": "1Xw0t",
+          "to": "Mlj2E",
+          "state": "success",
+          "retry": false,
+          "handle": "successNode"
+        },
+        {
+          "from": "gwnJd",
+          "to": "zQPRo",
+          "state": "success",
+          "retry": false,
+          "handle": "successNode"
+        },
+        {
+          "from": "zQPRo",
+          "to": "ZeKsL",
+          "state": "success",
+          "retry": false,
+          "handle": "successNode"
+        },
+        {
+          "from": "ZeKsL",
+          "to": "tgjvI",
+          "state": "success",
+          "retry": false,
+          "handle": "successNode"
+        }
+      ],
+      "routes": {
+        "success": [
+          "H1uss",
+          "XI3LH",
+          "cD8nS",
+          "hl39q",
+          "Ofd90",
+          "4IkH0",
+          "1Xw0t",
+          "Mlj2E",
+          "gwnJd",
+          "zQPRo",
+          "ZeKsL",
+          "tgjvI"
+        ],
+        "exception": [
+          "H1uss",
+          "XI3LH",
+          "ejJQW",
+          "NWPFj",
+          "Ofd90",
+          "4IkH0",
+          "1Xw0t",
+          "Mlj2E",
+          "gwnJd",
+          "zQPRo"
+        ]
+      }
+    },
+    {
+      "id": "faq",
+      "name": "FAQ / publisher",
+      "kicker": "107-note publishing workflow",
+      "description": "Locate SKU, open product editor, fill FAQ fields and recover from page errors",
+      "file": "DANG FQA.genlogin",
+      "fileNodes": 107,
+      "fileEdges": 149,
+      "nodes": [
+        {
+          "id": "Pq8zN",
+          "type": "ReadFile",
+          "label": "Read file / variable",
+          "hint": "faq.txt",
+          "options": {
+            "filePath": "C:\\Users\\<local-user>\\Desktop\\faq.txt",
+            "inputType": "file",
+            "readMode": "lineByLineDelimiter",
+            "lineDelimiter": "|",
+            "mapVariables": "[\"Ten\", \"Mã sản phẩm (SKU) *\", \"Danh muc\"]"
+          },
+          "code": "",
+          "lane": "main",
+          "position": 0,
+          "source": "DANG FQA.genlogin"
+        },
+        {
+          "id": "k3lvb",
+          "type": "If",
+          "label": "If",
+          "hint": "ten = ",
+          "options": {
+            "leftOperand": "ten",
+            "operator": "="
+          },
+          "code": "",
+          "lane": "main",
+          "position": 1,
+          "source": "DANG FQA.genlogin"
+        },
+        {
+          "id": "Xtx8y",
+          "type": "OpenUrl",
+          "label": "Open url",
+          "hint": "https://bo.ancarat.com/products",
+          "options": {
+            "url": "https://bo.ancarat.com/products",
+            "waitUntilEvent": "load",
+            "timeoutWaitForNavigation": "0"
+          },
+          "code": "",
+          "lane": "main",
+          "position": 2,
+          "source": "DANG FQA.genlogin"
+        },
+        {
+          "id": "Fa3Xi",
+          "type": "TypeText",
+          "label": "Type text",
+          "hint": "//input [@placeholder=\"Tìm tên/Mã SP...\"]",
+          "options": {
+            "selectorType": "xpath",
+            "selector": "//input [@placeholder=\"Tìm tên/Mã SP...\"]",
+            "text": "${Mã sản phẩm (SKU) *}",
+            "typeSpeed": "5",
+            "typeAsHuman": "False"
+          },
+          "code": "",
+          "lane": "main",
+          "position": 3,
+          "source": "DANG FQA.genlogin"
+        },
+        {
+          "id": "wZThK",
+          "type": "GetAttributeValue",
+          "label": "Get attribute",
+          "hint": "//a[contains(@class, 'text-primary') and contains(., '${Mã sản phẩ",
+          "options": {
+            "selectorType": "xpath",
+            "selector": "//a[contains(@class, 'text-primary') and contains(., '${Mã sản phẩm (SKU) *}')]",
+            "attributeName": "href",
+            "outputVariable": "link bo"
+          },
+          "code": "",
+          "lane": "main",
+          "position": 4,
+          "source": "DANG FQA.genlogin"
+        },
+        {
+          "id": "BKfrd",
+          "type": "WriteFile",
+          "label": "Write file",
+          "hint": "link bo3.txt",
+          "options": {
+            "filePath": "C:\\Users\\<local-user>\\Desktop\\link bo3.txt",
+            "writeMode": "append",
+            "appendMode": "newline",
+            "inputVariable": "${Mã sản phẩm (SKU) *}|${Ten}|https://bo.ancarat.com${link bo}"
+          },
+          "code": "",
+          "lane": "main",
+          "position": 5,
+          "source": "DANG FQA.genlogin"
+        },
+        {
+          "id": "dfMGf",
+          "type": "OpenUrl",
+          "label": "Open url",
+          "hint": "https://bo.ancarat.com${link bo}",
+          "options": {
+            "url": "https://bo.ancarat.com${link bo}",
+            "waitUntilEvent": "load",
+            "timeoutWaitForNavigation": "0"
+          },
+          "code": "",
+          "lane": "main",
+          "position": 6,
+          "source": "DANG FQA.genlogin"
+        },
+        {
+          "id": "HUqus",
+          "type": "ElementExists",
+          "label": "Element exists",
+          "hint": "//h2 [text () =\"Sửa sản phẩm\"]",
+          "options": {
+            "selectorType": "xpath",
+            "selector": "//h2 [text () =\"Sửa sản phẩm\"]"
+          },
+          "code": "",
+          "lane": "main",
+          "position": 7,
+          "source": "DANG FQA.genlogin"
+        },
+        {
+          "id": "ghOtJ",
+          "type": "GetValue",
+          "label": "Get value",
+          "hint": "//input [@placeholder=\"Câu hỏi (tối đa 300 ký tự)\"]",
+          "options": {
+            "selectorType": "xpath",
+            "selector": "//input [@placeholder=\"Câu hỏi (tối đa 300 ký tự)\"]",
+            "outputVariable": "ưdwd2312v"
+          },
+          "code": "",
+          "lane": "main",
+          "position": 8,
+          "source": "DANG FQA.genlogin"
+        },
+        {
+          "id": "VW1eD",
+          "type": "If",
+          "label": "If",
+          "hint": "ưdwd2312v = ",
+          "options": {
+            "leftOperand": "ưdwd2312v",
+            "operator": "="
+          },
+          "code": "",
+          "lane": "main",
+          "position": 9,
+          "source": "DANG FQA.genlogin"
+        },
+        {
+          "id": "muLKV",
+          "type": "If",
+          "label": "If",
+          "hint": "Danh muc = Ancarat Silver",
+          "options": {
+            "leftOperand": "Danh muc",
+            "operator": "=",
+            "rightOperand": "Ancarat Silver"
+          },
+          "code": "",
+          "lane": "main",
+          "position": 10,
+          "source": "DANG FQA.genlogin"
+        },
+        {
+          "id": "Y4UR1",
+          "type": "Click",
+          "label": "Click",
+          "hint": "(//button [@class=\"inline-flex items-center justify-center gap-2 w",
+          "options": {
+            "selectorType": "xpath",
+            "selector": "(//button [@class=\"inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-all duration-200 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opaci...",
+            "buttonType": "left",
+            "clickCount": "1",
+            "timeout": "10"
+          },
+          "code": "",
+          "lane": "main",
+          "position": 11,
+          "source": "DANG FQA.genlogin"
+        },
+        {
+          "id": "LU0ha",
+          "type": "Reload",
+          "label": "Reload page",
+          "hint": "GenLogin action",
+          "options": {},
+          "code": "",
+          "lane": "branch",
+          "position": 12,
+          "source": "DANG FQA.genlogin"
+        },
+        {
+          "id": "xeeiC",
+          "type": "Pause",
+          "label": "Sleep",
+          "hint": "Wait 1 sec",
+          "options": {
+            "timeoutType": "fixed",
+            "timeout": "1",
+            "timeoutFrom": "1",
+            "timeoutTo": "3"
+          },
+          "code": "",
+          "lane": "branch",
+          "position": 13,
+          "source": "DANG FQA.genlogin"
+        },
+        {
+          "id": "s7JdZ",
+          "type": "ElementExists",
+          "label": "Element exists",
+          "hint": "//p[text () =\"Quản lý thông tin sản phẩm\"]",
+          "options": {
+            "selectorType": "xpath",
+            "selector": "//p[text () =\"Quản lý thông tin sản phẩm\"]"
+          },
+          "code": "",
+          "lane": "branch",
+          "position": 14,
+          "source": "DANG FQA.genlogin"
+        },
+        {
+          "id": "Nz8u-",
+          "type": "TypeText",
+          "label": "Type text",
+          "hint": "(//input [@placeholder=\"Câu hỏi (tối đa 300 ký tự)\"])[${num}]",
+          "options": {
+            "selectorType": "xpath",
+            "selector": "(//input [@placeholder=\"Câu hỏi (tối đa 300 ký tự)\"])[${num}]",
+            "text": "Thu đổi tại Ancarat bao lâu nhận được tiền?",
+            "typeSpeed": "5",
+            "typeAsHuman": "True"
+          },
+          "code": "",
+          "lane": "branch",
+          "position": 15,
+          "source": "DANG FQA.genlogin"
+        }
+      ],
+      "edges": [
+        {
+          "from": "Y4UR1",
+          "to": "Nz8u-",
+          "state": "success",
+          "retry": false,
+          "handle": "successNode"
+        },
+        {
+          "from": "muLKV",
+          "to": "Y4UR1",
+          "state": "success",
+          "retry": false,
+          "handle": "successNode"
+        },
+        {
+          "from": "ghOtJ",
+          "to": "VW1eD",
+          "state": "success",
+          "retry": false,
+          "handle": "successNode"
+        },
+        {
+          "from": "VW1eD",
+          "to": "muLKV",
+          "state": "success",
+          "retry": false,
+          "handle": "successNode"
+        },
+        {
+          "from": "ghOtJ",
+          "to": "muLKV",
+          "state": "fail",
+          "retry": false,
+          "handle": "failNode"
+        },
+        {
+          "from": "Pq8zN",
+          "to": "k3lvb",
+          "state": "success",
+          "retry": false,
+          "handle": "successNode"
+        },
+        {
+          "from": "k3lvb",
+          "to": "Xtx8y",
+          "state": "fail",
+          "retry": false,
+          "handle": "failNode"
+        },
+        {
+          "from": "LU0ha",
+          "to": "xeeiC",
+          "state": "success",
+          "retry": true,
+          "handle": "successNode"
+        },
+        {
+          "from": "Xtx8y",
+          "to": "LU0ha",
+          "state": "fail",
+          "retry": false,
+          "handle": "failNode"
+        },
+        {
+          "from": "Fa3Xi",
+          "to": "wZThK",
+          "state": "success",
+          "retry": false,
+          "handle": "successNode"
+        },
+        {
+          "from": "wZThK",
+          "to": "BKfrd",
+          "state": "success",
+          "retry": false,
+          "handle": "successNode"
+        },
+        {
+          "from": "BKfrd",
+          "to": "dfMGf",
+          "state": "success",
+          "retry": false,
+          "handle": "successNode"
+        },
+        {
+          "from": "dfMGf",
+          "to": "HUqus",
+          "state": "success",
+          "retry": false,
+          "handle": "successNode"
+        },
+        {
+          "from": "Xtx8y",
+          "to": "Fa3Xi",
+          "state": "success",
+          "retry": false,
+          "handle": "successNode"
+        },
+        {
+          "from": "xeeiC",
+          "to": "Fa3Xi",
+          "state": "success",
+          "retry": true,
+          "handle": "successNode"
+        },
+        {
+          "from": "Fa3Xi",
+          "to": "s7JdZ",
+          "state": "fail",
+          "retry": false,
+          "handle": "failNode"
+        },
+        {
+          "from": "wZThK",
+          "to": "s7JdZ",
+          "state": "fail",
+          "retry": false,
+          "handle": "failNode"
+        },
+        {
+          "from": "s7JdZ",
+          "to": "LU0ha",
+          "state": "fail",
+          "retry": true,
+          "handle": "failNode"
+        },
+        {
+          "from": "s7JdZ",
+          "to": "Pq8zN",
+          "state": "success",
+          "retry": true,
+          "handle": "successNode"
+        },
+        {
+          "from": "HUqus",
+          "to": "ghOtJ",
+          "state": "success",
+          "retry": false,
+          "handle": "successNode"
+        },
+        {
+          "from": "Y4UR1",
+          "to": "Pq8zN",
+          "state": "fail",
+          "retry": false,
+          "handle": "failNode"
+        }
+      ],
+      "routes": {
+        "success": [
+          "Pq8zN",
+          "k3lvb",
+          "Xtx8y",
+          "Fa3Xi",
+          "wZThK",
+          "BKfrd",
+          "dfMGf",
+          "HUqus",
+          "ghOtJ",
+          "VW1eD",
+          "muLKV",
+          "Y4UR1",
+          "Nz8u-"
+        ],
+        "exception": [
+          "Pq8zN",
+          "k3lvb",
+          "Xtx8y",
+          "LU0ha",
+          "xeeiC",
+          "Fa3Xi",
+          "wZThK",
+          "BKfrd",
+          "dfMGf",
+          "HUqus",
+          "ghOtJ"
+        ]
+      }
+    }
+  ]
+}

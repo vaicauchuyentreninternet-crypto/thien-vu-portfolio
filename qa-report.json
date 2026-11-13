@@ -1,0 +1,87 @@
+{
+  "desktop": {
+    "stats": {
+      "tabs": 6,
+      "nodes": 18,
+      "edges": 21,
+      "viewport": 1440,
+      "bodyWidth": 1440,
+      "mapWidth": 1206,
+      "header": "A workflow you can actually inspect.",
+      "source": "upload gold.genlogin  /  853 source notes"
+    },
+    "exceptionRun": {
+      "status": "EXCEPTION  /  Write file  /  Hg-pd",
+      "active": 1,
+      "packetOpacity": "1"
+    },
+    "panel": {
+      "open": true,
+      "title": "JavaScript",
+      "codeLength": 442,
+      "filename": "AZ PROJECT.genlogin"
+    },
+    "hasXPath": true,
+    "errors": []
+  },
+  "mobile": {
+    "stats": {
+      "tabs": 6,
+      "nodes": 18,
+      "edges": 21,
+      "viewport": 390,
+      "bodyWidth": 390,
+      "mapWidth": 362,
+      "header": "A workflow you can actually inspect.",
+      "source": "upload gold.genlogin  /  853 source notes"
+    },
+    "exceptionRun": {
+      "status": "EXCEPTION  /  Write file  /  Hg-pd",
+      "active": 1,
+      "packetOpacity": "1"
+    },
+    "panel": {
+      "open": true,
+      "title": "JavaScript",
+      "codeLength": 442,
+      "filename": "AZ PROJECT.genlogin"
+    },
+    "hasXPath": true,
+    "errors": []
+  },
+  "narrow": {
+    "stats": {
+      "tabs": 6,
+      "nodes": 18,
+      "edges": 21,
+      "viewport": 320,
+      "bodyWidth": 320,
+      "mapWidth": 292,
+      "header": "A workflow you can actually inspect.",
+      "source": "upload gold.genlogin  /  853 source notes"
+    },
+    "exceptionRun": {
+      "status": "EXCEPTION  /  Write file  /  Hg-pd",
+      "active": 1,
+      "packetOpacity": "1"
+    },
+    "panel": {
+      "open": true,
+      "title": "JavaScript",
+      "codeLength": 442,
+      "filename": "AZ PROJECT.genlogin"
+    },
+    "hasXPath": true,
+    "errors": []
+  },
+  "integrated": {
+    "data": {
+      "tabs": 6,
+      "nodes": 18,
+      "hOverflow": false,
+      "heading": "A workflow you can actually inspect.",
+      "sectionId": true
+    },
+    "errors": []
+  }
+}
