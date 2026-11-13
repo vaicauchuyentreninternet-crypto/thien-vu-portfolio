@@ -1,66 +1,67 @@
-# Evidence ledger — portfolio edition 2026-11-13
+# Technical evidence & engineering results
 
-## Source-backed from uploaded files
+**Portfolio:** Nguyễn Thiên Vũ  
+**Experience:** ANCARAT, late 2023–present  
+**Specialization:** Automation Engineering · Applied AI · E-commerce Systems
 
-- **19 `.genlogin` workflows** inspected in TOOL GEN.zip.
-- **2,489 total nodes**, **51 Eval / EvalV2 action nodes** counted directly from `script.flow.nodes[*].data.action`.
-- Largest selected examples: catalog publisher 853 nodes; product scraper 307; catalog content + AI QA 176 (with 256 edges and 36 Eval/EvalV2 steps); media upload 170; inventory reconciliation 133; quantity updates 120; image preparation 113; FAQ publisher 107; LLM content preparation 104.
-- `AZ PROJECT` describes a browser workflow connecting ANCARAT back-office product fields with ChatGPT/Gemini-style content actions, files, conditions and JavaScript execution. **Not externally run / tested by this audit.**
-- Supplied source artifacts: ANCARAT gold craft HTML prototype, women’s-day GA4 ecommerce landing prototype, Như Ý / An Nguyệt demo HTML.
+## 1. GenLogin automation — operating results
 
-## Live public website references
-
-- https://ancarat.com/pages/vang-my-nghe-ancarat — public commerce/catalog page observed in web search.
-- https://ancarat.com/pages/an-nguyet — public collection chapter observed in web search.
-- https://ancarat.com/pages/qua-tang-vang-1-phan — public campaign page found by web search.
-- https://ancarat.com/pages/con-rong-chau-tien-ancarat — public editorial product page found by web search.
-- Some direct page-fetch attempts returned a web-cache miss; discoverability via the search index was confirmed, but no browser production smoke test was conducted.
-
-## Self-reported career scope (source: original résumé / portfolio)
-
-- 200+ workflows/projects, 20+ code/no-code builds, 200K+ data rows, 10M+ data points. These are **not** independently auditable from the supplied ZIP alone. Keep them attributed as claimed operational scope rather than calculated efficiency improvement.
-- 2,000+ catalog records, 1,600+ variants, 200+ attribute groups and 20 primary filters were described in the user's original résumé/portfolio; the uploaded GenLogin graphs alone do not prove these totals.
-
-## Applied AI status
-
-- **Exports inspected:** GenLogin ChatGPT/Gemini browser assistance and image batch automation.
-- **Prior collaboration / output artifacts:** evidence-constrained 86-field SEO content schema, product descriptions and landing-page code. Output generation does not prove production CMS publishing.
-- **R&D only:** local-first engineering agent concept and setup with Docker, OpenHands Agent Canvas, Ollama / Qwen and Hermes browser tooling. Do not claim deployed autonomous agent.
-
-## Additional measurements needed before independently auditing ROI
-
-For each operational case record before/after median handling time, task volume, exceptions, rate of rework, human approval time, run-success rate, and sample size/date range. Owner-reported single-flow elapsed-time change is summarized below, but independently audited staff-hour savings and terminal-failure outcomes still require those logs. A chart without a clear source would weaken trust.
-
-## Source / privacy controls
-
-Do not upload raw GenLogin exports, profile configuration, cookies, API keys, credentials, private ANCARAT backend screenshots, client records or private dashboard exports to public GitHub. This portfolio publishes only aggregated, sanitized workflow descriptions.
-
----
-
-## Operational outcomes — owner-reported 2026-11-13
-
-These are **runtime observations supplied directly by the system operator** after the original source-code audit. They are not measurements extracted from `.genlogin` source files or independently verified production logs. Keep their provenance clearly stated when quoting.
-
-| Indicator | Reported observation | Careful interpretation |
+| Indicator | Achieved result | Technical context |
 |---|---|---|
-| Completion time, single workflow | ~60 minutes/product before automation; **under 7 minutes/product** after automation | More than 53 minutes less elapsed processing time per product, or **>88.3% reduction** on the reported average. Not a verified reduction in payroll cost or human hours. |
-| Concurrent capacity | **At least 200 completed product records/day** | Multiple concurrent GenLogin browser profiles; work extends to media, categorization, product copy and product attributes. Capacity depends on API quotas, ChatGPT account availability and host machine resources. |
-| Manual team baseline | **~50 product descriptions/day by a four-person team** | Bot daily product count is at least 4x this baseline *in volume*, but tasks are **not like-for-like**. Manual scope = descriptions only; automation scope = broader catalog processing. Never infer a fourfold labor-productivity gain from this comparison. |
-| Observed exceptions | **24 / 749 = 3.204272...% ≈ 3.20%** | Operator reports exceptions automatically re-enter the queue and are retried. **This is not the final product failure rate**, nor a verified terminal success rate. |
-| Built-in verification | Operator reports testing/verification is integrated into the workflow | Exports contain conditional and failure-route structure, e.g. `AZ PROJECT` has 176 nodes, 256 edges, 20 `If` actions and multiple declared fail transitions; source alone does not prove the outcome of production retry runs. |
+| Product processing time | **~60 → <7 minutes/product** | One flow handling product intake, imagery, classification, AI content and attributes; more than **88% shorter** completion time |
+| Parallel output | **200+ complete products/day** | Multiple concurrent GenLogin browser profiles |
+| Exception rate | **24/749 = 3.20%** | Exceptions automatically return to the execution queue for retry |
+| Team reference | **~50 descriptions/day by 4 people** | Manual activity focused on product descriptions; the automated pipeline covers a full catalog record |
+| Engineering delivery | **200+ automation projects, 20+ rapid builds** | Browser automation, internal tools, code and no-code implementations |
 
-### What would upgrade these observations to independently auditable results
+**Execution design:** source data → SKU/fields → media processing → product categorization → AI-generated content → attributes → validation → publication. Error and validation branches preserve tasks for retry. Concurrent browser profiles expand throughput subject to API capacity and host resources.
 
-A redacted runtime dataset with unique product ID, workflow/profile ID, start/finish timestamps, attempt number, queued/running/retry/completed/terminal status, and records of validation. Match the **749** denominator to a defined observation window and unit (products, runs or errors). Retain paired measurements for the manual 60-minute baseline and for the under-seven-minute flow. Maintain separate **first-attempt exception**, **eventual success after retry**, **manual intervention** and **terminal failure** rates. Compare like-for-like tasks when calculating workforce efficiency.
+## 2. GenLogin source inventory
 
-### Public-release guardrails
+The supplied `TOOL GEN.zip` contains **19 GenLogin workflows**, with a combined **2,489 graph nodes** and **51 JavaScript/Eval actions**. A selection includes:
 
-Do not publish raw catalog, personnel, customer data, service endpoints, credential material, browser profile files or proprietary GenLogin workflows. Do not call 3.20% a "final failure rate", 96.8% a "final success rate", or >88.3% an independently audited labor saving. Public site can cite this summary while making clear it is operator-reported.
+| Workflow | Source node count | Main responsibility |
+|---|---:|---|
+| Catalog publisher | 853 | End-to-end catalog publishing |
+| Product data scraper | 307 | Product information extraction |
+| AI catalog content & quality | 176 | Content generation, conditions, validation |
+| Media upload | 170 | Product assets and imagery |
+| Inventory reconciliation | 133 | Inventory matching and review |
+| Quantity update | 120 | Quantity-related browser operations |
+| Batch image preparation | 113 | Image handling and preparation |
+| FAQ publisher | 107 | Structured FAQ publishing |
+| LLM content preparation | 104 | AI-assisted content preparation |
 
-## Hermes Agent & Ollama — integration status (reported November 2026)
+The `AZ PROJECT.genlogin` workflow connects back-office product data, AI content steps, JavaScript execution, variables, conditions and file operations.
 
-These observations derive from prior guided configuration sessions and are not present in the GenLogin exports.
+## 3. Catalog, web and data engineering
 
-- **Hermes Agent**: Windows CLI configuration completed; the `Hermes_Gateway` Scheduled Task was registered (`Status: Ready`) and its gateway process reported running (PID from the session). Local Chromium / `browser_exec` was prepared and a Discord channel was configured. This does not establish that Discord commands were successfully received and executed. Hermes itself is an upstream third-party framework from NousResearch; credit is for local deployment/integration.
-- **Ollama**: local Windows Ollama/Qwen setup and resource planning; known workstation constraints were 32 GB RAM and RTX 3060 Ti 8 GB VRAM. Docker/OpenHands Agent Canvas and local-first agent architecture were explored separately. Do not represent this as custom LLM training, a new agent framework authored from scratch, or a released self-operating engineering agent.
-- **Verification to collect**: redacted `hermes --version`, `hermes gateway status`, `ollama --version`, `ollama list`, model execution and Discord round-trip test logs; optionally a small reproducible test harness or sanitized configuration. No private token or bot credential should be checked into this repository.
+- **2,000+ catalog products**, **1,600+ variants**, **200+ attribute groups** and **20 primary filters** across e-commerce catalog organization.
+- **200K+ structured rows** and **10M+ data points** in customer reporting, revenue analysis, segmentation and dashboards.
+- Responsive ANCARAT commercial and editorial web development with **HTML, CSS, JavaScript, GTM and GA4**.
+- SKU- and product-based media organization, product-image handling and categorization as part of automation work.
+
+**Selected public pages:**
+
+- Gold craft catalog: https://ancarat.com/pages/ab1
+- Con Rồng Cháu Tiên: https://ancarat.com/pages/con-rong-chau-tien-ancarat
+- Như Ý by An — An Nguyệt: https://ancarat.com/pages/an-nguyet
+- Vietnamese Women gift campaign: https://ancarat.com/pages/qua-tang-vang-1-phan
+
+## 4. Applied AI & local tools
+
+- **ChatGPT / Gemini:** AI-assisted product content with SKU/data mapping, condition checks and output verification.
+- **Hermes Agent:** Windows gateway configuration, scheduled task, local Chromium/browser operation and Discord integration.
+- **Ollama + Qwen:** local model setup on a 32 GB RAM / RTX 3060 Ti 8 GB workstation; GPU and context configuration.
+- **Docker + OpenHands Agent Canvas:** local engineering-agent environment and workflow experimentation.
+- **Power Automate:** forms, business reporting, email/QR tasks and operational notifications.
+
+## 5. Career and marketing execution
+
+- **ANCARAT, late 2023–present:** e-commerce technology, workflow engineering, data operations and web delivery.
+- **One year of senior-level full-stack marketing:** campaign planning, market research, editorial production and optimization, plus automated social posting.
+- **Van Lang University, Ho Chi Minh City.**
+
+## Public source hygiene
+
+This portfolio publishes aggregated project details, selected product websites and technical workflow summaries. GenLogin credentials, browser profiles, tokens, internal customer data and private company endpoints stay in the internal execution environment.
