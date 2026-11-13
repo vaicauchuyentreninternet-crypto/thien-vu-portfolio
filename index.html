@@ -3782,6 +3782,27 @@
 body.booting{overflow:auto!important}
 .hero-v2 .hero-meta .hero-github{color:#8b0020!important;border-bottom:1px solid currentColor;font-weight:600}
 @media(min-width:721px){.mobile-hero-text{display:none!important}}
+
+    /* Workflow map panel */
+    .wf-map{margin-top:28px;border:1px solid var(--line);background:linear-gradient(180deg,#161412,#0f0e0d);color:#f3efe7;padding:26px 26px 20px;position:relative;overflow:hidden}
+    .wf-map:before{content:"";position:absolute;inset:0;background:linear-gradient(rgba(255,255,255,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.035) 1px,transparent 1px);background-size:32px 32px;pointer-events:none}
+    .wf-head{display:flex;justify-content:space-between;align-items:baseline;gap:14px;flex-wrap:wrap;position:relative;margin-bottom:22px}
+    .wf-tag{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:#c9a24b}
+    .wf-meta{font-size:12px;color:#8d887d;font-variant-numeric:tabular-nums}
+    .wf-stage{display:flex;align-items:stretch;gap:8px;position:relative;flex-wrap:nowrap}
+    .wf-node{flex:1 1 0;min-width:0;border:1px solid rgba(243,239,231,.14);background:#1b1a18;padding:12px;display:flex;flex-direction:column;gap:4px}
+    .wf-node b{font-size:13px;font-weight:500;color:#f3efe7;letter-spacing:-.01em}
+    .wf-node span{font-size:11px;color:#b3ac9f;line-height:1.35}
+    .wf-core{flex:1.6 1 0;background:#241d16;border-color:rgba(201,162,75,.6);box-shadow:0 0 0 1px rgba(201,162,75,.2),0 18px 44px rgba(0,0,0,.45)}
+    .wf-core b{color:#e7c987}
+    .wf-core span{color:#c3b6a0}
+    .wf-wire{flex:0 0 16px;align-self:center;height:1px;background:rgba(243,239,231,.3);position:relative}
+    .wf-wire:after{content:"";position:absolute;right:-1px;top:-3px;border-left:6px solid rgba(243,239,231,.45);border-top:3.5px solid transparent;border-bottom:3.5px solid transparent}
+    .wf-retry{border-style:dashed;border-color:rgba(243,239,231,.24)}
+    .wf-loop{margin-top:12px;font-size:11px;color:#a8a296;display:flex;align-items:center;gap:6px}
+    .wf-foot{display:flex;gap:22px;flex-wrap:wrap;margin-top:20px;padding-top:16px;border-top:1px solid rgba(243,239,231,.1);font-size:12px;color:#a8a296;font-variant-numeric:tabular-nums}
+    @media(max-width:720px){.wf-map{padding:18px 16px}.wf-stage{gap:8px}.wf-node{flex:1 1 46%;min-width:46%}.wf-core{flex:1 1 100%;min-width:100%}.wf-wire{display:none}}
+
 </style>
 
 <style>@media(min-width:721px){.mobile-hero-text{display:none!important}}</style>
@@ -4516,6 +4537,7 @@ body.booting{overflow:auto!important}
       <div class="case-top"><div class="label">CASE STUDY</div><button class="case-close" id="case-close" aria-label="Close case study">×</button></div>
       <section class="case-hero"><div class="case-kicker" id="case-kicker"></div><h2 id="case-title"></h2><p id="case-lead"></p></section>
       <div class="case-cover"><img id="case-cover-img" alt="Case study artifact" /><div class="case-cover-copy"><b id="case-cover-title"></b><span id="case-cover-caption"></span></div></div>
+      <div id="case-diagram"></div>
       <section class="case-block"><div class="case-block-grid"><div class="label">01 / CONTEXT</div><div><h3 id="case-context-title"></h3><p id="case-context-copy"></p><div class="case-facts" id="case-facts"></div></div></div></section>
       <section class="case-block"><div class="case-block-grid"><div class="label">02 / RESPONSIBILITY</div><div><h3>Scope and ownership.</h3><div class="ownership-grid" id="case-ownership"></div></div></div></section>
       <section class="case-block"><div class="case-block-grid"><div class="label">03 / DECISIONS</div><div><h3>Key decisions behind the system.</h3><div class="decision-grid" id="case-decisions"></div></div></div></section>
@@ -4546,8 +4568,10 @@ body.booting{overflow:auto!important}
         title:"From one-hour product entry to under seven minutes.",
         lead:"One GenLogin pipeline handles image processing, category mapping, AI content and attributes in under 7 minutes per product, scaling to 200+ records/day across parallel profiles.",
         coverAsset:"genlogin",
-        coverTitle:"Source → Classify → Content → Validate → Publish / Retry",
+        coverTitle:"SKU → Validate → AI content → Publish / Retry",
         coverCaption:"Workflow architecture mapped from exported GenLogin graphs: data, media, AI content, validation and retry.",
+        diagram:`<div class="wf-map"><div class="wf-head"><span class="wf-tag">GenLogin / Workflow map</span><span class="wf-meta">176 nodes · 256 links · 36 code actions</span></div><div class="wf-stage"><div class="wf-node"><b>SKU</b><span>intake &amp; source fields</span></div><div class="wf-wire"></div><div class="wf-node"><b>Validate</b><span>data &amp; state checks</span></div><div class="wf-wire"></div><div class="wf-node wf-core"><b>AI content</b><span>draft · enrich · QA against product facts</span></div><div class="wf-wire"></div><div class="wf-node"><b>Review</b><span>publish / safe stop</span></div><div class="wf-wire"></div><div class="wf-node wf-retry"><b>Retry</b><span>auto requeue</span></div></div><div class="wf-loop">↺ exceptions loop back to the retry queue</div>
+    <div class="wf-foot"><span>~60 min → &lt;7 min per product</span><span>24 / 749 exceptions auto-requeued</span><span>200+ products / day</span></div></div>`,
         contextTitle:"Product updates involve more than filling in a form.",
         contextCopy:"I built a complete catalog workflow: product intake, image handling, categorization, AI copy, attributes, testing and publishing. One flow cut completion time from about 60 to under 7 minutes. Running browser profiles in parallel delivers 200+ products/day, with failed tasks automatically returning to the retry queue.",
         facts:{Role:"Automation / Catalog operations",Time:"~60 min → <7 min/product · one flow",DailyThroughput:"200+ complete products/day · concurrent profiles",Exceptions:"24 of 749 observed (3.20%) · automatically re-queued",Graph:"19 exports · 2,489 nodes · 51 JavaScript/Eval actions",DeepDive:"176 nodes · 256 edges · 36 code actions"},
@@ -4832,6 +4856,7 @@ body.booting{overflow:auto!important}
       document.getElementById('case-cover-img').src=ASSETS[d.coverAsset];
       document.getElementById('case-cover-title').textContent=d.coverTitle;
       document.getElementById('case-cover-caption').textContent=d.coverCaption;
+      document.getElementById('case-diagram').innerHTML=d.diagram||'';
       document.getElementById('case-context-title').textContent=d.contextTitle;
       document.getElementById('case-context-copy').textContent=d.contextCopy;
       document.getElementById('case-facts').innerHTML=Object.entries(d.facts).map(([k,v])=>`<div class="case-fact"><span>${k}</span><b>${v}</b></div>`).join('');
