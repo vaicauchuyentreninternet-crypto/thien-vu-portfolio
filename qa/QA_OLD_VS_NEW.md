@@ -56,3 +56,17 @@ consent → "Validation passed"; email sai → "Enter a valid email address."
 
 **Hệ quả:** không còn regression nội dung nào so với live. Vẫn **chưa push** — cần user duyệt cổng
 old-vs-new trước khi đưa lên Pages.
+
+## Cổng duyệt 2026-11-16 — pixel-diff thật (Chrome, cùng viewport, cùng scrollY)
+
+| Vị trí | desktop 1440×889 | mobile 390×844 |
+|---|---|---|
+| Khu `#sku-lab` (y = 12.416 / 14.547) | **0.000 %** (max lệch 0) | **0.000 %** (max lệch 0) |
+
+Ảnh: `qa/gate_live_sku.png` / `qa/gate_local_sku.png`, `qa/gate_sku_side.png` (desktop);
+`qa/gate_live_sku_m.png` / `qa/gate_local_sku_m.png`, `qa/gate_sku_side_m.png` (mobile).
+Cả hai bản cùng `document.documentElement.scrollHeight` = 21.510, cùng `scrollY` trước khi chụp.
+
+**Kết luận cổng:** bản local giờ **khớp pixel** với live ở khu vực từng bị đánh dấu regression
+(0.44 % / 1.82 % trước đây). Không còn khác biệt nào để duyệt — chỉ còn chờ user cho phép đẩy
+lên Pages.
