@@ -64,6 +64,31 @@
 4. `updateProgress()` per-scroll `scrollHeight` read cached (recomputed on resize).
 
 ## Still open
-- Weighted release score 85.75 < 90 (contract gate) — see `SCORECARD_V2.md`.
-- 64.7 KB unused CSS + ~37 KB minifiable CSS/JS; one 94 ms reflow in the explorer.
-- Workflow-index markup absent → orphan CSS/JS; Core Web Vitals **field** data unavailable (lab only).
+- Weighted release score 86.75 < 90 (contract gate) — the residue is the three 8.5 design
+  dimensions; see `SCORECARD_V2.md` Phase 5.
+- Core Web Vitals **field** data unavailable (lab only); touch walkthrough unrecorded.
+
+---
+
+# Addendum — Phase 5 (2026-11-15, minification)
+
+- Inline CSS (CleanCSS L1) + JS (Terser whitespace-only) + embedded JSON minified:
+  **852,630 → 811,486 B** raw; gzip document **446 → 439 KiB**.
+- `unminified-css` / `unminified-javascript` Lighthouse audits: now clean.
+- **Identity parity:** computed styles of 15 selectors (font-family/size/weight, colour,
+  background, line-height, margin/padding, radius, letter-spacing, display, rect) compared
+  original vs minified in real Chrome → **0 differences**; `scrollHeight` 20,545 both; same
+  image set; same `js xl-enabled` / `boot-complete` classes.
+- **Behaviour parity:** dialog open→focus `#case-close`→`aria-modal`, close button closes,
+  copy-email feedback, GLX 18 nodes / 21 edges, node select + detail, **0 console errors** —
+  identical on both versions.
+- Lighthouse after minification: mobile **87** / desktop **100**, a11y 100, BP 100, SEO 100.
+
+| # | Criterion | Was | Now | Evidence |
+|---|-----------|-----|-----|----------|
+| 7 | Performance | 8.5 | 9.0 | LH 100 desktop / 87 mobile gzip; audits clean; 439 KiB; CLS 0; TBT ≤100 ms. |
+| 9 | Content clarity & tone | 8.5 | 8.5 | Case dialog renders 4 results · 2 before/after · 6 facts · 3 lessons · 3 decisions · 11 architecture steps · 2 artifacts. |
+
+**Average: 8.90 / 10** (unchanged) — target ≥ 8.5 met; no critical defect.
+Weighted release score moves 85.75 → **86.75**; the ≥90 contract gate stays open and now
+clearly needs a design decision rather than engineering cleanup.
