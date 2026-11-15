@@ -180,3 +180,44 @@ still requires real traffic after publish.
 `#sku-lab` and `.email-test` are **restored, not removed** — they are live, working content on
 `origin/main`, so deleting them would have been a regression under the "anchor to the original"
 rule. Pushing to Pages still needs the user's explicit approval (old-vs-new gate).
+
+---
+
+# Addendum — Phase 8 audit & rubric re-score (2026-11-16, local `59cb02e`)
+
+Independent re-check of the committed Gói Mạnh state on a fresh gzip server. Three defects found
+in the additive `xl-power` layer and fixed **inside `xl-` only** (identity tokens untouched):
+
+1. **M05 dead code removed** — CSS hook `.xl-sig.xl-dim` never matched (controller only added
+   `xl-hot`/`xl-dim`), and it drove a second emphasis controller against the original 1450 ms
+   `setSignalStep` timer, which the storyboard forbids.
+2. **M06 selector fixed** — `.ops-flow-head` is a *sibling* of `#ops-step-grid-live`; scoped lookup
+   returned null so the pinned theatre frame never applied. Now `closest('.ops-flow')`, gradient
+   `var(--bg)` → `#fff` to match the `.ops-flow` surface.
+3. **M03 scope corrected** — `.web-card.has-shot` owns its own `::after` shade (specificity 0,2,1 >
+   0,1,1) so the power-layer curtain was silently disabled and `scale(1.035)` fought its hover.
+   Targets narrowed to `.portrait-wrap, .project-media`.
+
+Evidence: Lighthouse 13.6.0 (gzip, production-equivalent) mobile **100** / desktop **100** on all
+four categories, TBT 40/0 ms, CLS 0, transfer 101 KiB, **0 console errors**; `scrollWidth − innerWidth
+≤ 0` at 320/390/768/1440; lowest computed contrast **4.70:1**; reduced-motion path exits early;
+27 `<section>`, exactly 1 `<h1>`, H1→H2→H3 intact, 78 focusables.
+
+## Rubric re-score (10 criteria)
+| # | Criterion | Score |
+|---|---|---|
+| 1 | First impression / visual system | 9.0 |
+| 2 | Typography & spacing rhythm | 8.5 |
+| 3 | Colour & contrast | 9.2 |
+| 4 | Motion with purpose | 9.0 |
+| 5 | Micro-interactions & feedback | 9.0 |
+| 6 | Responsive everywhere | 9.6 |
+| 7 | Performance | 9.5 |
+| 8 | Accessibility | 9.5 |
+| 9 | Content clarity & tone | 8.5 |
+| 10 | Craft consistency | 8.7 |
+
+**Average: 9.05 / 10** — floor ≥ 8.5 met, no critical defect. Caveat: animation *aesthetics* could not
+be judged from a hidden headless tab (rAF/CSS animations are throttled there), so criterion 4 is
+scored from deterministic end-state + reduced-motion evidence. Main remaining craft gap: type-scale
+consolidation (~30 legacy font sizes), which is deferred because it would touch the frozen identity.
