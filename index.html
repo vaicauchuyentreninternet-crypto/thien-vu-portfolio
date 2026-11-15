@@ -3853,7 +3853,7 @@ body.booting{overflow:auto!important}
           <div class="hero-actions">
             <a class="primary-link" href="#operational-impact">Measured impact<svg class="hero-cta-arrow" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M3.5 12.5 12.5 3.5 M5.5 3.5 H12.5 V10.5"/></svg></a>
             <a class="secondary-link" href="#work">Case studies<svg class="hero-cta-arrow" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M3.5 12.5 12.5 3.5 M5.5 3.5 H12.5 V10.5"/></svg></a>
-            <a class="resume-link" href="Nguyen_Thien_Vu_Resume.pdf" target="_blank" rel="noopener noreferrer" type="application/pdf" aria-label="View Nguyễn Thiên Vũ résumé (PDF, opens in a new tab)">Résumé PDF<svg class="hero-cta-arrow" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M3.5 12.5 12.5 3.5 M5.5 3.5 H12.5 V10.5"/></svg></a>
+            <a class="resume-link" href="Nguyen_Thien_Vu_Resume.pdf" target="_blank" rel="noopener noreferrer" type="application/pdf" aria-label="Résumé PDF — Nguyễn Thiên Vũ résumé, opens in a new tab">Résumé PDF<svg class="hero-cta-arrow" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M3.5 12.5 12.5 3.5 M5.5 3.5 H12.5 V10.5"/></svg></a>
           </div>
 <div class="hero-meta"><span>Nguyễn Thiên Vũ</span><span>ANCARAT · Late 2023–Present</span><span>Automation · Applied AI · Commerce</span><a class="hero-github" href="https://github.com/vaicauchuyentreninternet-crypto/thien-vu-portfolio" target="_blank" rel="noopener noreferrer">GitHub / portfolio source ↗︎</a></div>
         </div>
@@ -4515,7 +4515,6 @@ body.booting{overflow:auto!important}
   function nodeButton(n){
     const b=el('button','glx-node'+(n.lane==='branch'?' is-branch':''));
     b.type='button';b.dataset.id=n.id;
-    b.setAttribute('aria-label','Inspect '+(nodeTitles[n.type]||n.type)+' node '+n.id);
     const head=el('div','glx-node-head');
     head.append(el('span','glx-node-type',typeLabels[n.type]||n.type),el('span','glx-node-id','#'+n.id));
     b.append(head,el('strong','',nodeTitles[n.type]||n.type),el('small','',n.hint||'GenLogin note'));
@@ -4590,9 +4589,9 @@ body.booting{overflow:auto!important}
   }
   function drawEdges(){
     if(!root.isConnected)return;
+    const w=map.clientWidth,h=map.scrollHeight;
     svg.replaceChildren();
     addSvgMarkers();
-    const w=map.clientWidth,h=map.scrollHeight;
     svg.setAttribute('viewBox','0 0 '+w+' '+h);
     svg.setAttribute('preserveAspectRatio','none');
     paths=new Map();
@@ -4860,7 +4859,7 @@ body.booting{overflow:auto!important}
           <div class="code-lab-editor">
             <div class="code-lab-tabs"><div class="code-lab-tab">subscriber-mailer.js / walkthrough</div></div>
             <div class="code-lab-code-wrap" id="code-lab-scroll">
-              <pre class="code-lab-code" id="code-lab-code" aria-label="Animated Node.js email automation example"></pre>
+              <pre class="code-lab-code" id="code-lab-code"></pre>
             </div>
             <div class="code-lab-footer"><span>Node.js · Express · SMTP</span><span><b id="code-lab-position">Ln 1, Col 1</b> · UTF-8</span></div>
           </div>
@@ -5257,8 +5256,12 @@ body.booting{overflow:auto!important}
 
 
     const progressBar=document.getElementById('progress-bar');
-    const updateProgress=()=>{const h=document.documentElement;const max=h.scrollHeight-innerHeight;const p=max>0?(scrollY/max)*100:0;progressBar.style.width=p+'%'};
-    addEventListener('scroll',updateProgress,{passive:true});updateProgress();
+    let progressMax=0;
+    const measureProgress=()=>{progressMax=document.documentElement.scrollHeight-innerHeight;};
+    const updateProgress=()=>{const p=progressMax>0?(scrollY/progressMax)*100:0;progressBar.style.width=p+'%'};
+    addEventListener('scroll',updateProgress,{passive:true});
+    addEventListener('resize',()=>{measureProgress();updateProgress();},{passive:true});
+    measureProgress();updateProgress();
 
 
     // Numeric fallback is already real HTML; leave it immediately readable with JS too.
