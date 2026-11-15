@@ -132,3 +132,31 @@ Weighted = .20·8.5+.20·8.5+.15·8.5+.15·9.0+.10·9.5+.10·8.5+.05·8.5+.05·8
   Both were re-tested on live and function. This is a content change, so it needs an explicit
   user decision before push. **Not pushed.**
 - Housekeeping: moved untracked `_test_noxl.html` (835 KB test artifact) out of the repo tree.
+
+## Phase 7 — image split out of the HTML (2026-11-16, local)
+- Decoded the 6 inline data-URI images + `ASSETS.genlogin` SVG into `assets/`:
+  portrait/landing/powerauto/checkminus/dashboard/blender `.webp` + `genlogin.svg`.
+- `index.html` **812,305 → 339,322 B** raw; gzipped document **439 KiB → 80.6 KiB**
+  (Lighthouse total-byte-weight **439 KiB → 101 KiB**, images counted separately).
+- Re-ran Lighthouse on the gzip server (`qa/gzip_server.py`, production-equivalent):
+  | Metric | mobile | desktop |
+  |---|---|---|
+  | Performance | **100** (was 87) | **100** |
+  | Accessibility | 100 | 100 |
+  | Best Practices | 100 | 100 |
+  | SEO | 100 | 100 |
+  | FCP / LCP | 1.3 s / 1.3 s | 0.3 s / 0.3 s |
+  | TBT | 60 ms | 0 ms |
+  | CLS | 0 | 0 |
+- Verified all 7 asset URLs return 200 with valid magic bytes; dialog cover + artifact
+  images resolve to `assets/*` and load; 0 console errors.
+- Files: `assets/*.webp|svg`, `qa/lh_mobile_assets.json`, `qa/lh_desktop_assets.json`,
+  `qa/gzip_server.py`.
+
+## Score after Phase 7
+Weighted = .20·8.5+.20·8.5+.15·8.5+.15·9.5+.10·9.5+.10·8.5+.05·8.5+.05·8.5 = **87.5/100**
+Performance dimension raised to **9.5**. Gate still < 90 — remaining gap sits entirely in
+the three 8.5 design dimensions (creative direction, motion, visual craft), which need a
+design decision and the old-vs-new approval gate, not cleanup. Core Web Vitals field data
+still requires real traffic after publish.
+
