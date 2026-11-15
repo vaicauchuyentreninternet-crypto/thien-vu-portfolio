@@ -196,3 +196,72 @@ score + dimension floors. Remaining disclosures: Core Web Vitals **FIELD DATA NO
 focus-mode graph) not yet implemented. Artifacts: `qa/p8_power_desktop.png`, `qa/lh_*_power.json`.
 
 
+
+## Phase 8 addendum — independent re-verification & corrections (2026-11-16 04:00, local)
+
+Independent re-check of the committed `Gói Mạnh` state (`2f59977` + `83c8a9d`) on a fresh
+gzip server, plus three corrections found while auditing the layer.
+
+### Corrections applied (all inside the additive `xl-power` layer; identity tokens untouched)
+1. **M05 scale-signal scrub removed.** The CSS hook was `.xl-sig.xl-dim` / `.xl-sig.xl-hot`
+   but the controller only ever added `xl-hot` / `xl-dim` to `.signal-metric` / `.route-node`,
+   so the effect never applied (dead code). It also drove a second emphasis controller against
+   the page's original 1450 ms `setSignalStep` timer, which the storyboard explicitly forbids.
+   The original timer already provides the sequential metric/route emphasis.
+2. **M06 pinned theatre selector fixed.** `.ops-flow-head` is a *sibling* of
+   `#ops-step-grid-live` (both inside `.ops-flow`), so the old scoped lookup returned null and
+   the sticky frame never applied. Now resolved via `closest('.ops-flow')`; gradient switched
+   from `var(--bg)` to `#fff` to match the `.ops-flow` surface.
+3. **M03 media scope corrected.** `.web-card.has-shot` was dropped from `mediaTargets`: it
+   already owns a `::after` shade (specificity 0,2,1 beats `.xl-media:after` 0,1,1) and its own
+   `::before` curtain, so the power-layer curtain was silently disabled and the extra
+   `scale(1.035)` conflicted with `.web-card.has-shot img`. Targets are now
+   `.portrait-wrap, .project-media` only.
+
+### Independent verification (this run, real Chrome 13.6.0 + deterministic DOM checks)
+- **Lighthouse 13.6.0, gzip server (production-equivalent), artifacts `qa/lh_verify_*.json`:**
+  | Metric | mobile | desktop |
+  |---|---|---|
+  | Performance | **100** | **100** |
+  | Accessibility | 100 | 100 |
+  | Best Practices | 100 | 100 |
+  | SEO | 100 | 100 |
+  | FCP / LCP | 1.3 s / 1.3 s | 0.3 s / 0.3 s |
+  | TBT | 40 ms | 0 ms |
+  | CLS | 0 | 0 |
+  | Transfer | 101 KiB | 101 KiB |
+  | console errors | 0 | 0 |
+- **Responsive:** `scrollWidth - innerWidth <= 0` at 320 / 390 / 768 / 1440; `#top h1`
+  `scrollWidth == width` (18 word spans, no clipping) at every width.
+- **Kinetic headline:** 18 `.xl-kw` spans; `opacity` reaches 1 via the `xl-in-done` forced
+  final state; `aria-label` preserved on the H1. No-JS/reduced-motion path leaves the H1 intact.
+- **Contrast (computed, 15 selectors):** min **4.70:1** (`.section-head p`, `.fact-row span`,
+  `.footer`, `.contact-note`, `.scope`, `.cap p`), body **17.02:1** — all >= WCAG AA.
+- **Reduced motion (emulated):** layer returns early -> `xl-kw` count 0, no spotlight layers,
+  H1 readable; only the original page's own ambient animations remain.
+- **E2E:** case dialog opens (`aria-modal=true`, focus -> `#case-close`) and closes; GenLogin
+  explorer 18 nodes with selection; contact copy falls back to the manual-address message when
+  the clipboard API is unavailable (headless has no clipboard permission) — the success path
+  needs a trusted gesture.
+- **Structure:** 27 `<section>` (was 28 after the owner instructed removal of the SKU/email
+  demos), exactly 1 `<h1>`, heading order H1->H2->H3 intact, 78 focusables, 0 console errors.
+
+### Rubric re-score (ui-ux-review-rubric, 10 criteria)
+| # | Criterion | Score |
+|---|---|---|
+| 1 | First impression / visual system | 9.0 |
+| 2 | Typography & spacing rhythm | 8.5 |
+| 3 | Colour & contrast | 9.2 |
+| 4 | Motion with purpose | 9.0 |
+| 5 | Micro-interactions & feedback | 9.0 |
+| 6 | Responsive everywhere | 9.6 |
+| 7 | Performance | 9.5 |
+| 8 | Accessibility | 9.5 |
+| 9 | Content clarity & tone | 8.5 |
+| 10 | Craft consistency | 8.7 |
+
+**Average 9.05/10** — floor >= 8.5 met, no critical defect. Caveat: animation *aesthetics*
+could not be judged from a hidden headless tab (rAF/CSS animations are throttled there), so
+criterion 4 is scored from deterministic end-state + reduced-motion evidence, not from
+watching the motion. Type-scale consolidation (~30 legacy font sizes) remains the main
+craft gap.
