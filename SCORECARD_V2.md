@@ -160,3 +160,39 @@ the three 8.5 design dimensions (creative direction, motion, visual craft), whic
 design decision and the old-vs-new approval gate, not cleanup. Core Web Vitals field data
 still requires real traffic after publish.
 
+## Phase 8 — GÓI MẠNH (strongest package, 2026-11-16)
+Brief from ChatGPT "Creative Direction & Interaction Storyboard" (concept *SYSTEMS, MADE VISIBLE*)
+implemented as additive `xl-power` layer (vanilla JS/CSS, no libraries):
+- M02 Kinetic headline (word-by-word reveal, aria-label preserved, responsive spans kept,
+  forced final state at 2.6 s so content is never hidden by throttled animations).
+- M03 Cinematic media reveal (curtain wipe + scale, IO + scroll fallback for throttled tabs).
+- M04 Chapter progress label fixed top-right, driven by the same single active-section source.
+- M05 Scale-signal scrub (sequential metric emphasis + line states, direct scroll computation).
+- M06 Pinned theatre header frame for #ops-step-grid-live (visual anchor only; original timer untouched).
+- M09 Pointer-follow case preview (cloned real artifact near cursor, clamped, fine-pointer only).
+- M12 Experience scope progress hairline + active scope highlight.
+- Reduced-motion/touch: entire layer returns early (no hidden-tab failure modes); verified emulated reduce path still boots clean.
+
+Verification evidence: sig scrub hot/dim states measured; preview opens with correct asset and
+clamped position; chapter label follows section; media reveal fallback fires; H1 words opacity=1;
+0 console errors; responsive 360–1920 all pass; Lighthouse re-run mobile+desktop **100/100/100/100**
+(TBT 10 ms mobile / 0 desktop, CLS 0).
+
+## Score after Phase 8 (weighted)
+| Dimension | Score |
+|---|---|
+| Creative direction | 9.0 |
+| Motion & interactions | 9.0 |
+| Visual craft | 8.8 (type-scale consolidation still pending) |
+| Performance | 9.5 |
+| Accessibility | 9.5 |
+| Responsive/touch | 9.0 |
+| Functional completeness | 9.0 |
+| Content clarity | 8.5 |
+
+Weighted = .20·9+.20·9+.15·8.8+.15·9.5+.10·9.5+.10·9+.05·9+.05·8.5 = **90.7/100** → gate met on
+score + dimension floors. Remaining disclosures: Core Web Vitals **FIELD DATA NOT AVAILABLE**
+(needs traffic post-push); type-scale unification deferred; some storyboard items (route line-draw,
+focus-mode graph) not yet implemented. Artifacts: `qa/p8_power_desktop.png`, `qa/lh_*_power.json`.
+
+
