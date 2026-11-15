@@ -6278,37 +6278,7 @@ body.booting{overflow:auto!important}
 (()=>{
  const filters=[...document.querySelectorAll('[data-workflow-filter]')];const rows=[...document.querySelectorAll('[data-workflow-category]')];
  filters.forEach(button=>button.addEventListener('click',()=>{const target=button.dataset.workflowFilter;filters.forEach(x=>x.setAttribute('aria-pressed',String(x===button)));rows.forEach(row=>{row.hidden=target!=='All'&&row.dataset.workflowCategory!==target});}));
-    });
-  }
-
-  /* Runtime preference switch: cancel our work without touching old functions. */
-  motion.addEventListener?.('change', () => {
-    if (!motion.matches) return;
-    enabled = false;
-    stopScrollTween();
-    if (cursorFrame) cancelAnimationFrame(cursorFrame);
-    if (scrollFrame) cancelAnimationFrame(scrollFrame);
-    runningAnimations.forEach(animation => animation.cancel());
-    cursor.classList.remove('xl-cursor-visible', 'xl-cursor-engaged');
-    heroLayers.forEach(el => { el.style.translate = '0 0'; });
-    magnetic.forEach(el => { el.style.translate = '0 0'; });
-    spotlights.forEach(el => el.classList.remove('xl-spotlight-on'));
-    navLinks.forEach(el => el.classList.remove('xl-nav-active'));
-    originalProgress?.classList.remove('xl-hairline');
-    if (!originalProgress) progress.remove();
-    root.classList.remove('xl-enabled');
-    if (boot && !boot.classList.contains('done')) skipBootInstantly();
-  });
-  desktop.addEventListener?.('change', queueScrollPaint);
-  mobile.addEventListener?.('change', () => {
-    if (mobile.matches) {
-      cursor.classList.remove('xl-cursor-visible', 'xl-cursor-engaged');
-      magnetic.forEach(el => { el.style.translate = '0 0'; });
-    }
-  });
-  queueScrollPaint();
-})();
-</script>
+})();</script>
 
 <style id="xl-upgrade-styles">
 /* XL / additive motion layer. Uses only the original design tokens. */
@@ -6465,18 +6435,31 @@ h1,h2,h3,.hero-title,.boot-word{text-wrap:balance}
   body.append(status);
   const announce = text => { status.textContent = text; };
 
-  /* K. Preserve original boot(), but remove the waiting period on Skip. */
+  /* K. Single boot lifecycle: Skip cancels pending boot timers exactly once. */
   const boot = $('#system-boot');
   const skip = $('#boot-skip');
+  let bootFinished = false;
+  const bootTimers = new Set();
+  const nativeSetTimeout = window.setTimeout.bind(window);
+  let capturingBootTimers = true;
+  window.setTimeout = (fn, ms, ...rest) => {
+    const id = nativeSetTimeout(fn, ms, ...rest);
+    if (capturingBootTimers) bootTimers.add(id);
+    return id;
+  };
+  nativeSetTimeout(() => { capturingBootTimers = false; bootTimers.clear(); }, 5000);
   function skipBootInstantly() {
-    if (!boot) return;
+    if (!boot || bootFinished) return;
+    bootFinished = true;
+    capturingBootTimers = false;
+    bootTimers.forEach(id => clearTimeout(id));
+    bootTimers.clear();
     boot.classList.add('done', 'xl-boot-forced');
     body.classList.remove('booting');
     body.classList.add('boot-complete');
     announce('Introduction skipped. Portfolio ready.');
   }
-  // The old click handler still runs; the microtask only removes its exit wait.
-  skip?.addEventListener('click', () => queueMicrotask(skipBootInstantly), true);
+  skip?.addEventListener('click', skipBootInstantly, true);
   if (motion.matches) {
     skipBootInstantly();
     return; // A-J: absolutely no additional motion in reduced-motion mode.
@@ -6637,30 +6620,24 @@ h1,h2,h3,.hero-title,.boot-word{text-wrap:balance}
     revealTargets.forEach(el => revealObserver.observe(el));
   }
 
-  /* F. Leave existing data-count / data-hero-count animators completely alone. */
-  const metricPattern = /^(88%|200\+|19|2,489|2\.489|60\s*(?:→|->|–|-)\s*<?7(?:\s*(?:min|minutes))?)$/i;
-  const metrics = $$('main strong, main b, main span, main output, main .signal-number, #case-dialog strong')
-    .filter(el => !el.querySelector('*') && !el.closest('[data-count], [data-hero-count], [aria-live], button, a, #aim-shell, #code-lab-shell, .glx-node, .glx-canvas') && metricPattern.test(el.textContent.trim()));
+  /* F. Counters run ONLY from explicit data-xl-count attributes.
+     Existing [data-count] / [data-hero-count] animators stay untouched. */
+  const metrics = $$('[data-xl-count]')
+    .filter(el => !el.querySelector('*') && !el.closest('[data-count], [data-hero-count], button, a, #aim-shell, #code-lab-shell, .glx-node, .glx-canvas'));
   const runMetric = el => {
     if (!enabled || el.dataset.xlCounted) return;
     el.dataset.xlCounted = '1';
+    const target = Number(String(el.dataset.xlCount).replace(/,/g, ''));
+    const suffix = el.dataset.xlFormat === 'plus' ? '+' : '';
     const original = el.textContent;
-    const text = original.trim();
-    const pair = text.match(/^(60)\s*(→|->|–|-)\s*(<?)(7)(.*)$/);
-    const single = text.match(/^([\d,.]+)([%+]?)$/);
-    const start = performance.now();
+    const startAt = performance.now();
     const duration = 1050;
     function tick(now) {
       if (!enabled) { el.textContent = original; return; }
-      const t = clamp((now - start) / duration, 0, 1);
+      const t = clamp((now - startAt) / duration, 0, 1);
       const eased = 1 - Math.pow(1 - t, 3);
-      if (pair) {
-        el.textContent = `${Math.round(60 * eased)}${pair[2]}${pair[3]}${Math.round(7 * eased)}${pair[5]}`;
-      } else if (single) {
-        const target = Number(single[1].replace(/,/g, ''));
-        const count = Math.round(target * eased);
-        el.textContent = single[1].includes(',') ? count.toLocaleString('en-US') + single[2] : count + single[2];
-      }
+      const value = Math.round(target * eased);
+      el.textContent = value.toLocaleString('en-US') + suffix;
       if (t < 1) request(tick);
       else el.textContent = original;
     }
@@ -6677,21 +6654,36 @@ h1,h2,h3,.hero-title,.boot-word{text-wrap:balance}
     metrics.forEach(el => metricObserver.observe(el));
   }
 
-  /* H. Active state and scroll easing read from the original --ease token. */
+  /* H. ONE active-section source: the work-index controller wins; nav follows it.
+     Falls back to scroll geometry only when the index is unavailable. */
   const navLinks = $$('#nav a[href^="#"]');
   const navTargets = navLinks.map(link => {
     const id = decodeURIComponent(link.getAttribute('href').slice(1));
     return { link, target: doc.getElementById(id), id };
   }).filter(item => item.target);
+  const indexItems = $$('.work-index-item[data-target]');
+  let announcedSection = null;
+  function currentActiveId() {
+    const activeItem = indexItems.find(item => item.classList.contains('active'))
+      || indexItems.find(item => item.getAttribute('aria-current') === 'step');
+    if (activeItem && activeItem.dataset.target) return activeItem.dataset.target;
+    if (navTargets.length) {
+      const line = scrollY + Math.min(innerHeight * .42, 370);
+      let active = navTargets[0];
+      navTargets.forEach(item => {
+        if (item.target.getBoundingClientRect().top + scrollY <= line) active = item;
+      });
+      return active.id;
+    }
+    return null;
+  }
   function paintNav() {
     if (!enabled || !navTargets.length) return;
-    const line = scrollY + Math.min(innerHeight * .42, 370);
-    let active = navTargets[0];
+    const id = currentActiveId();
+    if (id === announcedSection) return;
+    announcedSection = id;
     navTargets.forEach(item => {
-      if (item.target.getBoundingClientRect().top + scrollY <= line) active = item;
-    });
-    navTargets.forEach(item => {
-      const selected = item === active;
+      const selected = item.id === id;
       item.link.classList.toggle('xl-nav-active', selected);
       if (selected) item.link.setAttribute('aria-current', 'location');
       else if (item.link.getAttribute('aria-current') === 'location') item.link.removeAttribute('aria-current');
@@ -6761,11 +6753,13 @@ h1,h2,h3,.hero-title,.boot-word{text-wrap:balance}
     event.preventDefault();
     if (key === 'Home') return scrollToTarget($('#top') || sections[0], 'top', '#top');
     if (key === 'End') return scrollToTarget(sections.at(-1), 'last section', '#' + sections.at(-1).id);
-    const line = scrollY + Math.min(innerHeight * .33, 250);
-    let current = 0;
-    sections.forEach((section, i) => {
-      if (section.getBoundingClientRect().top + scrollY <= line) current = i;
-    });
+    let current = sections.findIndex(section => section.id === currentActiveId());
+    if (current < 0) {
+      const line = scrollY + Math.min(innerHeight * .33, 250);
+      sections.forEach((section, i) => {
+        if (section.getBoundingClientRect().top + scrollY <= line) current = i;
+      });
+    }
     const next = clamp(current + (key === 'j' || key === 'ArrowDown' ? 1 : -1), 0, sections.length - 1);
     const destination = sections[next];
     const heading = $('h2, h3', destination)?.textContent.trim() || destination.id;
