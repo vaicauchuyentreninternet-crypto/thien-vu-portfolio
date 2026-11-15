@@ -39,3 +39,20 @@ rubric nói là regression cho tới khi chứng minh tốt hơn.
 2. **Khôi phục lại** `#sku-lab` + `.email-test` rồi mới push.
 
 Chưa push. Chỉ có thể lên live sau khi user duyệt.
+
+---
+
+## Cập nhật 2026-11-16 — đã chọn phương án B (khôi phục)
+
+`1a08fe4` đã **khôi phục** `#sku-lab` + `.email-test`. Kiểm chứng so với live `3a8678c`
+ chuẩn hoá khoảng trắng: HTML SKU (1.329 ký tự) **giống hệt**, HTML email (742 ký tự) **giống hệt**,
+ 19 rule CSS `.sku-*` + 13 rule CSS `.email-test` **giống hệt** (cùng selector, cùng declaration),
+ JS SKU (1.452 ký tự) và JS email (646 ký tự) **giống hệt**. Chỉ khác thứ tự selector trong một
+ media query (`.ai-work-grid,.audited-layout` ↔ `.audited-layout,.ai-work-grid`) — cùng declaration,
+ không ảnh hưởng hiển thị. Số `<section>` trở lại **28**, khớp live.
+
+E2E trên Chrome thật: SKU hợp lệ → decode đủ 4 trường; SKU sai → báo lỗi đúng; email hợp lệ + tick
+consent → "Validation passed"; email sai → "Enter a valid email address."
+
+**Hệ quả:** không còn regression nội dung nào so với live. Vẫn **chưa push** — cần user duyệt cổng
+old-vs-new trước khi đưa lên Pages.
