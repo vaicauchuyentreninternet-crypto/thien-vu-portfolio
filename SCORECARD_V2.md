@@ -119,3 +119,16 @@ Weighted = .20·8.5+.20·8.5+.15·8.5+.15·9.0+.10·9.5+.10·8.5+.05·8.5+.05·8
 3. XL v2 P0: boot-skip lifecycle, script-boundary repair, counter whitelist, single active-section source.
 4. **Phase 4**: real Lighthouse (2 modes × 2 form factors), a11y 96→100, 2 perf defects fixed, full E2E journey with 0 console errors.
 5. **Phase 5**: CSS/JS minification (−40.8 KB raw / −7 KiB gzip), computed-style + behaviour parity verified, dead-CSS purge evaluated and rejected.
+
+## Phase 6 — old-vs-new approval gate (2026-11-15, local)
+- Captured real Chrome screenshots of **live `3a8678c`** vs **local `78a02fd`** at the same
+  viewports (desktop 1440×900, mobile 390×844), with `scrollY` verified before every shot and
+  `location.href` checked to guarantee the correct build. Artifacts: `qa/side_desktop.png`,
+  `qa/side_mobile.png`, notes in `qa/QA_OLD_VS_NEW.md`.
+- Pixel diff (>8/255): fold **0.01 % / 0.00 %**, mid-page **0.04 % / 0.00 %** (desktop/mobile) —
+  visual identity preserved. Only the removed `#sku-lab` region differs (**0.44 % / 1.82 %**).
+- **Gate finding:** local commit `3ff6a59` removed two widgets that are *working* on live
+  (`#sku-lab` SKU decoder, `.email-test` email/consent validator) while labelling them "inert".
+  Both were re-tested on live and function. This is a content change, so it needs an explicit
+  user decision before push. **Not pushed.**
+- Housekeeping: moved untracked `_test_noxl.html` (835 KB test artifact) out of the repo tree.
