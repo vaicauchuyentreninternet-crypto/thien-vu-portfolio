@@ -896,6 +896,16 @@
 /* glx mock: node-id 4,47 -> 4,70 trên nền rgb(25,40,50) */
 .glx-node-id{color:#74959f!important}
 </style>
+  <style id="xl-responsive-fix">
+/* RESPONSIVE LAYER — additive, không sửa/xoá rule cũ (chỉ thêm, prefix xl-).
+   Nguyên nhân tràn ngang khung nhỏ: .audited-layout ở <=1000px là 2 cột
+   "160px 1fr" + gap clamp(50px,9vw,140px); min-content của .audited-numbers
+   ~198px nên tổng ~409px > vùng 305px ở 320px -> scrollWidth 424. */
+@media (max-width:720px){
+  .shell.audited-layout{grid-template-columns:minmax(0,1fr);gap:32px}
+  .audited-numbers>div{grid-template-columns:minmax(0,118px) minmax(0,1fr)}
+}
+</style>
 
 
 <script id="xl-power-script">
