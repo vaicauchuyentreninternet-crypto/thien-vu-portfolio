@@ -338,3 +338,24 @@ document wider than the viewport. At <=720px both blocks become a single stacked
 ### Note for future verification
 Never assert "no horizontal overflow" from `scrollWidth <= innerWidth` under mobile emulation:
 Chrome overview mode inflates `innerWidth`. Use `mobile:false` + `document.documentElement.clientWidth`.
+
+## Phase 11 — Re-verification 2026-11-16 (Hermes): live còn tràn 66px, bản local đã sửa
+
+Đo lại bằng desktop emulation (`mobile:false`, lấy `document.documentElement.clientWidth`) sau khi
+live đã nhận commit `a247483`:
+
+| viewport | LIVE `clientWidth` / `scrollWidth` | LOCAL (commit `49e3156`) | chênh |
+|---|---|---|---|
+| 320 | 305 / **371** | 305 / **305** | live còn tràn **66px**, local 0 |
+| 390 | 375 / 375 | 375 / 375 | 0 |
+| 768 | 753 / 753 | 753 / 753 | 0 |
+| 1440 | 1425 / 1425 | 1425 / 1425 | 0 |
+
+- Chênh 66px đúng bằng phần `.ai-work-grid` chưa được đưa vào luật `<=720px` ở bản live:
+  commit `a247483` chỉ thêm `.shell.audited-layout`; `49e3156` mới bổ sung `.shell.ai-work-grid`.
+- Bản local (`49e3156`) đo lại **0px overflow ở cả 4 khung** — không đụng rule cũ, chỉ thêm vào
+  khối `<style id="xl-responsive-fix">`.
+- Ảnh so bên (cùng breakpoint, trái = live / phải = local): workspace shots
+  `port_live_1440.png`, `port_live_320.png`, `port_local_1440.png`, `port_local_320.png`.
+- **Trạng thái:** commit `49e3156` đang nằm local, `main` ahead `origin/main` 1 commit — **chờ duyệt để push Pages**.
+- Điểm rubric không đổi: **9,11/10**, không lỗi chí mạng trên bản local.
