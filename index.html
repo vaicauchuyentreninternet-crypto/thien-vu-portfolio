@@ -44,7 +44,7 @@
 
 <style id="xl-reduced-motion-pseudo">@media(prefers-reduced-motion:reduce){*,*::before,*::after{transition:none!important;animation:none!important}}</style><style id="xl-micro-hover">
 /* MICRO-INTERACTION LAYER - additive; chi them hover/active cho control chua co phan hoi, khong sua/xoa rule cu */
-.live-node:hover{border-color:rgba(194,58,86,.45);background:#1b1a1e}
+.live-node:not(.active):hover{border-color:rgba(194,58,86,.45);background:#1b1a1e}
 .live-node:active{transform:translateX(8px) scale(.985)}
 #glx .glx-close:hover{background:#24495a;border-color:#52788a;color:#fff}
 .contact-links .contact-copy:hover{color:var(--accent);border-bottom-color:var(--accent)}

@@ -547,3 +547,43 @@ a[href^="https://mail.google.com"]:hover,a[href="#workflow-index"]:hover{opacity
 - `index.html` đã thêm `<style id="xl-micro-hover">` (chỉ thêm). Commit local `1676248`.
 - `main` ahead `origin/main` **5 commit**.
 - **Chờ duyệt để push Pages** — live vẫn là bản cũ (0 `xl-reduced-motion-pseudo`, 0 `xl-micro-hover`).
+
+---
+
+## Addendum Phase 14b — 2026-11-16 (session 2, cron 22:24)
+
+**Lỗi bắt được khi verify lại: rule hover ghi đè trạng thái ACTIVE.**
+- `.live-node.active` (specificity 0,2,0) đặt `border-color:rgba(194,58,86,.65);background:#21161a`
+  làm **chỉ báo node đang mở**. Rule mới `.live-node:hover` (0,2,0) nằm **sau** trong stylesheet
+  → khi trỏ chuột vào node ACTIVE, highlight bị ghi đè thành `#1b1a1e` (mất trạng thái đang chọn).
+- Sửa **chỉ trong khối mình thêm**: `.live-node:hover` → `.live-node:not(.active):hover` (0,3,0),
+  không đụng rule cũ. Kiểm bằng `CSS.getMatchedStylesForNode`.
+
+**Bẫy verify (quan trọng) — transition bị đóng băng ở tab nền:**
+- `.live-node` có `transition: 0.3s`. Ép `:hover` thì computed `background-color` **vẫn trả giá trị
+  gốc** `rgb(23,24,27)` dù `element.matches(':hover')===true` và rule hover **có nằm trong
+  matched cascade** (`CSS.getMatchedStylesForNode` liệt kê `.live-node:not(.active):hover`).
+  Nguyên nhân: tab headless nền đóng băng transition → giá trị computed đứng ở mốc 0%.
+- Cách đúng: đặt `el.style.transition='none'` **cho đúng element đang đo** rồi mới ép hover.
+  Kết quả: `rgb(23,24,27) → rgb(27,26,30)`, border `rgba(255,255,255,.1) → rgba(194,58,86,.45)` ✓.
+- Không được kết luận "hover không hoạt động" khi chưa tắt transition.
+
+## Verification Phase 14b (kết quả thật)
+| control | property | trước | sau hover (transition off) | kết luận |
+|---|---|---|---|---|
+| `.live-node:not(.active)` | background-color | rgb(23,24,27) | rgb(27,26,30) | CHANGED |
+| `.live-node.active` | background-color | rgb(33,22,26) | rgb(33,22,26) | SAME (đúng ý — giữ highlight) |
+| `#glx .glx-close` | background-color | rgb(27,48,57) | rgb(36,73,90) | CHANGED |
+| `.contact-links .contact-copy` | color | rgb(21,21,21) | rgb(122,0,25) | CHANGED |
+| `.hero-github` | opacity | 1 | 0.72 | CHANGED |
+| link Gmail | opacity | 1 | 0.72 | CHANGED |
+| link `#workflow-index` | opacity | 1 | 0.72 | CHANGED |
+
+- axe-core 4.10.2 (nạp same-origin `/axe.min.js`): **0 violations / 45 passes** ở 320/390/768,
+  **44 passes** ở 1440. `scrollWidth == innerWidth` cả 4 khung (320/390/768/1440). Đúng 1 `<h1>`.
+- Copy `axe.min.js` vào repo chỉ để chạy QA, **đã xoá** ngay sau đó (`git status` chỉ còn `index.html`).
+
+## Trạng thái cập nhật
+- `index.html`: `<style id="xl-micro-hover">` đã sửa 1 dòng (`.live-node:hover` → `.live-node:not(.active):hover`).
+- `main` ahead `origin/main` **6 commit** (chưa push — chờ duyệt).
+- Live vẫn bản cũ: 344.476 bytes, 0 `xl-reduced-motion-pseudo`, 0 `xl-micro-hover`.
