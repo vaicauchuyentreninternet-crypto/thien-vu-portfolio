@@ -276,3 +276,65 @@ consolidation (~30 legacy font sizes), which is deferred because it would touch 
   defer.
 - Single-file weight (~345 KB HTML, 184 KB CSS, 96 KB JS inline) — acceptable for a self-contained
   offline-capable page; split only if a build step is introduced.
+
+## Addendum — Phase 10 (2026-11-16, Hermes): responsive overflow correction
+
+### Correction of a Phase 9 claim
+Phase 9 recorded "scrollWidth - innerWidth <= 0 at 320/390/768/1440". That check ran under Chrome
+**mobile** emulation, where overview / shrink-to-fit mode inflates `window.innerWidth` to the page's
+minimum content width (424 at a 320 viewport), so the page was compared against itself. Re-measured
+with desktop emulation (`Emulation.setDeviceMetricsOverride`, `mobile:false`) and
+`document.documentElement.clientWidth` as reference, the page really did overflow:
+- **320px: scrollWidth 424 vs clientWidth 305 -> 119px overflow**
+- **390px: scrollWidth 424 vs clientWidth 375 -> 49px overflow**
+- 768 / 1440: 0
+
+Root cause — one media rule drives three grids:
+`@media (max-width:1000px){ .ai-work-grid, .audited-layout, .audited-numbers>div{ grid-template-columns:160px 1fr } }`
+- `.audited-layout`: `gap:clamp(50px,9vw,140px)` resolves to 50px at 320; `1fr` cannot shrink below the
+  min-content of `.audited-numbers` (~198px) -> 160 + 50 + 198.5 = 408.5 > 275px container.
+- `.ai-work-grid`: same pattern -> 160 + 22 + 173.9 = 355.9 > 275px container.
+
+### Fix (additive `xl-` layer only; no original rule edited or removed)
+`index.html`, `<style id="xl-responsive-fix">`:
+```css
+@media (max-width:720px){
+  .shell.audited-layout,.shell.ai-work-grid{grid-template-columns:minmax(0,1fr)}
+  .shell.audited-layout{gap:32px}
+  .audited-numbers>div{grid-template-columns:minmax(0,118px) minmax(0,1fr)}
+}
+```
+`.shell.audited-layout` (specificity 0,2,0) deliberately beats the legacy `.audited-layout` (0,1,0)
+regardless of source order; `minmax(0,...)` lets tracks shrink below min-content so nothing forces the
+document wider than the viewport. At <=720px both blocks become a single stacked column.
+
+### Verification (real output; desktop emulation; clientWidth reference)
+| viewport | clientWidth | scrollWidth | overflow |
+|---|---|---|---|
+| 320 | 305 | 305 | 0 |
+| 390 | 375 | 375 | 0 |
+| 414 | 399 | 399 | 0 |
+| 768 | 753 | 753 | 0 |
+| 1440 | 1425 | 1425 | 0 |
+
+- Elements still wider than the viewport (`.marquee-track`, `.automation-card`) sit inside
+  `overflow-x:auto|hidden` ancestors (`.automation-grid{overflow-x:auto}`) — internal scroll only;
+  ancestor chain walked to confirm they do not extend the document.
+- `.audited-numbers` rect after fix: left 15 / right 290 (was 225 / 424).
+- Console: 0 errors, 0 unhandled rejections (via `Page.addScriptToEvaluateOnNewDocument` + reload).
+- Structure/a11y: 1 `<h1>`, H1->H2->H3 order intact, 78 focusables, 18 `:focus-visible` rules,
+  14 `prefers-reduced-motion` rules, `#boot-skip` "Skip intro" present, 0 images missing `alt`.
+- Colour untouched this round; the Phase 9 pixel-measured contrast audit still stands.
+
+### Rubric re-score
+| # | Criterion | Was | Now | Evidence |
+|---|-----------|-----|-----|----------|
+| 6 | Responsive everywhere | 9.6 | 9.8 | 0px horizontal overflow at 320/390/414/768/1440; wide media kept inside internal scrollers. |
+| 3 | Colour & contrast | 9.6 | 9.6 | unchanged (no colour edits this round) |
+| 1,2,4,5,7,8,9,10 | — | — | unchanged (no other rule, token or copy touched) |
+
+**Average: 9.11 / 10** (was 9.09) — floor >= 8.5 met, no critical defect.
+
+### Note for future verification
+Never assert "no horizontal overflow" from `scrollWidth <= innerWidth` under mobile emulation:
+Chrome overview mode inflates `innerWidth`. Use `mobile:false` + `document.documentElement.clientWidth`.

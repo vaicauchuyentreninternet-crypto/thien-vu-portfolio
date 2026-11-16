@@ -902,7 +902,8 @@
    "160px 1fr" + gap clamp(50px,9vw,140px); min-content của .audited-numbers
    ~198px nên tổng ~409px > vùng 305px ở 320px -> scrollWidth 424. */
 @media (max-width:720px){
-  .shell.audited-layout{grid-template-columns:minmax(0,1fr);gap:32px}
+  .shell.audited-layout,.shell.ai-work-grid{grid-template-columns:minmax(0,1fr)}
+  .shell.audited-layout{gap:32px}
   .audited-numbers>div{grid-template-columns:minmax(0,118px) minmax(0,1fr)}
 }
 </style>
