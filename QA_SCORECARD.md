@@ -594,3 +594,34 @@ a[href^="https://mail.google.com"]:hover,a[href="#workflow-index"]:hover{opacity
 | 5 | Micro-interactions & feedback | 9,3 | 9,3 | Điểm không đổi, nhưng **bằng chứng mạnh hơn**: lượt trước đo sai (transition đóng băng). Giờ 6/6 control đo được bằng computed style sau khi `transition:none`, và node `.active` **giữ nguyên** highlight khi hover. |
 
 **Average: 9,21 / 10** (không đổi) — floor ≥ 8,5 đạt, **không lỗi chí mạng**.
+
+
+---
+
+## Addendum Phase 14c — 2026-11-17 (cron 00:15, chỉ verify, không đổi code)
+
+**Kết luận: không phát hiện lỗi mới; điểm giữ nguyên 9,21/10.**
+
+### Verification chạy thật lượt này
+| Kiểm | Kết quả |
+|---|---|
+| axe-core 4.10.2 (wcag2a/aa/21a/21aa) | 320: **0 violations / 28 passes** · 1440: **0 violations / 27 passes** |
+| `scrollWidth` vs `innerWidth` | 320 ≤ 320 · 1425 ≤ 1440 → **0px overflow** cả 2 khung |
+| `<h1>` | đúng **1** ở cả 2 khung |
+| Console (hook `Page.addScriptToEvaluateOnNewDocument`) | `[]` |
+| Reduced-motion | reduce → **0 animation**; no-preference → 13 (320) / 25 (1440) → không regression |
+| Reveal | cuộn **từng phần tử** vào khung + chờ: 43/47 nhận `.visible`; 4 còn lại là **rác test** (xem bẫy dưới), không phải content bị kẹt |
+
+### 2 bẫy verify đã ghi thêm vào skill (tránh báo oan "reveal hỏng")
+1. **Cuộn giả bằng vòng lặp đồng bộ** (`window.scrollTo` nhảy tới `scrollHeight`) → IO chỉ chạy cho
+   vị trí cuối; mới cuộn tới `scrollY 7470` trong `scrollHeight 23613` thì mọi section sau vẫn
+   `opacity:0`. Phải cuộn từng bước + chờ thật, đọc lại `scrollY`/`scrollHeight` trước khi kết luận.
+2. **Cuộn `forEach` tất cả reveal trong 1 nhịp** → IO callback chạy sau vòng lặp, lúc đó element đã
+   ra khỏi khung → 3-4 element không bao giờ nhận class. Cuộn từng cái, chờ 250-1000ms/cái.
+- Đã thêm mục "IntersectionObserver reveals — fake-scroll traps" vào
+  `ui-ux-review-rubric/references/browser-verification-quirks.md`.
+
+### Trạng thái
+- **Không sửa `index.html`** lượt này (đã verify lại bản Phase 14b, sạch).
+- `main` ahead `origin/main` **8 commit** — vẫn **chờ duyệt push Pages**.
+- Live vẫn bản cũ (chưa có `xl-reduced-motion-pseudo` / `xl-micro-hover`).
