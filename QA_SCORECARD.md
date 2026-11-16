@@ -587,3 +587,10 @@ a[href^="https://mail.google.com"]:hover,a[href="#workflow-index"]:hover{opacity
 - `index.html`: `<style id="xl-micro-hover">` đã sửa 1 dòng (`.live-node:hover` → `.live-node:not(.active):hover`).
 - `main` ahead `origin/main` **6 commit** (chưa push — chờ duyệt).
 - Live vẫn bản cũ: 344.476 bytes, 0 `xl-reduced-motion-pseudo`, 0 `xl-micro-hover`.
+
+## Rubric re-score Phase 14b
+| # | Criterion | Was | Now | Evidence |
+|---|-------------|-----|----------|
+| 5 | Micro-interactions & feedback | 9,3 | 9,3 | Điểm không đổi, nhưng **bằng chứng mạnh hơn**: lượt trước đo sai (transition đóng băng). Giờ 6/6 control đo được bằng computed style sau khi `transition:none`, và node `.active` **giữ nguyên** highlight khi hover. |
+
+**Average: 9,21 / 10** (không đổi) — floor ≥ 8,5 đạt, **không lỗi chí mạng**.
