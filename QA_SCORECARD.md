@@ -701,3 +701,24 @@ Phai set override roi **reload** lai trang truoc khi doc so.
 - Không đổi layout/palette/font; `:root` tokens và font stack gốc còn nguyên.
 
 **Trạng thái:** đã commit local; **chờ duyệt push** Pages.
+
+
+
+## Addendum — 2026-11-17 (cron 04:15) — Sửa chồng lấn pill chương lên nav (criterion 6)
+
+**Phát hiện (đo hình học, không bằng mắt):** `#xl-chapter-label` (pill "Scale Signal") là overlay `position:fixed; right:18px` gắn ở `<body>`. Ở khung >=721px nó nằm chồng lên mục nav cuối "Contact":
+- 1440×900: pill x≈1306.6–1407, Contact x≈1287.1–1332.5 → chồng ngang ~25px, dọc ~15px.
+- 768×900: pill chồng Contact nặng hơn (Contact nằm sát pill).
+- Rule ẩn pill mặc định là `@media(max-width:720px)` → lỗi tồn tại ở mọi khung 721–1536px.
+- Bằng chứng pixel (PIL dark-ratio vùng Contact): 1440 → không có pill 0,1176 · pill vị trí cũ 0,0648 (mất ~45% chữ) · sau sửa 0,1176. 768 → 0,1113 · 0,0247 · 0,1113.
+
+**Sửa (chỉ thêm, không sửa/xoá rule hay hàm cũ):** thêm `<style id="xl-chapter-label-fix">` sau khối `xl-power-styles`: `@media (min-width:721px){ #xl-chapter-label{right:auto;left:max(104px,calc((100vw - 1240px)/2 + 76px))} }` → đưa pill về ngay sau wordmark (`--max` shell = 1240px nên offset bắt theo shell, không hard-code breakpoint cho từng khung).
+
+**Verify thật (cổng 8769, cache-busting):**
+- Hình học: pill không chồng **bất kỳ** mục nav nào ở 721 / 768 / 1024 / 1280 / 1440 / 1536 / 1920 (`hits: []`).
+- Pixel A/B: vùng Contact khôi phục đúng baseline (0,1176 @1440; 0,1113 @768).
+- axe 4.10.2: **0 violations**, 44–45 passes ở 320/390/768/1440; `aria-prohibited-attr` vẫn không có.
+- Overflow: `scrollWidth <= innerWidth` ở cả 4 khung (0px); console `errs: []`; đúng 1 `<h1>`.
+- `:root` tokens, font stack, palette, layout gốc còn nguyên (diff = thêm 1 khối `<style>`).
+
+**Trạng thái:** đã commit local; **chờ duyệt push** Pages.

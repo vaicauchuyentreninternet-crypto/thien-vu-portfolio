@@ -867,6 +867,12 @@ a[href^="https://mail.google.com"]:hover,a[href="#workflow-index"]:hover{opacity
 }
 @media(hover:none),(pointer:coarse){#xl-case-preview{display:none!important}}
 </style>
+  <style id="xl-chapter-label-fix">
+  /* CHAPTER LABEL — đưa pill về ngay sau wordmark, không chồng lấn nav (721px–1536px) */
+  @media (min-width:721px){
+    #xl-chapter-label{right:auto;left:max(104px,calc((100vw - 1240px)/2 + 76px))}
+  }
+  </style>
   <style id="xl-contrast-styles">
 /* CONTRAST LAYER — WCAG AA (additive; chỉ đổi lightness, giữ hue/identity tokens) */
 .console-log>div{color:#7b817d!important}
