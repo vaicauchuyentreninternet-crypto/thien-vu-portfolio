@@ -230,7 +230,7 @@ a[href^="https://mail.google.com"]:hover,a[href="#workflow-index"]:hover{opacity
    <p>I engineered a GenLogin pipeline covering product intake, image preparation, classification, AI content, attributes and quality checks. Processing dropped from <strong>60 minutes to under 7 minutes per product</strong> in one flow.</p>
    <p class="impact-context">Exceptions return automatically to the retry queue. Validation branches and logging keep each product moving through the publishing process.</p>
   </div>
-  <div class="impact-stats reveal" aria-label="Observed catalog workflow outcomes">
+  <div class="impact-stats reveal" role="group" aria-label="Observed catalog workflow outcomes">
    <div class="impact-stat"><strong>&lt;7<span> min</span></strong><small>Per completed product, one flow</small><em>~60 minutes before automation · &gt;88% less time</em></div>
    <div class="impact-stat"><strong>200<span>+</span></strong><small>Products per day, multiple profiles</small><em>Media, category, copy and attributes</em></div>
    <div class="impact-stat"><strong>3.20<span>%</span></strong><small>Observed exception incidence</small><em>24 exceptions across 749 cases · auto-queued for another attempt</em></div>
@@ -360,7 +360,7 @@ a[href^="https://mail.google.com"]:hover,a[href="#workflow-index"]:hover{opacity
     <div class="project-no">01 / 04 · CATALOG AUTOMATION</div>
     <h3 class="project-title">GenLogin Catalog Automation &amp; AI Content QA</h3>
     <p class="project-problem">A catalog item is not finished when its description is typed. The workflow processes product source data, images, classification, copy and attributes, validates the result and routes exceptions back to a retry queue.</p>
-    <div class="impact-case-strip" aria-label="Reported operating results"><div><strong>&lt;7 min</strong><small>per product · one workflow</small></div><div><strong>200+ / day</strong><small>concurrent browser profiles</small></div><div><strong>24 / 749</strong><small>exceptions · re-queued for retry</small></div></div>
+    <div class="impact-case-strip" role="group" aria-label="Reported operating results"><div><strong>&lt;7 min</strong><small>per product · one workflow</small></div><div><strong>200+ / day</strong><small>concurrent browser profiles</small></div><div><strong>24 / 749</strong><small>exceptions · re-queued for retry</small></div></div>
     <div class="project-facts">
       <div class="fact-row"><span>What runs</span><b>Product input → media / taxonomy → AI content → attributes → QA → publish / retry queue</b></div>
       <div class="fact-row"><span>Evidence</span><b>19 exported workflows · 2,489 graph nodes · 51 JavaScript/Eval steps</b></div>
@@ -459,7 +459,7 @@ a[href^="https://mail.google.com"]:hover,a[href="#workflow-index"]:hover{opacity
       <div>
         <p class="glx-kicker">AUTOMATION ENGINEERING / INTERACTIVE SOURCE GRAPH</p>
         <h2 id="workflow-title">Follow the flow. <em>Inspect the code.</em></h2>
-        <div class="glx-metrics" aria-label="GenLogin source collection">
+        <div class="glx-metrics" role="group" aria-label="GenLogin source collection">
           <span><strong>19</strong><small>workflow exports</small></span>
           <span><strong>2,489</strong><small>connected notes</small></span>
           <span><strong>51</strong><small>JavaScript / Eval</small></span>
@@ -484,7 +484,7 @@ a[href^="https://mail.google.com"]:hover,a[href="#workflow-index"]:hover{opacity
       </div>
       <div class="glx-statusrow">
         <div class="glx-status" role="status"><span class="glx-status-indicator"></span><span class="glx-status-text">READY / select a route or inspect any note</span></div>
-        <div class="glx-legend" aria-label="Line legend"><span><i class="glx-swatch"></i> SUCCESS</span><span><i class="glx-swatch fail"></i> FAIL</span><span><i class="glx-swatch retry"></i> RETRY</span></div>
+        <div role="group" class="glx-legend" aria-label="Line legend"><span><i class="glx-swatch"></i> SUCCESS</span><span><i class="glx-swatch fail"></i> FAIL</span><span><i class="glx-swatch retry"></i> RETRY</span></div>
       </div>
       <div class="glx-view">
         <div class="glx-scroller" id="glx-map-area" tabindex="0" role="region" aria-label="GenLogin workflow note graph, scroll to navigate">
@@ -527,7 +527,7 @@ a[href^="https://mail.google.com"]:hover,a[href="#workflow-index"]:hover{opacity
    <div class="ai-status">AI-ASSISTED CATALOG WORKFLOWS</div>
    <h3>AI-assisted product content, with operational guardrails.</h3>
    <p>Connected ChatGPT/Gemini steps to SKU intake, product attributes, conditional checks, file handling and back-office entry. Each generation step is paired with field-level validation and exception routing.</p>
-   <div class="ai-steps" aria-label="Content workflow"><span>SKU / product data</span><i>→</i><span>LLM drafting</span><i>→</i><span>Rule-based checks</span><i>→</i><span>Review / publish</span></div>
+   <div role="group" class="ai-steps" aria-label="Content workflow"><span>SKU / product data</span><i>→</i><span>LLM drafting</span><i>→</i><span>Rule-based checks</span><i>→</i><span>Review / publish</span></div>
    <div class="tag-row"><span class="tag">ChatGPT / Gemini</span><span class="tag">JavaScript</span><span class="tag">Browser automation</span><span class="tag">Human review</span></div>
   </article>
   <div class="ai-work-aside">
@@ -713,7 +713,7 @@ a[href^="https://mail.google.com"]:hover,a[href="#workflow-index"]:hover{opacity
         </div>
 
         <div class="aim-main">
-          <div class="aim-arena" id="aim-arena" aria-label="Interactive precision aim training arena">
+          <div role="group" class="aim-arena" id="aim-arena" aria-label="Interactive precision aim training arena">
             <div class="aim-calibration" aria-hidden="true"></div>
             <div class="aim-coord aim-coord-a">RANGE // 01</div>
             <div class="aim-coord aim-coord-b">TARGET SYSTEM ONLINE</div>
@@ -768,7 +768,7 @@ a[href^="https://mail.google.com"]:hover,a[href="#workflow-index"]:hover{opacity
               <div><div class="aim-meter-head"><span>REACTION</span><b id="aim-reaction-label">CALIBRATING</b></div><div class="aim-meter"><i id="aim-reaction-meter"></i></div></div>
               <div><div class="aim-meter-head"><span>PRECISION</span><b id="aim-precision-label">100%</b></div><div class="aim-meter"><i id="aim-precision-meter"></i></div></div>
             </div>
-            <div class="aim-sens" aria-label="Mouse sensitivity settings">
+            <div role="group" class="aim-sens" aria-label="Mouse sensitivity settings">
               <div class="aim-sens-header">
                 <label for="aim-sensitivity">MOUSE SENSITIVITY</label>
                 <input id="aim-sensitivity-value" class="aim-sens-number" type="number" min="0.10" max="1.50" step="0.01" value="0.35" inputmode="decimal" aria-label="Exact mouse sensitivity" />

@@ -686,3 +686,18 @@ Phai set override roi **reload** lai trang truoc khi doc so.
 - File working tree có CRLF, nhưng `core.autocrlf=true` nên blob trong git là LF (kiểm chứng `git show HEAD:index.html`).
 
 **Trạng thái:** local `main` ahead `origin/main` **10 commit**, working tree sạch. Vẫn chờ user duyệt push Pages.
+
+
+## Addendum — 2026-11-17 (cron 02:49) — Sửa ARIA không hợp lệ trên 7 `<div>` (criterion 8)
+
+**Phát hiện:** axe-core 4.10.2 đánh dấu `aria-prohibited-attr` (incomplete) trên các `<div>` mang `aria-label` nhưng không có `role` — `div` implicit role `generic` bị cấm đặt tên, nên `aria-label` bị bỏ qua (ARIA không hợp lệ).
+
+**Sửa (chỉ thêm thuộc tính, không đổi rule/hàm):** thêm `role="group"` vào 7 div: `.impact-stats`, `.impact-case-strip`, `.glx-metrics`, `.glx-legend`, `.ai-steps`, `#aim-arena`, `.aim-sens`.
+
+**Verify thật (cổng 8769, cache-busting):**
+- axe 4.10.2: **0 violations**, 27 passes; `aria-prohibited-attr` **biến mất** khỏi incomplete (còn `color-contrast` do pseudo-element — tự tính tay: `.xl-kw` `#151515` trên `#f7f7f5` ≈ 15:1; eyebrow `#7a0019` trên nền sáng ≈ 10,6:1 → đạt).
+- Overflow 4 khung: 320/390/768/1440 → `scrollWidth == innerWidth` (0px).
+- Console: `errs: []` cả 4 khung; đúng 1 `<h1>`.
+- Không đổi layout/palette/font; `:root` tokens và font stack gốc còn nguyên.
+
+**Trạng thái:** đã commit local; **chờ duyệt push** Pages.
