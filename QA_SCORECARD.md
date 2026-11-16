@@ -648,3 +648,41 @@ Phai set override roi **reload** lai trang truoc khi doc so.
 ### Trang thai
 - Khong sua `index.html` luot nay.
 - `main` ahead `origin/main` **9 commit** — van **cho duyet push Pages**.
+
+
+## Addendum Phase 16 — 2026-11-17 (cron 02:49) — Cổng duyệt old-vs-new + verify lại
+
+**Mục đích:** dựng bằng chứng cổng duyệt trước khi push Pages (rubric: "chụp old-vs-new side-by-side cùng breakpoint"). Không sửa `index.html`.
+
+**1. Old-vs-new side-by-side (đã chụp)**
+- OLD = live Pages `https://vaicauchuyentreninternet-crypto.github.io/thien-vu-portfolio/index.html` — 344.476 B, có 4 `xl-*` (`upgrade`, `power`, `contrast`, `responsive-fix`).
+- NEW = local `127.0.0.1:8769/index.html` — 347.828 B, có 6 `xl-*` (thêm `micro-hover`, `reduced-motion-pseudo`).
+- Ảnh: `qa_shots/compare_1440.png`, `qa_shots/compare_320.png` (OLD trái / NEW phải).
+
+**2. Chứng minh không phải redesign — pixel diff (PIL, ngưỡng 16/255)**
+- 1440×900: 2.301 px khác = **0,18%** (maxdiff 148).
+- 320×800: 1.569 px khác = **0,61%** (maxdiff 73).
+→ Thay đổi gần như vô hình, đúng tinh thần "chỉ thêm, không sửa identity".
+
+**3. Diff thật live→local (bỏ qua CR): 34 dòng, toàn bộ là THÊM**
+- `<style id="xl-reduced-motion-pseudo">` + `<style id="xl-micro-hover">` (hover/active cho control chưa có phản hồi).
+- `tabindex="0"` cho `.shell.automation-grid` và `.code-lab-code-wrap` (2 vùng cuộn -> truy cập bàn phím).
+- `.shell.audited-layout,.shell.ai-work-grid{grid-template-columns:minmax(0,1fr)}` + `.ops-step:not(.is-active){opacity:.85}` / `small{color:#545451}` (tương phản bước chưa active).
+- Script fallback reveal (2.5s/6s) — nội dung không kẹt `opacity:0`.
+- Không sửa/xoá rule hay hàm cũ nào.
+
+**4. Verify lại lượt này (bản local 8769)**
+- axe-core 4.10.2: **0 violations** — 320: 28 passes · 1440: 27 passes.
+- Overflow: `scrollWidth <= innerWidth` ở 320 / 390 / 768 / 1440 → **0px** (đặt viewport rồi reload).
+- Đúng **1 `<h1>`** ở cả 4 khung; console sạch.
+
+**5. Kiểm tra mới (lần đầu)**
+- **Focus bằng Tab THẬT** (CDP `Input.dispatchKeyEvent`, không dùng `.focus()` thủ công): `:focus-visible` = true, outline `rgb(122,0,25) solid 2px` → criterion 8 đạt thật.
+- **Reveal khi cuộn**: `.impact-story` `opacity 0 → 1`, class `visible` → fallback hoạt động đúng.
+- 72 phần tử `opacity:0` sau boot là reveal nằm **dưới fold**, không phải bị kẹt.
+- axe `incomplete` đã giải thích: `color-contrast` = nền pseudo-element (hero deco); `aria-prohibited-attr` = role chưa xác định → **incomplete, không phải violation**.
+
+**6. Ghi chú kỹ thuật**
+- File working tree có CRLF, nhưng `core.autocrlf=true` nên blob trong git là LF (kiểm chứng `git show HEAD:index.html`).
+
+**Trạng thái:** local `main` ahead `origin/main` **10 commit**, working tree sạch. Vẫn chờ user duyệt push Pages.
