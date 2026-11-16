@@ -722,3 +722,10 @@ Phai set override roi **reload** lai trang truoc khi doc so.
 - `:root` tokens, font stack, palette, layout gốc còn nguyên (diff = thêm 1 khối `<style>`).
 
 **Trạng thái:** đã commit local; **chờ duyệt push** Pages.
+
+
+### Re-verify — 2026-11-17 (cron 04:15, session này)
+
+- Local 8769 (`?v=20261117i`): pill ↔ Contact overlap **0 px²** ở 721 / 768 / 1024 / 1280 / 1440 / 1536 / 1920; pill `display:none` ở <=720px; pill ↔ wordmark 0.
+- axe 4.10.2 (tags wcag2a/2aa/21a/21aa): **0 violations**, 27–28 passes; `color-contrast` incomplete (pseudo-element, đã tính tay ~15:1 / ~10,6:1); overflow 0px; console `errs: []`; 1 `<h1>`.
+- **Live vẫn còn lỗi** (`xl-chapter-label-fix` = không tồn tại): 1440×900 overlap **525 px²** (ox 25,9 · oy 20,3); 768×900 **920 px²** (ox 45,4). → cần push.
