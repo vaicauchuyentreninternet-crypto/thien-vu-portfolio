@@ -428,3 +428,53 @@ setTimeout(... 6000ms -> nếu chưa có .reveal nào visible thì reveal toàn 
 - Đã sửa `index.html` (4 thay đổi: 2× `tabindex`, 3 rule contrast, 1 script reveal fallback). **Chưa commit.**
 - `main` đang ahead `origin/main` 2 commit (`27e4c4e`, `49e3156`) + thay đổi Phase 12 chưa commit.
 - **Chờ duyệt để push Pages** (live còn tràn 66px ở 320 — xem Phase 11).
+
+
+---
+
+# Addendum — Phase 13: reduced-motion phủ pseudo-element (2026-11-16)
+
+- Target: `index.html` local, preview `http://127.0.0.1:8769/` (cache-buster `?v=<epoch>`).
+- Phương pháp: deterministic — ép `Emulation.setEmulatedMedia prefers-reduced-motion=reduce` rồi đếm
+  `document.getAnimations()`; đối chứng bằng chế độ `no-preference`.
+
+## Lỗi thật: `*{animation:none!important}` không phủ `::before` / `::after`
+Bản gốc đã có:
+```css
+@media(prefers-reduced-motion:reduce){ html{scroll-behavior:auto} .js .reveal{opacity:1;transform:none;transition:none} *{transition:none!important;animation:none!important} }
+```
+Nhưng `*` chỉ khớp **element**, không khớp pseudo-element → 2 animation vô hạn vẫn chạy khi reduce:
+| animation | node | duration |
+|---|---|---|
+| `signalSheen` | `.signal-board::before` | 8s ease-in-out infinite |
+| `routeSweep` | `.route-line::after` | 3.9s linear infinite |
+
+Đây là **vi phạm criterion 4** ("reduced-motion tắt hoàn toàn") — các lượt trước ghi "reduced-motion
+removes all motion (verified)" là chưa đủ, vì chỉ đo được element, không đo pseudo-element.
+
+## Sửa — chỉ THÊM, không sửa/xoá rule cũ
+Thêm 1 `<style>` mới ngay trước `</head>`:
+```html
+<style id="xl-reduced-motion-pseudo">@media(prefers-reduced-motion:reduce){*,*::before,*::after{transition:none!important;animation:none!important}}</style>
+```
+
+## Verification (kết quả thật)
+- `prefers-reduced-motion: reduce` → `document.getAnimations().length === 0` (**trước fix: 2**).
+- `no-preference` → vẫn **66** animation chạy (gồm `signalSheen`, `routeSweep`, `marqueeMove`,
+  `statusPulse`, `packetMove`, `radarSpin`…) → **không regression** chế độ thường.
+- axe-core 4.10.2 (wcag2a/aa/21a/21aa/**22aa**): **0 violations / 29 passes** ở 320/390/768,
+  28 passes ở 1440; `scrollWidth == innerWidth` (305/375/753/1425) → 0px overflow; đúng 1 `<h1>`.
+- Console: `[]` (hook `Page.addScriptToEvaluateOnNewDocument` + reload).
+- Reveal fallback vẫn hoạt động: 3 phần tử trong viewport, 0 cái ẩn.
+
+## Rubric re-score
+| # | Criterion | Was | Now | Evidence |
+|---|-----------|-----|-----|----------|
+| 4 | Motion with purpose | 9.2 | 9.4 | reduce-motion giờ tắt **hoàn toàn** (0 animation, gồm pseudo-element); chế độ thường không đổi. |
+
+**Average: 9,18 / 10** (was 9,16) — floor ≥ 8,5 đạt, **không lỗi chí mạng**.
+
+## Trạng thái
+- `index.html` đã sửa (thêm 1 `<style>` 156 bytes). **Commit local `da4606a`, chưa push.**
+- Phase 13 đã commit local `da4606a`; `main` ahead `origin/main` **4 commit**.
+- **Chờ duyệt để push Pages** (live vẫn là bản cũ, còn tràn 66px ở 320).
