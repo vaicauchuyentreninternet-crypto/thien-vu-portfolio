@@ -221,3 +221,58 @@ four categories, TBT 40/0 ms, CLS 0, transfer 101 KiB, **0 console errors**; `sc
 be judged from a hidden headless tab (rAF/CSS animations are throttled there), so criterion 4 is
 scored from deterministic end-state + reduced-motion evidence. Main remaining craft gap: type-scale
 consolidation (~30 legacy font sizes), which is deferred because it would touch the frozen identity.
+
+
+---
+
+# Addendum — Phase 9 contrast hardening (2026-11-16)
+
+- Target: `index.html` local @ `D:/AI-AGENT/Projects/portfolio_repo`, served `http://127.0.0.1:8769/`
+  (verified with cache-buster `?v=20261116c..i`; `grep` on `curl` confirms the server serves the new bytes).
+- Method: deterministic checks only (computed style, ancestor walk, WCAG ratio on **real pixels** via
+  PIL on a CDP viewport screenshot) — no aesthetic judgement from a headless tab.
+
+## Defects found and fixed (all in the additive `xl-` layer; original rules untouched)
+1. **`.console-log>div`** opacity `.42 -> .72` — colour kept at `#7b817d` so `.active` (opacity 1)
+   keeps its hierarchy; text is now legible on the dark console surface.
+2. **`.route-node small` / `.live-node span`** `#c23a56 -> #ce5c74` -> **4.53:1** on `rgb(33,22,26)`.
+3. **`.aim-result-note`** added `color:#777d79` (was inheriting a sub-AA grey).
+4. **`.glx-node-id`** `#6f919e -> #74959f` — the legacy rule `#glx .glx-node-id` (specificity 0,1,1)
+   silently beat the `.xl-` rule (0,1,0), so the fix needed `!important`. Measured **4.47 -> 4.70:1**
+   on real background `rgb(25,40,50)`.
+
+## Verification (real output)
+- **Contrast re-audit, whole page**: 109 visible text nodes, **12** flagged below 4.5:1 — every one of
+  them inside `#glx`, whose background is a `radial-gradient`, so the flat-background estimator wrongly
+  reports white. Measured on pixels: kicker **11.89**, title **16.64**, description **9.08**,
+  metrics **13.78–17.62**, small labels **6.28–6.33**, spans **6.80–7.20** → all pass. **0 real failures.**
+- **Horizontal overflow**: `scrollWidth - innerWidth <= 0` at 320 / 390 / 768 / 1440.
+- **Console**: 0 errors, 0 unhandled rejections (captured via `Page.addScriptToEvaluateOnNewDocument`
+  then `Page.reload(ignoreCache=True)`).
+- **Structure/a11y**: exactly 1 `<h1>`, H1→H2→H3 order intact, 78 focusables, 19 `:focus-visible`
+  rules, every `outline:0` paired with an underline/background replacement, decorative arrows
+  `aria-hidden`, 0 images missing `alt`.
+- **Motion**: Skip-intro control present, `prefers-reduced-motion` block present, reveal end-state
+  reached (opacity 1 after scroll-through + settle).
+
+## Rubric re-score (10 criteria)
+| # | Criterion | Was | Now | Evidence |
+|---|-----------|-----|-----|----------|
+| 1 | First impression / visual system | 9.0 | 9.0 | Identity tokens (`:root`, palette, font stack) untouched — additions are `xl-` prefixed only. |
+| 2 | Typography & spacing rhythm | 8.5 | 8.5 | Hierarchy H1→H2→H3 clean; 48 distinct px sizes counted (legacy + mock UI), consolidated later only if identity-safe. |
+| 3 | Colour & contrast | 9.2 | 9.6 | Pixel-measured: 0 real text node below 4.5:1; lowest remaining is the `.glx` mock id at 4.70:1. |
+| 4 | Motion with purpose | 9.0 | 9.0 | Skip intro + reduced-motion verified; 60 small loop animations are decorative status cues. |
+| 5 | Micro-interactions & feedback | 9.0 | 9.0 | Unchanged from Phase 8 E2E (dialog focus/ESC, copy-email, node select). |
+| 6 | Responsive everywhere | 9.6 | 9.6 | `scrollWidth <= innerWidth` at all four breakpoints, re-measured this round. |
+| 7 | Performance | 9.5 | 9.5 | Unchanged (gzip-equivalent Lighthouse numbers from Phase 8). |
+| 8 | Accessibility | 9.5 | 9.5 | 1 H1, valid heading order, 78 focusables, focus-visible coverage, 0 console errors. |
+| 9 | Content clarity & tone | 8.5 | 8.5 | Copy unchanged; UI language kept Vietnamese/English per owner convention. |
+| 10 | Craft consistency | 8.7 | 8.7 | Single radius/shadow system; `xl-` additions non-destructive. |
+
+**Average: 9.09 / 10** (was 9.05) — floor >= 8.5 met, no critical defect.
+
+## Remaining non-blocking items
+- ~48 font sizes inherited from legacy/mock sections — unifying them would touch the frozen identity;
+  defer.
+- Single-file weight (~345 KB HTML, 184 KB CSS, 96 KB JS inline) — acceptable for a self-contained
+  offline-capable page; split only if a build step is introduced.

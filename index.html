@@ -858,6 +858,44 @@
 }
 @media(hover:none),(pointer:coarse){#xl-case-preview{display:none!important}}
 </style>
+  <style id="xl-contrast-styles">
+/* CONTRAST LAYER — WCAG AA (additive; chỉ đổi lightness, giữ hue/identity tokens) */
+.console-log>div{color:#7b817d!important}
+.signal-console span{color:#797f7b!important}
+.signal-state span{color:#7a7e7b!important}
+.code-lab-com{color:#79807c!important}
+.code-lab-footer{color:#79807c!important}
+.code-lab-terminal-card small{color:#77807b!important}
+.code-lab-log span{color:#757d79!important}
+.live-node span{color:#ce5c74!important}
+.route-node small{color:#ce5c74!important}
+.aim-focus-state{color:#777e80!important}
+.aim-coord{color:#757d81!important}
+.aim-result-stats small{color:#787e80!important}
+.aim-meter-head{color:#787e80!important}
+.aim-hud-kicker{color:#787f81!important}
+.signal-index{color:#7a7e7c!important}
+.signal-live small{color:#7a7f7b!important}
+.live-clock small{color:#7c7f7d!important}
+.distribution-branches small{color:#7d817e!important}
+.aim-stat small{color:#787e80!important}
+.code-lab-status{color:#d4536f!important}
+.impact-stat em{color:#6f6a66!important}
+.impact-footnote span{color:#706a67!important}
+.impact-story>.impact-context{color:#706a66!important}
+#operational-impact .label{color:#6c6c68!important}
+.aim-result-note{color:#777d7f!important}
+/* code-lab: dòng chờ .42 -> .58 (vẫn thấp hơn .is-done .88 / .is-current 1) */
+.code-lab-line{opacity:.58}
+/* ops-step: bước chưa active .52 -> .72 (vẫn thấp hơn .is-active 1) */
+.ops-step-grid-live .ops-step{opacity:.72}
+
+/* console-log: dòng đã đọc .42 -> .72 (vẫn thấp hơn .active 1) để đọc được trên nền tối */
+.console-log>div{opacity:.72}
+
+/* glx mock: node-id 4,47 -> 4,70 trên nền rgb(25,40,50) */
+.glx-node-id{color:#74959f!important}
+</style>
 
 
 <script id="xl-power-script">
