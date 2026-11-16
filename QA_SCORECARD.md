@@ -359,3 +359,72 @@ live đã nhận commit `a247483`:
   `port_live_1440.png`, `port_live_320.png`, `port_local_1440.png`, `port_local_320.png`.
 - **Trạng thái:** commit `49e3156` đang nằm local, `main` ahead `origin/main` 1 commit — **chờ duyệt để push Pages**.
 - Điểm rubric không đổi: **9,11/10**, không lỗi chí mạng trên bản local.
+
+## Phase 12 — Re-verification 2026-11-16 (Hermes): axe-core 4.10.2, bắt 3 lỗi a11y chí mạng, đã sửa + verify lại 0 vi phạm
+
+- Method: **axe-core 4.10.2** (real library, loaded locally then injected via CDP) chạy trên
+  preview thật `http://127.0.0.1:8769/` với tags `wcag2a,wcag2aa,wcag21a,wcag21aa`.
+  Đây là lần đầu trang được quét bằng axe (các phase trước chỉ đo contrast/overflow thủ công).
+- Trạng thái đầu: **3 vi phạm serious** (2 rule khác nhau).
+
+### Lỗi #1 — color-contrast (serious, 4 node)
+`button[data-ops-step] small` — chữ "bước" của các nút bước **chưa active**.
+Nguyên nhân: rule gốc `.ops-step{opacity:.72}` (mobile `.58`) + `small` dùng `var(--muted)` `#6f6f6b`
+→ màu hiệu lực `rgb(151,151,148)` trên nền trắng = **2,92:1** (dưới AA 4,5).
+- Fix: **chỉ thêm** 3 rule vào `<style id="xl-responsive-fix">`, không sửa/xoá rule cũ:
+```css
+.ops-step-grid-live .ops-step:not(.is-active){opacity:.85}
+.ops-step-grid-live .ops-step:not(.is-active):hover{opacity:1}
+.ops-step-grid-live .ops-step:not(.is-active) small{color:#545451}
+```
+`:not(.is-active)` nên không đụng bước đang active (đo lại: active opacity 1, `small` `rgb(68,68,64)`).
+
+### Lỗi #2 — scrollable-region-focusable (serious): `.automation-grid`
+`overflow-x:auto`, `scrollWidth 934 > clientWidth` nhưng không `tabindex` → không cuộn được bằng bàn phím.
+- Fix: thêm `tabindex="0"` (không thêm aria-label — tránh aria thừa).
+
+### Lỗi #3 — scrollable-region-focusable (serious): `#code-lab-scroll`
+`overflow:auto/auto`, `scrollHeight 573 > clientHeight 441` khi code-lab đã gõ xong, không `tabindex`.
+Chỉ lộ ra sau khi để typing animation chạy hết — các lượt quét trước bỏ lỡ vì content chưa đầy.
+- Fix: thêm `tabindex="0"`.
+
+### Bổ sung — reveal fallback bắt buộc (rubric criterion 4)
+Trang trước đây chỉ reveal bằng IntersectionObserver (có nhánh `else` khi không có IO, nhưng **không có
+timer/class fallback** cho trường hợp IO bị throttle ở tab nền). Thêm **một** `<script>` mới trước `</body>`,
+không sửa code reveal cũ:
+```js
+setTimeout(... 2500ms -> reveal .reveal đang nằm trong viewport nếu chưa visible ...)
+setTimeout(... 6000ms -> nếu chưa có .reveal nào visible thì reveal toàn bộ ...)
+```
+
+### Verification (real output, bản local `?v=20261116j`)
+- **axe-core 4.10.2: 0 violations / 29 passes** (còn 2 `incomplete`, xem dưới).
+- Chứng minh fix #3: ép `#code-lab-scroll` thành scrollable (`max-height:180px`, `sh 867 > ch 180`) rồi chạy
+  axe → vẫn **0 violations**. Trước fix, trạng thái này báo `scrollable-region-focusable`.
+- **Responsive:** `clientWidth == scrollWidth` ở 320/390/768/1440 → 305/375/753/1425, **0px overflow ngang**.
+- **Console:** 0 error, 0 unhandled rejection (hook qua `Page.addScriptToEvaluateOnNewDocument` + reload).
+- **Reveal:** cuộn hết trang (height 25 020) → 47/47 `.reveal` visible; sau 3,2s không cuộn: 0 phần tử ẩn
+  trong viewport.
+- Ảnh: `port_qa_1440.png`, `port_qa_320.png` (workspace).
+
+### 2 `incomplete` của axe — không phải lỗi
+- `aria-prohibited-attr` (7 node: `#impact-stats`, `#impact-case-strip`, `#glx-metrics`, `#glx-legend`,
+  `#ai-steps`, `#aim-arena`, `.aim-sens`): axe dự đoán role theo tên id/class, không xác định được
+  role thật → `incomplete`, không phải violation.
+- `color-contrast` cho 2 dòng hero: axe không tính được nền vì nền là pseudo-element/gradient phức tạp
+  → `incomplete`. Đo tay: hero copy 7,67:1 (Phase 9) — đạt AA.
+
+### Rubric re-score
+| # | Criterion | Was | Now | Evidence |
+|---|-----------|-----|-----|----------|
+| 3 | Color & contrast | 9.6 | 9.7 | axe 0 violation; đã sửa 1 cặp thật 2,92:1 → đạt AA; active step không đổi. |
+| 4 | Motion with purpose | 9.0 | 9.2 | Đã có fallback bắt buộc (2,5s/6s) — nội dung không thể kẹt ở `opacity:0`. |
+| 8 | Accessibility | 9.5 | 9.7 | axe 0 violation / 29 passes; 2 vùng cuộn có `tabindex`; chứng minh bằng ép scrollable. |
+| 1,2,5,6,7,9,10 | — | — | unchanged (không đụng rule/token/copy nào khác). |
+
+**Average: 9,16 / 10** (was 9,11) — floor ≥ 8,5 đạt, **không lỗi chí mạng**.
+
+### Trạng thái
+- Đã sửa `index.html` (4 thay đổi: 2× `tabindex`, 3 rule contrast, 1 script reveal fallback). **Chưa commit.**
+- `main` đang ahead `origin/main` 2 commit (`27e4c4e`, `49e3156`) + thay đổi Phase 12 chưa commit.
+- **Chờ duyệt để push Pages** (live còn tràn 66px ở 320 — xem Phase 11).
