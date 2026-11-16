@@ -475,6 +475,75 @@ Thêm 1 `<style>` mới ngay trước `</head>`:
 **Average: 9,18 / 10** (was 9,16) — floor ≥ 8,5 đạt, **không lỗi chí mạng**.
 
 ## Trạng thái
-- `index.html` đã sửa (thêm 1 `<style>` 156 bytes). **Commit local `da4606a`, chưa push.**
+- `index.html` đã sửa (thêm 1 `<style>` 156 bytes). **Commit local `e564303`, chưa push.**
 - Phase 13 đã commit local `da4606a`; `main` ahead `origin/main` **4 commit**.
 - **Chờ duyệt để push Pages** (live vẫn là bản cũ, còn tràn 66px ở 320).
+
+
+---
+
+# Addendum — Phase 14: micro-interaction layer (2026-11-16)
+
+- Target: `index.html` local, preview `http://127.0.0.1:8769/` (cache-buster `?v=<epoch>`).
+- Phương pháp: deterministic — CDP `CSS.forcePseudoState` + đọc `getComputedStyle`, mỗi control
+  `scrollIntoView({block:"center"})` trước (ép pseudo-class không áp dụng cho node ngoài viewport —
+  xem `browser-verification-quirks.md`).
+- Công cụ: axe-core 4.10.2 (wcag2a/aa/21a/21aa) nạp qua `http://127.0.0.1:8788/axe.min.js`.
+
+## Lỗi thật: 6 nhóm control chính không có phản hồi hover
+Quét `document.styleSheets` + `getComputedStyle`: `.live-node`, `#glx .glx-close`,
+`.contact-links .contact-copy`, `.hero-github`, link Gmail, link `#workflow-index`
+không có rule `:hover` nào → người dùng trỏ chuột không thấy gì đổi.
+
+## Sửa — chỉ THÊM, không sửa/xoá rule cũ
+Thêm `<style id="xl-micro-hover">` ngay trước `</head>` (sau `xl-reduced-motion-pseudo`):
+```css
+.live-node:hover{border-color:rgba(194,58,86,.45);background:#1b1a1e}
+.live-node:active{transform:translateX(8px) scale(.985)}
+#glx .glx-close:hover{background:#24495a;border-color:#52788a;color:#fff}
+.contact-links .contact-copy:hover{color:var(--accent);border-bottom-color:var(--accent)}
+.hero-github:hover,a[href^="https://github.com/vaicauchuyentreninternet-crypto/thien-vu-portfolio"]:hover{opacity:.72}
+a[href^="https://mail.google.com"]:hover,a[href="#workflow-index"]:hover{opacity:.72}
+```
+(Lần đầu 2 rule cuối dùng `color:var(--accent)` nhưng probe cho thấy computed không đổi →
+đổi sang `opacity:.72`, đã kiểm chứng.)
+
+## Verification (kết quả thật)
+| control | property | trước | sau hover | kết luận |
+|---|---|---|---|---|
+| `.live-node:not(.active)` | background-color | rgb(23,24,27) | rgb(27,26,30) | CHANGED |
+| `#glx .glx-close` | background-color | rgb(27,48,57) | rgb(36,73,90) | CHANGED |
+| `.contact-links .contact-copy` | color | rgb(21,21,21) | rgb(122,0,25) | CHANGED |
+| `.hero-github` | opacity | 1 | 0.72 | CHANGED |
+| link Gmail | opacity | 1 | 0.72 | CHANGED |
+| link `#workflow-index` | opacity | 1 | 0.72 | CHANGED |
+
+- `:active` trên `.live-node`: transform đọc được `matrix(0.987,0,0,0.987,6.68,0)` → đang chạy
+  tới `translateX(8px) scale(.985)` (transition .3s nên giá trị là trung gian) ✓
+- Focus: rule toàn cục `:focus-visible{outline:2px solid var(--accent);outline-offset:4px}`
+  phủ **cả 80 focusable**. Ép trên `.wordmark`: `none 0px` → `solid 2px rgb(122,0,25)` ✓
+  (Audit "thiếu focus" trước đó là **false negative** do strip selector sai — đã đo lại.)
+- axe-core 4.10.2: **0 violations / 28 passes** ở 320/390/768 (27 ở 1440).
+- Overflow: `scrollWidth` 305/375/753/1425 ≤ `innerWidth` 320/390/768/1440 → 0px cả 4 khung.
+- Console (`Page.addScriptToEvaluateOnNewDocument` hook): `[]`. Đúng 1 `<h1>` mọi khung.
+- Reduced-motion: `getAnimations()` = **0** khi reduce, **31** khi no-preference;
+  `.signal-board::before` = `signalSheen 8s` bình thường / `none 0s` khi reduce → không regression.
+
+## Rubric re-score
+| # | Criterion | Was | Now | Evidence |
+|---|-----------|-----|-----|----------|
+| 5 | Micro-interactions & feedback | 9.0 | 9.3 | 6/6 control còn thiếu giờ có hover/active đo được bằng computed style; focus-visible toàn cục 2px accent; reduced-motion vẫn 0 animation. |
+
+**Average: 9,21 / 10** (was 9,18) — floor ≥ 8,5 đạt, **không lỗi chí mạng**.
+
+## 3 tiêu chí thấp nhất — cần anh quyết (không tự sửa)
+| # | Criterion | Score | Vì sao chưa sửa |
+|---|-----------|-------|-----------------|
+| 2 | Typography & spacing | 8.5 | 48 font-size hiệu lực, phần lớn là micro-label/mock UI kế thừa; gom về ≤5 hệ phải sửa rule cũ → vi phạm "chỉ thêm, không sửa/xoá" lên identity đang đóng băng. |
+| 9 | Content clarity & tone | 8.5 | Portfolio ~99% tiếng Anh (H1 tiếng Anh) nên `lang="en"` là đúng; chuyển UI sang tiếng Việt = đổi identity/copy. |
+| 10 | Craft consistency | 8.7 | Đã dùng một hệ radius/shadow/border; phần lệch còn lại nằm ở section legacy — sửa là chạm identity. |
+
+## Trạng thái
+- `index.html` đã thêm `<style id="xl-micro-hover">` (chỉ thêm). Commit local `1676248`.
+- `main` ahead `origin/main` **5 commit**.
+- **Chờ duyệt để push Pages** — live vẫn là bản cũ (0 `xl-reduced-motion-pseudo`, 0 `xl-micro-hover`).
