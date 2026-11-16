@@ -625,3 +625,26 @@ a[href^="https://mail.google.com"]:hover,a[href="#workflow-index"]:hover{opacity
 - **Không sửa `index.html`** lượt này (đã verify lại bản Phase 14b, sạch).
 - `main` ahead `origin/main` **8 commit** — vẫn **chờ duyệt push Pages**.
 - Live vẫn bản cũ (chưa có `xl-reduced-motion-pseudo` / `xl-micro-hover`).
+
+
+---
+
+## Addendum Phase 15 — 2026-11-17 (cron 01:41, chi verify, khong doi code)
+
+**Ket luan: khong phat hien loi moi; diem giu nguyen 9,21/10.**
+
+| Kiem | Ket qua |
+|---|---|
+| axe-core 4.10.2 (CDN, wcag2a/aa/21a/21aa) | 320: **0 violations / 28 passes** · 1440: **0 violations / 27 passes** |
+| Overflow (do dung: dat viewport + **reload**) | 320 ≤ 320 · 390 ≤ 390 · 753 ≤ 768 · 1425 ≤ 1440 → **0px** |
+| `<h1>` | dung **1** o ca 4 khung |
+| Live Pages | 344.476 bytes, `xl-micro-hover`=0, `xl-reduced-motion-pseudo`=0 → van ban cu (chua push) |
+| Git | `main` ahead `origin/main` **9 commit**, working tree sach |
+
+**Bay verify moi (da ghi vao skill):** `Emulation.setDeviceMetricsOverride` **khong reload** →
+`clientWidth` doi nhung `scrollWidth` con 1440; quet hinh hoc bao 862 phan tu tran (false positive).
+Phai set override roi **reload** lai trang truoc khi doc so.
+
+### Trang thai
+- Khong sua `index.html` luot nay.
+- `main` ahead `origin/main` **9 commit** — van **cho duyet push Pages**.
