@@ -51,8 +51,21 @@
 .hero-github:hover,a[href^="https://github.com/vaicauchuyentreninternet-crypto/thien-vu-portfolio"]:hover{opacity:.72}
 a[href^="https://mail.google.com"]:hover,a[href="#workflow-index"]:hover{opacity:.72}
 </style>
+
+  <style id="xl-skip-styles">
+/* SKIP LINK — WCAG 2.4.1 (bypass blocks). Chỉ thêm; ẩn khi không focus,
+   hiện khi Tab đầu tiên. Không đổi layout nên không ảnh hưởng thiết kế. */
+#xl-skip{position:fixed!important;left:14px;top:14px;z-index:99999!important;
+  padding:11px 18px;border-radius:8px;background:#0b0d0e;color:#f4f1e8;
+  font:600 13px/1.2 ui-sans-serif,system-ui,-apple-system,"Segoe UI",Arial,sans-serif;
+  letter-spacing:.02em;text-decoration:none;box-shadow:0 8px 26px rgba(0,0,0,.4);
+  transform:translateY(-260%);transition:transform .16s ease}
+#xl-skip:focus-visible{transform:translateY(0);outline:2px solid #c9a24b;outline-offset:2px}
+@media (prefers-reduced-motion:reduce){#xl-skip{transition:none}}
+</style>
 </head>
 <body>
+<a id="xl-skip" href="#top">Skip to content</a>
 <noscript><style>.system-boot{display:none!important}.reveal{opacity:1!important;transform:none!important;visibility:visible!important}.web-card.has-shot::before{display:none!important}.metric-live-number,.signal-number{opacity:1!important}.work-index{display:none!important}</style></noscript>
   <div class="system-boot" id="system-boot" aria-label="Portfolio introduction">
     <button class="boot-skip" id="boot-skip" type="button">Skip intro</button>
@@ -112,7 +125,7 @@ a[href^="https://mail.google.com"]:hover,a[href="#workflow-index"]:hover{opacity
     </div>
   </header>
 
-  <main id="top">
+  <main id="top" tabindex="-1">
     <section class="hero hero-v2">
       <div class="shell hero-grid">
         <div class="reveal">
@@ -264,7 +277,7 @@ a[href^="https://mail.google.com"]:hover,a[href="#workflow-index"]:hover{opacity
       <div class="shell marquee reveal" aria-hidden="true">
         <div class="marquee-track">content workflow design · product update tooling · reporting automation · dashboard synchronization · campaign reporting · data mapping · internal process tooling · website operations · customer communication · measurement setup · content workflow design · product update tooling · reporting automation · dashboard synchronization · campaign reporting · data mapping · internal process tooling · website operations · customer communication · measurement setup</div>
       </div>
-      <div class="shell automation-grid" tabindex="0">
+      <div class="shell automation-grid" tabindex="0" role="region" aria-label="Automation capabilities, scroll to navigate">
         <article class="automation-card reveal">
           <div class="automation-icon">01</div>
           <h3>Content production workflows</h3>
@@ -490,7 +503,7 @@ a[href^="https://mail.google.com"]:hover,a[href="#workflow-index"]:hover{opacity
         <div class="glx-scroller" id="glx-map-area" tabindex="0" role="region" aria-label="GenLogin workflow note graph, scroll to navigate">
           <div class="glx-map"><svg class="glx-wires" role="img" aria-label="GenLogin note connections"></svg></div>
         </div>
-        <aside class="glx-detail" role="dialog" aria-label="GenLogin note configuration" aria-modal="false">
+        <aside class="glx-detail" role="region" aria-label="GenLogin note configuration">
           <div class="glx-detail-head">
             <div><p class="glx-detail-eyebrow">DOM / FILE SOURCE</p><h3>Note configuration</h3></div>
             <button class="glx-close" type="button" aria-label="Close note configuration">&#215;</button>
@@ -612,7 +625,7 @@ a[href^="https://mail.google.com"]:hover,a[href="#workflow-index"]:hover{opacity
         <div class="code-lab-main">
           <div class="code-lab-editor">
             <div class="code-lab-tabs"><div class="code-lab-tab">subscriber-mailer.js / walkthrough</div></div>
-            <div class="code-lab-code-wrap" id="code-lab-scroll" tabindex="0">
+            <div class="code-lab-code-wrap" id="code-lab-scroll" tabindex="0" role="region" aria-label="Code editor, scroll to navigate">
               <pre class="code-lab-code" id="code-lab-code"></pre>
             </div>
             <div class="code-lab-footer"><span>Node.js · Express · SMTP</span><span><b id="code-lab-position">Ln 1, Col 1</b> · UTF-8</span></div>
@@ -877,7 +890,7 @@ a[href^="https://mail.google.com"]:hover,a[href="#workflow-index"]:hover{opacity
 /* CONTRAST LAYER — WCAG AA (additive; chỉ đổi lightness, giữ hue/identity tokens) */
 .console-log>div{color:#7b817d!important}
 .signal-console span{color:#797f7b!important}
-.signal-state span{color:#7a7e7b!important}
+.signal-state span{color:#7f8380!important}
 .code-lab-com{color:#79807c!important}
 .code-lab-footer{color:#79807c!important}
 .code-lab-terminal-card small{color:#77807b!important}
@@ -889,7 +902,7 @@ a[href^="https://mail.google.com"]:hover,a[href="#workflow-index"]:hover{opacity
 .aim-result-stats small{color:#787e80!important}
 .aim-meter-head{color:#787e80!important}
 .aim-hud-kicker{color:#787f81!important}
-.signal-index{color:#7a7e7c!important}
+.signal-index{color:#818583!important}
 .signal-live small{color:#7a7f7b!important}
 .live-clock small{color:#7c7f7d!important}
 .distribution-branches small{color:#7d817e!important}
@@ -910,6 +923,38 @@ a[href^="https://mail.google.com"]:hover,a[href="#workflow-index"]:hover{opacity
 
 /* glx mock: node-id 4,47 -> 4,70 trên nền rgb(25,40,50) */
 .glx-node-id{color:#74959f!important}
+
+/* PORTRAIT METRIC LABEL — WCAG AA. Chữ xám 9px (#666965) nằm trực tiếp trên ảnh chân
+   dung sáng (nền ảnh ~ rgb(168,160,179)) cho contrast 2.21:1 -> đậm màu chữ còn hue,
+   thêm halo sáng để đọc được trên mọi phần ảnh. Số lớn dùng var(--ink) đã đạt. */
+.portrait-metric small{color:#33362f!important;text-shadow:0 1px 2px rgba(255,255,255,.6),0 0 6px rgba(255,255,255,.45)}
+
+/* PORTRAIT UNDER — span 11px nằm trong vệt bóng đổ của khung ảnh (nền 234 thay vì 247)
+   -> phủ nền trang để giữ contrast 4.7:1. */
+.portrait-under{background:var(--bg);position:relative}
+/* QA 2026-11-17 — 3 phép đo contrast còn <4.5:1 (tính từ CSS + composite alpha,
+   không dựa resolver DOM sai). Chỉ THÊM rule, prefix xl-, không sửa rule cũ.
+   .console-log>div  : .72 + #7b817d -> 3.03:1 trên nền live-system #111214
+   .code-lab-log span: #757d79 -> 4.47:1 trên nền #0f1114
+   .hero-meta span:last-child: #858581 -> 3.45:1 trên nền --bg #f7f7f5 */
+.console-log>div{opacity:.85;color:#8b918d!important}
+.code-lab-log span{color:#7d8581!important}
+.hero-meta span:last-child{color:#6f6f6b!important}
+</style>
+  <style id="xl-contrast-styles-2">
+/* QA 2026-11-17 (lượt 2) — đo lại bằng PIXEL thật trên slice 900px (fresh3),
+   không dựa resolver DOM (resolver DOM báo 1.00 cho vùng ảnh vì nền là <img> độc lập).
+   Các mục đo được <4.5:1 nâng lên >=4.5:1. Chỉ THÊM rule, prefix xl-,
+   không sửa/xoá rule cũ. Kết quả đo: xem qa/portfolio_contrast_pixel.json. */
+/* 1) .web-card.has-shot.campaign-shade: nội dung (27..184px của card 510px, ~36%)
+   nằm ở dải scrim chỉ ~0.62 alpha -> chữ trắng 76% chỉ 2.88:1 (a) / 3.28:1 (p)
+   / 4.04:1 (.label). Kéo scrim tối hơn đúng dải nội dung, đáy thả dần để ảnh
+   vẫn nhìn thấy. Trước: rgba(37,39,41,.72)->.18. */
+.web-card.has-shot.campaign-shade::after{background:linear-gradient(180deg,rgba(33,35,37,.9) 0,rgba(33,35,37,.86) 30%,rgba(33,35,37,.62) 55%,rgba(33,35,37,.2) 100%)!important}
+/* 2) .portrait-under span <=390px: #898984 trên nền trang #f7f7f5 = 3.28:1 (fs 8.5px) */
+@media (max-width:390px){.portrait-under span{color:#6f6f6b!important}}
+/* 3) .media-note span: #6f6f6b trên nền trắng .94 = 4.49:1 (sát ngưỡng) */
+.media-note span{color:#5c5c58!important}
 </style>
   <style id="xl-responsive-fix">
 /* RESPONSIVE LAYER — additive, không sửa/xoá rule cũ (chỉ thêm, prefix xl-).
@@ -1110,6 +1155,238 @@ a[href^="https://mail.google.com"]:hover,a[href="#workflow-index"]:hover{opacity
   setTimeout(function(){if(!document.querySelector('.reveal.visible'))document.querySelectorAll('.reveal').forEach(function(el){el.classList.add('visible');});},6000);
 })();
 </script>
+
+<script id="xl-reveal-failsafe">
+/* QA 2026-11-17 — rubric #4 motion: moi reveal khoi dau opacity:0 PHAI co trang thai cuoi bat buoc.
+   Failsafe: neu IntersectionObserver khong kich hoat, khoi phuc cac phan tu dang trong viewport. */
+(function(){function flush(){var vh=window.innerHeight||document.documentElement.clientHeight;var l=document.querySelectorAll(".reveal:not(.visible)");for(var i=0;i<l.length;i++){var r=l[i].getBoundingClientRect();if(r.bottom>0&&r.top<vh&&r.width>0)l[i].classList.add("visible");}}
+setTimeout(flush,4000);var t;window.addEventListener("scroll",function(){clearTimeout(t);t=setTimeout(flush,1200);},{passive:true});})();
+</script>
+<style id="xl-type-rhythm">
+/* QA 2026-11-17 — rubric #2 typography: lam phang gia tri font-size le (.5px) thanh so nguyen.
+   Chi THEM rule, khong sua/xoa rule cu. */
+@media (max-width:720px){ .hero-v2 .hero-copy{font-size:16px!important } }
+@media (max-width:720px){ .hero-meta{font-size:11px!important } }
+@media (max-width:720px){ .portrait-under span{font-size:10px!important } }
+@media (max-width:720px){ .signal-head p{font-size:13px!important } }
+@media (max-width:720px){ .signal-metric p{font-size:11px!important } }
+@media (max-width:720px){ .signal-state{font-size:8px!important } }
+@media (max-width:720px){ .signal-console>div:first-child{font-size:8px!important } }
+@media (max-width:720px){ .signal-console small{font-size:8px!important } }
+@media (max-width:720px){ .section-head p{font-size:14px!important } }
+@media (max-width:720px){ .automation-card p{font-size:13px!important } }
+@media (max-width:720px){ .tag{font-size:9px!important } }
+@media (max-width:720px){ .ops-flow-head p{font-size:13px!important } }
+@media (max-width:720px){ .ops-step small{font-size:12px!important } }
+@media (max-width:720px){ .live-node small{font-size:10px!important } }
+@media (max-width:720px){ .distribution-branches span{font-size:8px!important } }
+@media (max-width:720px){ .fact-row{font-size:12px!important } }
+@media (max-width:720px){ .experience-list li{font-size:13px!important } }
+@media (max-width:720px){ .cap p{font-size:12px!important } }
+@media (max-width:720px){ .vision-panel p{font-size:13px!important } }
+@media (max-width:720px){ .vision-item small{font-size:12px!important } }
+@media (max-width:720px){ .contact-note{font-size:12px!important } }
+@media (max-width:720px){ .case-fact b{font-size:12px!important } }
+@media (max-width:720px){ .decision p,.ownership p,.result p{font-size:12px!important } }
+@media (max-width:720px){ .artifact figcaption{font-size:11px!important } }
+@media (max-width:720px){ .ba ol{font-size:12px!important } }
+@media (max-width:720px){ .lesson{font-size:13px!important } }
+@media (max-width:720px){ .eyebrow{font-size:9px!important } }
+@media (max-width:720px){ .primary-link{font-size:11px!important } }
+@media (max-width:720px){ .portrait-under b{font-size:11px!important } }
+@media (max-width:720px){ .ops-step-grid-live .ops-step small{font-size:12px!important } }
+@media (max-width:720px){ .ops-step-grid-live .ops-step em{font-size:8px!important } }
+@media (max-width:720px){ .aim-overlay p{font-size:12px!important } }
+@media (max-width:720px){ .aim-stat small{font-size:8px!important } }
+@media (max-width:390px){ .aim-overlay-sub{font-size:9px!important } }
+ .code-lab-code{font-size:13px!important}
+ .code-lab-terminal-body{font-size:11px!important}
+@media (max-width:720px){ .code-lab-terminal-card p{font-size:11px!important } }
+ .work-index-item span{font-size:10px!important}
+ .work-index-item b{font-size:12px!important}
+@media (max-width:720px){ .after-hours .section-head p,.built-copy p,.code-lab-section .section-head p,.section-head p,.signal-head p,.vision-panel p{font-size:13px!important } }
+@media (max-width:720px){ .project-problem{font-size:14px!important } }
+@media (max-width:720px){ .case-block p{font-size:13px!important } }
+ .system-index-item b{font-size:13px!important}
+ #glx .glx-code{font-size:11px!important}
+@media (max-width:740px){ #glx .glx-topbar-title{font-size:9px!important } }
+@media (max-width:740px){ #glx .glx-tab{font-size:11px!important } }
+ /* C6 radar: truoc day vong quet bi overflow:hidden cat 38px -> dua vao trong khung */
+ .portrait-wrap .portrait-radar{right:12px;bottom:12px}
+</style>
+<style id="xl-type-rhythm-desktop">
+/* Desktop type rhythm: 11 rule font-size co phan le (x.5px) o ngoai media query,
+   lam hong scale 4/8px va lam lech baseline. Chi THEM, khong sua rule cu.
+   Nguyen tac: lam tron xuong so nguyen gan nhat. */
+.code-lab-code{font-size:13px!important}
+.code-lab-terminal-body{font-size:11px!important}
+.work-index-item span{font-size:10px!important}
+.work-index-item b{font-size:12px!important}
+.fact-row{font-size:12px!important}
+.cap p{font-size:12px!important}
+.vision-item small{font-size:12px!important}
+.signal-metric p{font-size:11px!important}
+.live-node small{font-size:10px!important}
+.system-index-item b{font-size:13px!important}
+#glx .glx-code{font-size:11px!important}
+</style>
+<style id="xl-type-legibility">
+/* Legibility floor: 47 rule dat font-size < 9px, nhom nguy hiem nhat la
+   .portrait-metric small bi thu 9px -> 5.4px o <=390px (khong doc duoc).
+   Chi THEM, khong sua/xoa rule cu. Sang tay: nang san nho nhat len 9px. */
+@media (max-width:720px){
+.portrait-metric small{font-size:9px!important;line-height:1.4!important}
+.portrait-under span{font-size:9px!important}
+.system-rail-foot span{font-size:9px!important}
+.aim-stat small{font-size:9px!important}
+.distribution-source span{font-size:9px!important}
+.distribution-branches span,.distribution-branches small{font-size:9px!important}
+.live-clock small{font-size:9px!important}
+.route-node small,.route-node b{font-size:9px!important}
+.signal-console small,.signal-state{font-size:9px!important}
+.signal-console>div:first-child{font-size:9px!important}
+.ops-step-grid-live .ops-step em{font-size:9px!important}
+}
+@media (max-width:390px){
+.eyebrow{font-size:9px!important}
+}
+/* .aim-focus-state: pixel-do contrast 4.20:1 < 4.5 (WCAG AA) -> sang mau de dat ~5.9 */
+.aim-focus-state{color:#8b9294!important}
+</style>
+<style id="xl-type-floor8">
+/* Legibility floor 2: con 41 phan tu o 8px (sau block xl-type-legibility).
+   Nhom la chrome may (signal-index / console-log / aim-coord / code-lab-status...).
+   CHI THEM !important, khong sua/xoa rule cu. */
+.signal-index{font-size:9px!important;letter-spacing:.05em!important}
+.signal-throughput span{font-size:9px!important}
+.console-head{font-size:9px!important}
+.console-log>div{font-size:9px!important}
+.console-log small{font-size:9px!important}
+.live-topbar{font-size:9px!important}
+.live-clock span{font-size:9px!important}
+.aim-topbar{font-size:9px!important}
+.aim-session-state{font-size:9px!important}
+.aim-coord{font-size:9px!important}
+.aim-sens-help{font-size:9px!important}
+.code-lab-status{font-size:9px!important}
+.code-lab-footer{font-size:9px!important}
+#glx .glx-topbar-right{font-size:9px!important}
+.system-rail-title small{font-size:9px!important}
+.system-rail-percent{font-size:9px!important}
+.system-rail-num{font-size:9px!important}
+@media (max-width:720px){
+.portrait-under span{font-size:9px!important}
+.route-node small,.route-node b{font-size:9px!important}
+.distribution-branches span,.distribution-branches small{font-size:9px!important}
+.ops-step-grid-live .ops-step em{font-size:9px!important}
+}
+</style>
+<style id="xl-type-floor8b">
+/* Legibility floor 3: 8px con lai deu nam trong #aim-shell (HUD stat, meter head,
+   sens scale, personal best). CHI THEM !important, khong sua rule cu. */
+.aim-stat small{font-size:9px!important}
+.aim-meter-head span,.aim-meter-head b{font-size:9px!important}
+.aim-sens-scale span{font-size:9px!important}
+.aim-personal-best span,.aim-personal-best b{font-size:9px!important}
+</style>
+<style id="xl-contrast-final">
+/* QA 2026-11-18 (lượt 3) — đo bằng PIXEL thật trên full-page screenshot 390px
+   (cdpqa/full390.png + rect doc-coord), lấy pixel chữ cực trị so màu nền modal.
+   Các mục đo <4.5:1 được nâng lightness (giữ hue/identity). Chỉ THÊM rule,
+   không sửa/xoá rule cũ. Kết quả đo: qa/portfolio_contrast_final.json */
+.signal-console span{color:#9aa09c!important}
+.signal-state span{color:#9aa09c!important}
+.code-lab-terminal-card small{color:#9aa09c!important}
+.code-lab-com{color:#9aa09c!important}
+.code-lab-footer{color:#9aa09c!important}
+.code-lab-log span{color:#9aa09c!important}
+.live-node span{color:#e07a92!important}
+.route-node small{color:#e07a92!important}
+.aim-focus-state{color:#9aa09c!important}
+.aim-coord{color:#9aa09c!important}
+.aim-result-stats small{color:#9aa09c!important}
+.aim-meter-head{color:#9aa09c!important}
+.aim-hud-kicker{color:#9aa09c!important}
+.signal-index{color:#9aa09c!important}
+.signal-live small{color:#9aa09c!important}
+.live-clock small{color:#9aa09c!important}
+.distribution-branches small{color:#9aa09c!important}
+.aim-stat small{color:#9aa09c!important}
+.code-lab-status{color:#e07a92!important}
+.aim-result-note{color:#9aa09c!important}
+.impact-stat em{color:#5f5a56!important}
+.glx-node-id{color:#86a8b5!important}
+/* AIM HUD: nhãn BEST/scale còn dưới 4.5:1 trên nền #0e1114 (đo 2026-11-18) */
+.aim-personal-best{color:#9aa09c!important}
+.aim-personal-best span,.aim-personal-best b{color:#9aa09c!important}
+.aim-sens-scale{color:#8a9193!important}
+.aim-sens-scale span{color:#8a9193!important}
+
+.console-log>div{color:#9aa09c!important}
+/* Legibility floor: nhóm đếm giờ/console 8px -> 9px (rubric: chữ quan trọng >=9px) */
+.console-log span,.console-log>div,.console-log small{font-size:9px!important}
+.code-lab-log span{font-size:9px!important}
+.live-clock span,.live-clock small{font-size:9px!important}
+.signal-throughput span{font-size:9px!important}
+.signal-index{font-size:9px!important}
+.aim-stat small{font-size:9px!important}
+.aim-result-stats small{font-size:9px!important}
+.aim-meter-head,.aim-meter-head span,.aim-meter-head b{font-size:9px!important}
+.code-lab-status{font-size:9px!important}
+.code-lab-footer{font-size:9px!important}
+.signal-live small{font-size:9px!important}
+.distribution-branches small{font-size:9px!important}
+.route-node small{font-size:9px!important}
+.ops-step em{font-size:9px!important}
+.signal-state{font-size:9px!important}
+.signal-console>div:first-child{font-size:9px!important}
+.signal-console small{font-size:9px!important}
+</style>
+
+<style id="xl-contrast-final-2">
+/* QA 2026-11-18 (lượt 4) - do bang PIXEL that tren full-page screenshot 320/390/768/1440
+   (cdpqa/c2_*.png + rect doc-coord). Nhom .tag 9-10px mono mem: DOM 4.70:1 nhung pixel
+   chu cuc tri chi 3.86-4.49 (antialiasing chu mong). Nang lightness, giu hue.
+   Chi THEM rule, khong sua/xoa rule cu. */
+.automation-card .tag,.project-copy .tag{color:#50504a!important}
+/* GLX node id 9px tren nen xanh dam: DOM 4.38 -> rendered 4.13 */
+.glx-node-id{color:#93b5c1!important}
+/* kicker 11px tren nen sang: 4.49 -> 7.58 (scoped, chi dung cho section sang nay) */
+#automation-lab .section-head .label{color:#50504a!important}
+</style>
+<style id="xl-contrast-final-3">
+/* QA 2026-11-18 (luot 5) - do bang PIXEL that tren c2_*.png (RM=reduce) 4 khung.
+   3 mon chu nho 9px con duoi nguong khi do tren pixel rendered (antialias lam lech):
+     #console-log small  5.05 -> 6.06
+     .aim-sens-help      4.88 -> 6.06
+     .built-tag          4.70 -> 7.57 (dung lai token #50504a cho dong he)
+   Chi THEM rule, khong sua/xoa rule cu. */
+#console-log small{color:#a2a2a0!important}/* 0.85 opacity ancestor -> hieu qua 5.54:1 */
+.aim-sens-help{color:#939391!important}
+.built-tags span{color:#50504a!important}
+</style>
+<!-- QA 2026-11-18 — rubric #4 motion. Do luong do that: voi prefers-reduced-motion:reduce,
+     44/47 `.reveal` van bi `filter:blur(5px)` + transform lech (translateY/translateX/scale),
+     anh thumbnail project bi clip-path an, overlay `.project-media:before` + `.web-card.has-shot:before`
+     phu mat, `.aim-stat` mo 30%. Nguyen nhan: `.js .reveal[data-reveal=*]` co specificity cao hon
+     luat RM `.js .reveal{opacity:1;transform:none}`, nen luat RM khong thang cascade.
+     Chi THEM rule, khong sua/xoa rule cu. Ap dung cho ca JS tat (giong kieu noscript). -->
+<style id="xl-rm-complete">
+@media (prefers-reduced-motion: reduce){
+  .js .reveal,.js .reveal[data-reveal],.js .aim-shell.reveal{opacity:1!important;filter:none!important;transform:none!important;clip-path:none!important;visibility:visible!important;transition:none!important}
+  .js .about-grid.reveal h2,.js .built-system-grid.reveal h2,.js .section-head.reveal h2{opacity:1!important;transform:none!important;transition:none!important}
+  .js .project .project-media{clip-path:none!important;transition:none!important}
+  .js .project .project-media img{transform:none!important;transition:none!important}
+  .project-media:before{--reveal-x:101%!important;transform:translateX(101%)!important;transition:none!important}
+  .web-card.has-shot:before{display:none!important}
+  .aim-shell .aim-stat{opacity:1!important;transform:none!important;transition:none!important}
+  .about h2:after,.built-system-grid h2:after,.section-head h2:after{transform:scaleX(1)!important;transition:none!important}
+  .proof-item:before{transform:scaleX(1)!important;transition:none!important}
+  .proof-item:after{width:100%!important;transition:none!important}
+}
+</style>
+
+
 
 </body>
 </html>
